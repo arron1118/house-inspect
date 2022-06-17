@@ -5,6 +5,7 @@ namespace app;
 
 use think\App;
 use think\exception\ValidateException;
+use think\facade\View;
 use think\Validate;
 
 /**
@@ -37,6 +38,24 @@ abstract class BaseController
     protected $middleware = [];
 
     /**
+     * View 实例
+     * @var null
+     */
+    protected $view = null;
+
+    /**
+     * 业务模块
+     * @var string
+     */
+    protected $module = '';
+
+    /**
+     * Token 过期时间
+     * @var float|int
+     */
+    protected $token_expire_time = 3600 * 24 * 7;
+
+    /**
      * 构造方法
      * @access public
      * @param  App  $app  应用对象
@@ -45,6 +64,10 @@ abstract class BaseController
     {
         $this->app     = $app;
         $this->request = $this->app->request;
+        $this->view = View::instance();
+        $this->module = app('http')->getName();
+        $this->view->assign('module', $this->module);
+        $this->view->assign('app_name', config('app.app_name'));
 
         // 控制器初始化
         $this->initialize();
@@ -89,6 +112,11 @@ abstract class BaseController
         }
 
         return $v->failException(true)->check($data);
+    }
+
+    public function getMenu()
+    {
+        return config('menu.' . $this->module);
     }
 
 }

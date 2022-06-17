@@ -1,0 +1,95 @@
+{extend name='public/base' /}
+{block name='css'}
+{include file='public/bootstrap' /}
+{/block}
+
+{block name='body'}
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
+            <ul class="layui-tab-title">
+                {foreach $typeList as $key => $val}
+                <li class="{if ($key === 0)}layui-this{/if}">{$val}</li>
+                {/foreach}
+            </ul>
+            <div class="layui-tab-content">
+                {foreach $typeList as $key => $val}
+                <div class="layui-tab-item {if ($key === 0)}layui-show{/if}">
+                    <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter{$key}" lay-even lay-data="">
+                        <thead>
+                        <tr>
+                            <th lay-data="{field: 'id', title: '编号',}"></th>
+                            {if ($key === 0)}
+                            <th lay-data="{field: 'images', title: '图片', edit: 'text'}"></th>
+                            <th lay-data="{field: 'image_time', title: '拍照时间'}"></th>
+                            <th lay-data="{field: 'description', title: '描述'}"></th>
+                            {elseif ($key === 1) /}
+                            <th lay-data="{field: 'crack_area', title: '裂缝区域'}"></th>
+                            <th lay-data="{field: 'crack_sum', title: '裂缝数量'}"></th>
+                            <th lay-data="{field: 'crack_images', title: '图片'}"></th>
+                            <th lay-data="{field: 'crack_image_time', title: '拍照时间'}"></th>
+                            <th lay-data="{field: 'crack_description', title: '裂缝描述'}"></th>
+                            {elseif ($key === 2) /}
+                            <th lay-data="{field: 'refuse_images', title: '图片'}"></th>
+                            <th lay-data="{field: 'refuse_image_time', title: '拍照时间'}"></th>
+                            <th lay-data="{field: 'refuse_reason', title: '原因'}"></th>
+                            {/if}
+                            <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
+                        </tr>
+                        </thead>
+                    </table>
+                </div>
+                {/foreach}
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+
+{block name='js'}
+<script>
+    layui.use(['jquery', 'layer', 'table', 'form', 'element'], function () {
+        let $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            form = layui.form,
+            element = layui.element;
+
+        let option = { icon: 0 };
+
+        table.init('currentTableFilter1', {
+            url: '{:url("/investigation/getHouseRateList", ["house_id" => $house_id, "investigation_times" => $investigation_times])}',
+            id: 'currentTable',
+            //异步请求，格式化数据
+            parseData: function (res) {
+                return {
+                    'code': 0,
+                    'msg': '',
+                    'data': res.data,
+                    'count': res.total
+                }
+            },
+            page: {
+                limits: [15, 30, 45, 60],
+                limit: 15,
+            },
+            skin: 'line',
+            even: true,
+        })
+
+        let reloadTable = function (params = {}) {
+            //执行搜索重载
+            table.reload('currentTable', {
+                page: {
+                    curr: 1
+                },
+                where: params
+            }, false);
+        }
+
+        form.on('select(typeFilter)', function (data) {
+            reloadTable({ type: data.value })
+        })
+    })
+</script>
+{/block}

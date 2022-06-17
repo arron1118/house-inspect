@@ -1,0 +1,148 @@
+{extend name="public/base" /}
+{block name="css"}
+{include file="public/bootstrap" /}
+{/block}
+{block name="body"}
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <div class="container-fluid ">
+            <div class="row mt-5 justify-content-center">
+                <div class="col-md-8 col-sm-12">
+                    <form class="layui-form layuimini-form">
+                        {foreach ($siteConfig as $item)}
+                        <div class="layui-form-item">
+                            <label class="layui-form-label">{$item.name}</label>
+                            <div class="layui-input-block">
+                                {switch $item.type}
+                                {case radio}
+                                <input type="checkbox" lay-skin="switch" lay-filter="testFilter" name="param[{$item.keyword}]" data-type="{$item.type}"
+                                       value="1"
+                                       lay-text="是|否" {if ($item.value == 1)}checked{/if}>
+                                {/case}
+                                {case file}
+                                <button type="button" class="layui-btn layui-btn-sm upload">上传</button>
+                                <div class="layui-upload-list upload-image"></div>
+                                <input name="param[{$item.keyword}]" data-type="{$item.type}" type="hidden" value="{$item.value}" class="layui-input upload-input" />
+                                {/case}
+                                {case textarea}
+                                <textarea name="param[{$item.keyword}]" data-type="{$item.type}" class="layui-textarea">{$item.value}</textarea>
+                                {/case}
+                                {case select}
+                                {php} $options = json_decode($item['value'], true); {/php}
+                                <select name="param[{$item.keyword}]" data-type="{$item.type}">
+                                    {foreach $options as $key => $val}
+                                    <option value="{$key}" {if $item.content == $key}selected{/if}>{$val}</option>
+                                    {/foreach}
+                                </select>
+                                {/case}
+                                {default /}
+                                <input type="text" name="param[{$item.keyword}]" data-type="{$item.type}" placeholder=""  value="{$item.value}" class="layui-input">
+                                {/switch}
+                                {if $item.tip}
+                                <tip>{$item.tip}</tip>
+                                {/if}
+                            </div>
+                        </div>
+                        {/foreach}
+
+                        <div class="layui-form-item">
+                            <div class="layui-input-block">
+                                <button class="layui-btn layui-btn-normal" lay-submit lay-filter="saveBtn">保 存</button>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{/block}
+{block name="js"}
+<script>
+    layui.use(['form', 'miniTab', 'jquery', 'upload'], function () {
+        let form = layui.form,
+            layer = layui.layer,
+            $ = layui.jquery,
+            miniTab = layui.miniTab,
+            upload = layui.upload;
+
+        let option = { icon: 2 }
+
+        let appendAttachment = function (param = {
+            elem: '',
+            source: '',
+            name: '',
+        }) {
+            if (param.source !== '') {
+                $(param.elem).siblings('.upload-image').append('<img src="' + param.source + '" alt="' + param.name + '" class="layui-upload-img" style="max-height: 100px; width: auto;">')
+            }
+        }
+
+        $.each($('.upload-input'), function (index, item) {
+            let img = $(item).val()
+            appendAttachment({
+                elem: $(this),
+                source: $(item).val(),
+            })
+        })
+
+        const uploadInst = upload.render({
+            elem: '.upload',
+            url: '{:url("/config/upload")}',
+            accept: 'images',
+            before: function (obj) {
+                const el = this.item;
+                $(this.item).siblings('.upload-image').html('')
+                //预读本地文件示例，不支持ie8
+                obj.preview(function (index, file, result) {
+                    appendAttachment({ elem: el, source: result, name: file.name })
+                });
+            },
+            done: function (res) {
+                if (res.code === 1) {
+                    option.icon = 1;
+                    this.item.siblings('.upload-input').val(res.data.savePath);
+                }
+
+                return layer.msg(res.msg, option)
+            },
+            error: function () {
+                //演示失败状态，并实现重传
+                let demoText = $('#demoText');
+                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                demoText.find('.demo-reload').on('click', function () {
+                    uploadInst.upload();
+                });
+            },
+        })
+
+        //监听提交
+        form.on('submit(saveBtn)', function (obj) {
+            let fields = {}
+            $.each(obj.form, function (index, item) {
+                let name = $(item).prop('name'), type = $(item).data('type');
+                if (name.indexOf('param') !== -1 && obj.field.hasOwnProperty(name)) {
+                    fields[name + '[value]'] = $(item).val();
+                    fields[name + '[type]'] = type
+                }
+            });
+            if (!obj.field.hasOwnProperty('param[site_watermark_engine]')) {
+                fields['param[site_watermark_engine][value]'] = 0;
+                fields['param[site_watermark_engine][type]'] = 'radio';
+            }
+
+            $.post('{:url("/config/update")}', fields, function (res) {
+                if (res.code === 1) {
+                    option.icon = 1;
+                }
+
+                return layer.msg(res.msg, option)
+            })
+
+            return false;
+        });
+
+    });
+</script>
+
+{/block}

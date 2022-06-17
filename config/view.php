@@ -22,4 +22,10 @@ return [
     'taglib_begin'  => '{',
     // 标签库标签结束标记
     'taglib_end'    => '}',
+
+    'tpl_replace_string' => [
+        '__STATIC__' => '/static',
+        '__PUBLIC__' => public_path(),
+        '__VIEW__' => base_path() . '/view',
+    ]
 ];
