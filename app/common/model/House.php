@@ -10,17 +10,24 @@ use think\Model;
  */
 class House extends Model
 {
+    protected $json = [
+        'doorplate_info',
+        'house_info',
+        'indoor_info',
+        'roof_info',
+        'extension_info',
+        'extension_demountable_info',
+        'rust_eaten_info',
+        'crack_info',
+        'other_info',
+    ];
+
     public static function onAfterInsert($house): void
     {
     }
 
     public static function onAfterDelete($house): void
     {
-    }
-
-    public function houseExtension()
-    {
-        return $this->hasOne(HouseExtension::class);
     }
 
     public function user()

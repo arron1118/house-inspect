@@ -6,7 +6,6 @@ namespace app\admin\controller;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
-use app\common\model\HouseExtension;
 use app\common\model\HouseRate;
 use app\common\model\Area;
 
