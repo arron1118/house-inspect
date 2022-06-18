@@ -139,26 +139,25 @@
                     layer.msg('请选择区域', option)
                     return false
                 }
-
-                layer.prompt({ title: '添加' }, function (input, index) {
-                    if (input === '') {
-                        option.icon = 2
-                        layer.msg('请输入名称', option);
-                        return false;
-                    }
-                    let param = { title: input }
-                    param[area.prop('name')] = area.val()
-
-                    $.post('{:url("/house/save")}', param, function (res) {
-                        if (res.code === 1) {
-                            option.icon = 1
-                            layer.close(index)
-                            reloadTable(form.val('searchForm'))
-                        }
-
-                        layer.msg(res.msg, option)
-                    })
+                let index = layer.open({
+                    title: '数据列表',
+                    type: 2,
+                    shade: 0.2,
+                    maxmin: true,
+                    shadeClose: true,
+                    anim: 2,
+                    area: ['100%', '100%'],
+                    content: '{:url("/House/create")}',
                 });
+                // $.post('{:url("/house/save")}', param, function (res) {
+                //     if (res.code === 1) {
+                //         option.icon = 1
+                //         layer.close(index)
+                //         reloadTable(form.val('searchForm'))
+                //     }
+                //
+                //     layer.msg(res.msg, option)
+                // })
             }
         });
 
