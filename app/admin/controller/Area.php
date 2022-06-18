@@ -70,7 +70,7 @@ class Area extends AdminController
     public function save(Request $request)
     {
         if ($request->isPost()) {
-            $params = $request->only(['title']);
+            $params = $request->only(['title', 'code']);
             $params['admin_id'] = $this->userInfo->id;
             (new $this->model)->save($params);
             $this->returnData['code'] = 1;
@@ -111,7 +111,7 @@ class Area extends AdminController
     public function update(Request $request, $id)
     {
         if ($request->isPost()) {
-            $params = $request->only(['title']);
+            $params = $request->only(['title', 'code']);
             $area = $this->model::find($id);
 
             $area->save($params);

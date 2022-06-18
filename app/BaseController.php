@@ -116,7 +116,7 @@ abstract class BaseController
 
     public function getMenu()
     {
-        return config('menu.' . $this->module);
+        return json(config('menu.' . $this->module));
     }
 
 }

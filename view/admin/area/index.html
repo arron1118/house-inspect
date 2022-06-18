@@ -118,21 +118,23 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
-                layer.prompt({ title: '添加' }, function (input, index) {
+                layer.prompt({ title: '请输入名称' }, function (input, index) {
                     if (input === '') {
                         layer.msg('请输入名称', { icon: 2 });
                         return false;
                     }
 
-                    $.post('{:url("/area/save")}', { title: input }, function (res) {
-                        if (res.code === 1) {
-                            option.icon = 1
-                            layer.close(index)
-                            reloadTable(form.val('searchForm'))
-                        }
+                    layer.prompt({ title: '请输入编码' }, function (input, index) {
+                        $.post('{:url("/area/save")}', {title: input}, function (res) {
+                            if (res.code === 1) {
+                                option.icon = 1
+                                layer.close(index)
+                                reloadTable(form.val('searchForm'))
+                            }
 
-                        layer.msg(res.msg, option)
-                    });
+                            layer.msg(res.msg, option)
+                        });
+                    })
                 });
             }
         });
