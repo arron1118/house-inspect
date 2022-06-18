@@ -42,7 +42,7 @@ class House extends ApiController
 
         $this->returnData['code'] = 1;
         $this->returnData['total'] = $this->model::where($map)->count();
-        $this->returnData['data'] = $this->model::field('id, title, area_id, create_time')
+        $this->returnData['data'] = $this->model::field('id, title, code, area_id, create_time')
             ->where($map)
             ->order('id desc')
             ->limit(($page - 1) * $limit, $limit)
@@ -62,9 +62,11 @@ class House extends ApiController
         if ($request->isPost()) {
             $params = $request->param();
             $params['user_id'] = $this->userInfo->id;
-            (new $this->model)->save($params);
+//            (new $this->model)->save($params);
 
+            $this->returnData['file'] = $this->upload('house_info_image');
             $this->returnData['code'] = 1;
+            $this->returnData['data'] = $params;
             $this->returnApiData(lang('Done'));
         }
 
