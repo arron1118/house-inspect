@@ -32,7 +32,7 @@ class House extends ApiController
             $this->returnApiData('请提供项目ID: area_id');
         }
 
-        $map = $finish_map = [
+        $map = [
             ['area_id', '=', $areaId],
         ];
 
@@ -42,9 +42,7 @@ class House extends ApiController
 
         $this->returnData['code'] = 1;
         $this->returnData['total'] = $this->model::where($map)->count();
-        $this->returnData['finish_total'] = $this->model::where($finish_map)->count();
         $this->returnData['data'] = $this->model::field('id, title, area_id, create_time')
-            ->withCount(['investigation'])
             ->where($map)
             ->order('id desc')
             ->limit(($page - 1) * $limit, $limit)
