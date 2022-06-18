@@ -32,7 +32,7 @@ class Area extends ApiController
         }
 
         $this->returnData['total'] = $this->model::where($map)->count();
-        $this->returnData['data'] = $this->model::field('id, title')
+        $this->returnData['data'] = $this->model::field('id, title, create_time')
             ->where($map)
             ->order('id desc')
             ->limit(($page - 1) * $limit, $limit)
