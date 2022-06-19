@@ -339,50 +339,11 @@
                         </div>
                     </div>
                     <div class="layui-tab-item container">
-                        <div class="mb-4">
-                            <div class="layui-font-18 text-black">门牌照片
-                                <button type="button" class="layui-btn layui-btn-normal layui-btn-xs"
-                                        id="doorplateInfo">
-                                    <i class="layui-icon"></i></button>
-                            </div>
-                        </div>
-                        <div id="infos">
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md6">
-                                    <div class="grid-demo grid-demo-bg1">
-                                        <div class="layui-form-item">
-                                            <div class="layui-input-block m-0">
-                                             <textarea name="description"  placeholder="请描述"
-                                                       autocomplete="off" class="layui-input" value=""
-                                                       style="height: 80px"
-                                             ></textarea>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="layui-col-md6">
-                                    <div class="grid-demo">
-                                        <div class="layui-upload"
-                                             style="display: flex; flex-direction: row; justify-content: start">
-                                            <div class="layui-upload-list w-25 h-25 text-center my-0">
-                                                <img class="layui-upload-img" id="demo1" style="height: 80px">
-                                                <p id="demoText"></p>
-                                            </div>
-                                            <div style="display: flex; flex-direction: row; justify-content: start">
-                                                <button type="button"
-                                                        class="layui-btn layui-btn-primary layui-btn-sm me-2"
-                                                        id="test1">
-                                                    <i class="layui-icon"></i>上传图片
-                                                </button>
-                                                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
-                                                        id="del">
-                                                    <i class="layui-icon"></i></button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                        <div class="d-none" id="infos">{:json_encode($infos)}</div>
+                        {foreach ($infos as $key => $val)}
+                        <div class="d-none" id="{$key}_data">{:json_encode($house[$key])}</div>
+                        {/foreach}
+                        <div class="infos-content"></div>
                     </div>
 
                 </div>
@@ -401,96 +362,128 @@
 
 {block name='js'}
 <script>
-    layui.use(['jquery', 'layer', 'form', 'element', 'upload'], function () {
+    layui.use(['jquery', 'layer', 'form', 'element', 'laydate', 'upload'], function () {
         let $ = layui.jquery,
             layer = layui.layer,
             element = layui.element,
             upload = layui.upload,
             form = layui.form;
         let frameIndex = parent.layer.getFrameIndex(window.name);
-
         let option = { icon: 0 };
-        //常规使用 - 普通图片上传
-        let uploadInst = upload.render({
-            elem: '#test1'
-            , url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
-            , before: function (obj) {
-                //预读本地文件示例，不支持ie8
-                obj.preview(function (index, file, result) {
-                    $('#demo1').attr('src', result); //图片链接（base64）
-                });
 
-                element.progress('demo', '0%'); //进度条复位
-                layer.msg('上传中', {icon: 16, time: 0});
-            }
-            , done: function (res) {
-                //如果上传失败
-                if (res.code > 0) {
-                    return layer.msg('上传失败');
+        let makeHtml = function (index, item, data = null) {
+            console.log(data)
+            let item_container = index + '_container', cont = $('.' + item_container), i = cont.children().length;
+            cont.append($('<div />', {
+                class: 'layui-row layui-col-space15'
+            }).append($('<div />', {
+                class: 'layui-col-md6'
+            }).append($('<div />', {
+                class: 'layui-form-item'
+            }).append($('<div />', {
+                class: 'layui-input-block m-0'
+            }).append($('<textarea />', {
+                name: index + '[description][]',
+                class: 'layui-textarea',
+                rows: 5,
+                placeholder: '描述',
+                text: data?.description
+            }))))).append($('<div />', {
+                class: 'layui-col-md6'
+            }).append($('<div />', {
+                style: 'display: flex; flex-direction: row; justify-content: start',
+                class: 'layui-upload',
+            }).append($('<div />', {
+                class: 'layui-upload-list w-25 h-25 text-center my-0'
+            }).append($('<img />', {
+                class: 'layui-upload-img',
+                style: 'height: 80px',
+                src: data?.image
+            })).append($('<input />', {
+                type: 'hidden',
+                name: index + '[image][]',
+                value: data?.image
+            })).append($('<p />', { class: index + '_tip' }))).append($('<div />', {
+                style: 'display: flex; flex-direction: row; justify-content: start'
+            }).append($('<button />', {
+                text: '上传图片',
+                type: 'button',
+                id: index + '_upload_' + i,
+                class: 'layui-btn layui-btn-primary layui-btn-sm me-2',
+            })).append($('<button />', {
+                class: 'layui-btn layui-btn-danger layui-btn-sm delete-info',
+                text: '删除',
+                type: 'button',
+                click: function () {
+                    $(this).parentsUntil('.' + item_container).remove()
                 }
-                //上传成功的一些操作
-                //……
-                $('#demoText').html(''); //置空上传失败的状态
-            }
-            , error: function () {
-                //演示失败状态，并实现重传
-                var demoText = $('#demoText');
-                demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
-                demoText.find('.demo-reload').on('click', function () {
-                    uploadInst.upload();
-                });
-            }
-        });
-        let infoTemplate = `<div class="layui-row layui-col-space15">
-                        <div class="layui-col-md6">
-                            <div class="grid-demo grid-demo-bg1">
-                                <div class="layui-form-item">
-                                    <div class="layui-input-block m-0">
-                                         <textarea  name="description"  placeholder="请描述"
-                                                    autocomplete="off" class="layui-input" value=""
-                                                    style="height: 80px"
-                                         ></textarea>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="layui-col-md6">
-                            <div class="grid-demo">
-                                <div class="layui-upload" style="display: flex; flex-direction: row; justify-content: start">
-                                    <div class="layui-upload-list w-25 h-25 text-center my-0">
-                                        <img class="layui-upload-img" id="demo1" style="height: 80px">
-                                        <p id="demoText"></p>
-                                    </div>
-                                   <div style="display: flex; flex-direction: row; justify-content: start">
-                                       <button type="button" class="layui-btn layui-btn-primary layui-btn-sm me-2" id="test1">
-                                           <i class="layui-icon"></i>上传图片</button>
-                                       <button type="button" class="layui-btn layui-btn-danger layui-btn-sm" id="del">
-                                           <i class="layui-icon"></i></button>
-                                   </div>
+            }))))));
 
-                                </div>
-                            </div>
-                        </div>
-                    </div>`
-        // 添加一行 doorplateInfo
-        $("#doorplateInfo").on('click', function () {
-            $("#infos").append(infoTemplate)
-        })
-        // 删除一行
-        $("#del").on('click', function () {
-            layer.confirm('确定删除吗？', function (index) {
-                // obj.del()
-                console.log('yes')
-                layer.close(index);
-            }, function () {
-                console.log('no')
+            let uploadInst = upload.render({
+                elem: '#' + index + '_upload_' + i,
+                url: '{:url("/house/upload")}',
+                accept: 'images',
+                before: function (obj) {
+                    const el = this.item;
+                    $(this.item).siblings('.upload-image').html('')
+                    //预读本地文件示例，不支持ie8
+                    obj.preview(function (index, file, result) {
+                        el.parentsUntil('.' + item_container).find('img').attr('src', result);
+                    });
+                },
+                done: function (res) {
+                    if (res.code === 1) {
+                        option.icon = 1;
+                        this.item.parentsUntil('.' + item_container).find('input[name="' + index + '[image][]"]').val(res.data.savePath);
+                    }
+
+                    return layer.msg(res.msg, option)
+                },
+                error: function () {
+                    //演示失败状态，并实现重传
+                    let demoText = $('#demoText');
+                    demoText.html('<span style="color: #FF5722;">上传失败</span> <a class="layui-btn layui-btn-xs demo-reload">重试</a>');
+                    demoText.find('.demo-reload').on('click', function () {
+                        uploadInst.upload();
+                    });
+                },
+            });
+        };
+        let infos = JSON.parse($('#infos').text())
+        $.each(infos, function (index, item) {
+            let div = $('<div />', { class: index + '_row row' }),
+                container = $('.infos-content'),
+                item_container = index + '_container';
+
+            div.append($('<div />', { class: 'col-12' }).append($('<div />', {
+                class: 'mb-4'
+            }).append($('<div />', {
+                class: 'layui-font-18 text-black',
+                text: item
+            }).append($('<button />', {
+                class: 'layui-btn layui-btn-normal layui-btn-xs',
+                type: 'button',
+                id: index,
+                text: '添加',
+                title: '添加',
+                click: function () {
+                    makeHtml(index, item)
+                }
+            })))).append($('<div />', {
+                class: item_container
+            })));
+
+            div.appendTo(container);
+
+            let info_data = JSON.parse($('#' + index + '_data').text());
+            $.each(info_data, function (info_index, info_item) {
+                makeHtml(index, item, info_item)
             })
-        })
+        });
+
         // 提交
         form.on('submit(add)', function (data) {
-            console.log(data.field)
-            console.log(data)
-            $.post("{:url('/house/save')}", data.field, function (res) {
+            $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
 
