@@ -42,18 +42,22 @@
 </div>
 <div class="layuimini-container">
     <div class="layuimini-main">
+        <button type="button" class="layui-btn layui-btn-sm data-count-edit layui-btn-normal d-none" id="importExcel">导入客户</button>
         <script type="text/html" id="toolbarDemo">
             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i
                     class="fa fa-plus"></i> 添加
             </button>
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even lay-data="">
             <thead>
             <tr>
                 <th lay-data="{field: 'id', title: '编号', width: 100}"></th>
+                <th lay-data="{field: 'code', title: '编码'}"></th>
                 <th lay-data="{field: 'title', title: '名称', edit: 'text'}"></th>
-                <th lay-data="{field: 'building_title', title: '所属楼宇'}"></th>
                 <th lay-data="{field: 'area_title', title: '所属区域'}"></th>
+                <th lay-data="{field: 'address', title: '地址'}"></th>
+                <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
                 <th lay-data="{title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'}"></th>
             </tr>
             </thead>
@@ -76,13 +80,14 @@
 
 {block name='js'}
 <script>
-    layui.use(['jquery', 'layer', 'table', 'form'], function () {
+    layui.use(['jquery', 'layer', 'table', 'form', 'upload'], function () {
         let $ = layui.jquery,
             layer = layui.layer,
             table = layui.table,
+            upload = layui.upload,
             form = layui.form;
 
-        let option = { icon: 0 };
+        let option = { icon: 0 }, area_id = 0;
 
         table.init('currentTableFilter', {
             url: '{:url("/house/getHouseList")}',
@@ -134,15 +139,15 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
+            let area = $('select[lay-filter="areaFilter"]')
+
+            if (parseInt(area.val()) <= 0) {
+                option.icon = 2
+                layer.msg('请选择区域', option)
+                return false
+            }
             switch (obj.event) {  // 监听添加操作
                 case 'add':
-                    let area = $('select[lay-filter="areaFilter"]')
-
-                    if (parseInt(area.val()) <= 0) {
-                        option.icon = 2
-                        layer.msg('请选择区域', option)
-                        return false
-                    }
                     let index = layer.open({
                         title: '添加',
                         type: 2,
@@ -153,6 +158,11 @@
                         area: ['100%', '100%'],
                         content: '{:url("/House/create")}?area_id=' + area.val(),
                     });
+                    break;
+
+                case 'importExcel':
+                    area_id = area.val()
+                    $('#importExcel').click();
                     break;
             }
         });
@@ -222,7 +232,45 @@
             }
         });
 
+        // 导入
+        let loading = null;
+        upload.render({
+            elem: '#importExcel',
+            url: '{:url("/House/importExcel")}',
+            data: {
+                area_id: function () {
+                    return area_id
+                },
+            },
+            accept: 'file', //普通文件
+            exts: 'xls|excel|xlsx', //导入表格
+            auto: true,  //选择文件后不自动上传
+            before: function (obj) {
+                loading = layer.load(); //上传loading
+            },
+            // 选择文件回调
+            choose: function (obj) {
+            },
+            done: function (res) {
+                layer.close(loading);
+                let icon = 0;
+                if (res.code === 1) {
+                    icon = 1;
+                    reloadTable({ area_id: area_id })
+                }
 
+                return layer.msg(res.msg, {icon: icon, time: 3000})
+            },
+            error: function () {
+                setTimeout(function () {
+                    layer.msg("上传失败！", {
+                        icon: 1
+                    });
+                    //关闭所有弹出层
+                    layer.closeAll(); //疯狂模式，关闭所有层
+                }, 1000);
+            }
+        });
     })
 </script>
 {/block}
