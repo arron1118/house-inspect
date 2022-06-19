@@ -34,6 +34,7 @@ class House extends ApiController
 
         $map = [
             ['area_id', '=', $areaId],
+            ['user_id', '=', $this->userInfo->id]
         ];
 
         if ($title) {
