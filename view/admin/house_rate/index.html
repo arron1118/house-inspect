@@ -1,95 +1,140 @@
-{extend name='public/base' /}
-{block name='css'}
-{include file='public/bootstrap' /}
-{/block}
+{extend name="public/base" /}
+{block name="css"}
+{include file="public/bootstrap" /}
+<style>
+    .logo-title {
+        text-align: center;
+        letter-spacing: 2px;
+        padding: 14px 0;
+    }
 
-{block name='body'}
-<div class="layuimini-container">
-    <div class="layuimini-main">
-        <div class="layui-tab layui-tab-brief" lay-filter="docDemoTabBrief">
-            <ul class="layui-tab-title">
-                {foreach $typeList as $key => $val}
-                <li class="{if ($key === 0)}layui-this{/if}">{$val}</li>
-                {/foreach}
-            </ul>
-            <div class="layui-tab-content">
-                {foreach $typeList as $key => $val}
-                <div class="layui-tab-item {if ($key === 0)}layui-show{/if}">
-                    <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter{$key}" lay-even lay-data="">
-                        <thead>
-                        <tr>
-                            <th lay-data="{field: 'id', title: '编号',}"></th>
-                            {if ($key === 0)}
-                            <th lay-data="{field: 'images', title: '图片', edit: 'text'}"></th>
-                            <th lay-data="{field: 'image_time', title: '拍照时间'}"></th>
-                            <th lay-data="{field: 'description', title: '描述'}"></th>
-                            {elseif ($key === 1) /}
-                            <th lay-data="{field: 'crack_area', title: '裂缝区域'}"></th>
-                            <th lay-data="{field: 'crack_sum', title: '裂缝数量'}"></th>
-                            <th lay-data="{field: 'crack_images', title: '图片'}"></th>
-                            <th lay-data="{field: 'crack_image_time', title: '拍照时间'}"></th>
-                            <th lay-data="{field: 'crack_description', title: '裂缝描述'}"></th>
-                            {elseif ($key === 2) /}
-                            <th lay-data="{field: 'refuse_images', title: '图片'}"></th>
-                            <th lay-data="{field: 'refuse_image_time', title: '拍照时间'}"></th>
-                            <th lay-data="{field: 'refuse_reason', title: '原因'}"></th>
-                            {/if}
-                            <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
-                        </tr>
-                        </thead>
-                    </table>
+    .logo-title h1 {
+        color: #1E9FFF;
+        font-size: 25px;
+        font-weight: bold;
+    }
+
+    .login-form {
+        background-color: #fff;
+        border: 1px solid #fff;
+        border-radius: 3px;
+        padding: 14px 20px;
+        box-shadow: 0 0 8px #eeeeee;
+    }
+
+    .login-form .layui-form-item {
+        position: relative;
+    }
+
+    .login-form .layui-form-item label {
+        position: absolute;
+        left: 1px;
+        top: 1px;
+        width: 100px;
+        line-height: 20px;
+        text-align: center;
+        color: #565656;
+    }
+
+    .layui-form-item .layui-input-block {
+        margin-left: 130px;
+    }
+</style>
+{/block}
+{block name="body"}
+<div class="container justify-content-center">
+    <div class="row justify-content-center">
+        <div class="col col-lg-8 col-md-10 bg-white">
+            <form class="layui-form layuimini-form" action="">
+                <input type="hidden" name="id" value="{$rate.id}">
+                <input type="hidden" name="id" value="{$userInfo.id}" />
+                <div class="layui-form-item logo-title">
+                    <h1>评 级</h1>
                 </div>
-                {/foreach}
-            </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="place_rate">场地排查:</label>
+                    <div class="layui-input-block" id="place_rate">
+                        {foreach ($placeRateList as $key => $val)}
+                        <input type="radio" name="place_rate" value="{$key}" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="foundation_rate">地基基础排查:</label>
+                    <div class="layui-input-block" id="foundation_rate">
+                        {foreach ($foundationRateList as $key => $val)}
+                        <input type="radio" name="foundation_rate" value="{$key}" title="{$val}" {if ($rate.foundation_rate === $key)}checked{/if}>
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="main_rate">主体结构排查:</label>
+                    <div class="layui-input-block" id="main_rate">
+                        {foreach ($mainRateList as $key => $val)}
+                        <input type="radio" name="main_rate" value="{$key}" title="{$val}" {if ($rate.main_rate === $key)}checked{/if}>
+                        {/foreach}
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="house_safety_rate">房屋安全隐患排查类别:</label>
+                    <div class="layui-input-block" id="house_safety_rate">
+                        {foreach ($houseSafetyRateList as $key => $val)}
+                        <input type="radio" name="house_safety_rate" value="{$key}" title="{$val}" {if ($rate.house_safety_rate === $key)}checked{/if}>
+                        {/foreach}
+                    </div>
+                </div>
+
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="suggestion">处理建议:</label>
+                    <div class="layui-input-block m-0" id="suggestion">
+                        <textarea name="suggestion"  placeholder=""
+                               autocomplete="off" class="layui-textarea"
+                                  style="height: 150px;"
+                        >{$rate.suggestion}</textarea>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
+                            lay-filter="edit">保 存
+                    </button>
+                </div>
+            </form>
         </div>
     </div>
 </div>
+
 {/block}
 
-{block name='js'}
+{block name="js"}
 <script>
-    layui.use(['jquery', 'layer', 'table', 'form', 'element'], function () {
+    layui.use(['form','laydate'], function () {
         let $ = layui.jquery,
-            layer = layui.layer,
-            table = layui.table,
-            form = layui.form,
-            element = layui.element;
+            laydate = layui.laydate,
+            form = layui.form;
 
-        let option = { icon: 0 };
+        let frameIndex = parent.layer.getFrameIndex(window.name);
 
-        table.init('currentTableFilter1', {
-            url: '{:url("/investigation/getHouseRateList", ["house_id" => $house_id, "investigation_times" => $investigation_times])}',
-            id: 'currentTable',
-            //异步请求，格式化数据
-            parseData: function (res) {
-                return {
-                    'code': 0,
-                    'msg': '',
-                    'data': res.data,
-                    'count': res.total
+        // 进行登录操作
+        form.on('submit(edit)', function (data) {
+            let params = data.field, option = { icon: 2 };
+
+            $.post("{:url('/HouseRate/update')}", params, function (res) {
+                if (res.code === 1) {
+                    option.icon = 1
+                    layer.msg(res.msg, option, function () {
+                        parent.layer.close(frameIndex);
+                        parent.layui.table.reload('userTable');
+                    });
+                } else {
+                    layer.msg(res.msg, option);
                 }
-            },
-            page: {
-                limits: [15, 30, 45, 60],
-                limit: 15,
-            },
-            skin: 'line',
-            even: true,
-        })
+            });
 
-        let reloadTable = function (params = {}) {
-            //执行搜索重载
-            table.reload('currentTable', {
-                page: {
-                    curr: 1
-                },
-                where: params
-            }, false);
-        }
+            return false;
+        });
 
-        form.on('select(typeFilter)', function (data) {
-            reloadTable({ type: data.value })
-        })
-    })
+    });
 </script>
+
 {/block}

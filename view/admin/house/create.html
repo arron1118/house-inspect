@@ -338,50 +338,58 @@
                         </div>
                     </div>
                     <div class="layui-tab-item container">
-                        <div class="mb-4">
-                            <div class="layui-font-18 text-black">门牌照片
-                                <button type="button" class="layui-btn layui-btn-normal layui-btn-xs"
-                                        id="doorplateInfo">
-                                    <i class="layui-icon"></i></button>
-                            </div>
-                        </div>
-                        <div id="infos">
-                            <div class="layui-row layui-col-space15">
-                                <div class="layui-col-md6">
-                                    <div class="grid-demo grid-demo-bg1">
-                                        <div class="layui-form-item">
-                                            <div class="layui-input-block m-0" id="code">
-                                             <textarea name="code"  placeholder="请描述"
-                                                       autocomplete="off" class="layui-input" value=""
-                                                       style="height: 80px"
+                        <div class="d-none" id="infos">{:json_encode($infos)}</div>
+                        <div class="infos-content"></div>
+                        {foreach ($infos as $key => $val)}
+                        <div class="row">
+                            <div class="col">
+                                <div class="mb-4">
+                                    <div class="layui-font-18 text-black">{$val}
+                                        <button type="button" class="layui-btn layui-btn-normal layui-btn-xs"
+                                                id="doorplateInfo">
+                                            <i class="layui-icon"></i></button>
+                                    </div>
+                                </div>
+                                <div id="infos">
+                                    <div class="layui-row layui-col-space15">
+                                        <div class="layui-col-md6">
+                                            <div class="grid-demo grid-demo-bg1">
+                                                <div class="layui-form-item">
+                                                    <div class="layui-input-block m-0">
+                                             <textarea name="doorplateInfo[description][]"  placeholder="请描述"
+                                                       autocomplete="off" class="layui-textarea"
+                                                       rows="5"
                                              ></textarea>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="layui-col-md6">
-                                    <div class="grid-demo">
-                                        <div class="layui-upload"
-                                             style="display: flex; flex-direction: row; justify-content: start">
-                                            <div class="layui-upload-list w-25 h-25 text-center my-0">
-                                                <img class="layui-upload-img" id="demo1" style="height: 80px">
-                                                <p id="demoText"></p>
-                                            </div>
-                                            <div style="display: flex; flex-direction: row; justify-content: start">
-                                                <button type="button"
-                                                        class="layui-btn layui-btn-primary layui-btn-sm me-2"
-                                                        id="test1">
-                                                    <i class="layui-icon"></i>上传图片
-                                                </button>
-                                                <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
-                                                        id="del">
-                                                    <i class="layui-icon"></i></button>
+                                        <div class="layui-col-md6">
+                                            <div class="grid-demo">
+                                                <div class="layui-upload"
+                                                     style="display: flex; flex-direction: row; justify-content: start">
+                                                    <div class="layui-upload-list w-25 h-25 text-center my-0">
+                                                        <img class="layui-upload-img" id="demo1" style="height: 80px">
+                                                        <p id="demoText"></p>
+                                                    </div>
+                                                    <div style="display: flex; flex-direction: row; justify-content: start">
+                                                        <button type="button"
+                                                                class="layui-btn layui-btn-primary layui-btn-sm me-2"
+                                                                id="test1">
+                                                            <i class="layui-icon"></i>上传图片
+                                                        </button>
+                                                        <button type="button" class="layui-btn layui-btn-danger layui-btn-sm"
+                                                                id="del">
+                                                            <i class="layui-icon"></i></button>
+                                                    </div>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
+                        {/foreach}
                     </div>
 
                 </div>
@@ -404,14 +412,64 @@
         let $ = layui.jquery,
             layer = layui.layer,
             element = layui.element,
-            laydate = layui.laydate,
             upload = layui.upload,
             form = layui.form;
         let frameIndex = parent.layer.getFrameIndex(window.name);
 
+        let makeHtml = function (index, item) {
+            let div = $('<div />', { class: 'row' }).append($('<div />', { class: 'col' }));
+            div.append($('<div />', {
+                class: 'mb-4'
+            }).append($('<div />', {
+                class: 'layui-font-18 text-black',
+                text: item
+            }).append($('<button />', {
+                class: 'layui-btn layui-btn-normal layui-btn-xs',
+                type: 'button',
+                id: index,
+                text: '添加',
+                title: '添加'
+            })))).append($('<div />', {
+                id: index + '_content'
+            }).append($('<div />', {
+                class: 'layui-row layui-col-space15'
+            }).append($('<div />', {
+                class: 'layui-col-md6'
+            }).append($('<div />', {
+                class: 'layui-form-item'
+            }).append($('<div />', {
+                class: 'layui-input-block m-0'
+            }).append($('<textarea />', {
+                name: index + '[description][]',
+                class: 'layui-textarea',
+                rows: 5,
+                placeholder: '描述',
+            }))))).append($('<div />', {
+                class: 'layui-col-md6'
+            })).append($('<div />', {
+                style: 'display: flex; flex-direction: row; justify-content: start',
+                class: 'layui-upload',
+            }).append($('<div />', {
+                class: 'layui-upload-list w-25 h-25 text-center my-0'
+            }).append($('<img />', {
+                class: 'layui-upload-img',
+                style: 'height: 80px',
+            })).append($('<p />', { class: index + '_tip' }))).append($('<div />', {
+                style: 'display: flex; flex-direction: row; justify-content: start'
+            }).append($('<button />', {
+                text: '上传图片',
+                type: 'button',
+                class: index + '_upload layui-btn layui-btn-primary layui-btn-sm me-2',
+            }))))));
+            div.appendTo($('.infos-content'));
+        };
+        let infos = JSON.parse($('#infos').text())
+        $.each(infos, function (index, item) {
+            makeHtml(index, item);
+        });
         let option = { icon: 0 };
         //常规使用 - 普通图片上传
-        var uploadInst = upload.render({
+        let uploadInst = upload.render({
             elem: '#test1'
             , url: 'https://httpbin.org/post' //此处用的是第三方的 http 请求演示，实际使用时改成您自己的上传接口即可。
             , before: function (obj) {

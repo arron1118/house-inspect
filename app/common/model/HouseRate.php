@@ -14,9 +14,24 @@ class HouseRate extends Model
     {
     }
 
-    public function getTypeList()
+    public function getPlaceRateList()
     {
-        return ['现场', '裂缝', '无法进入'];
+        return [1 => 'a类', 2 => 'b类', 3 => 'c类'];
+    }
+
+    public function getFoundationRateList()
+    {
+        return [1 => 'a类', 2 => 'b类', 3 => 'c类'];
+    }
+
+    public function getMainRateList()
+    {
+        return [1 => 'a类', 2 => 'b类', 3 => 'c类'];
+    }
+
+    public function getHouseSafetyRateList()
+    {
+        return [1 => 'a类', 2 => 'b类', 3 => 'c1类', 4 => 'c2类', 5 => 'c3类'];
     }
 
     public function getImagesAttr($value)

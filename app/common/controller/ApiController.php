@@ -216,21 +216,31 @@ class ApiController extends BaseController
     {
         $site_watermark_engine = SiteConfig::getByKeyword('site_watermark_engine');
 
-        $files = request()->file($fileName);
-        $saveName = [];
-        if ($files) {
-            foreach ($files as $file) {
-                $upload = (new Attachment())->upload($file, 'attachment', (bool) (int) $site_watermark_engine->value);
+//        $files = request()->file($fileName);
+//        $saveName = [];
+//        if ($files) {
+//            foreach ($files as $file) {
+//                $upload = (new Attachment())->upload($file, 'attachment', (bool) (int) $site_watermark_engine->value);
+//
+//                if (!$upload) {
+//                    $this->returnApiData('上传失败: 未找到文件');
+//                }
+//
+//                $saveName[] = $upload['savePath'];
+//            }
+//        }
+//
+//        return $saveName;
+        $file = request()->file($fileName);
+        $upload = (new Attachment())->upload($file, 'attachment', (bool) (int) $site_watermark_engine->value);
 
-                if (!$upload) {
-                    $this->returnApiData('上传失败: 未找到文件');
-                }
-
-                $saveName[] = $upload['savePath'];
-            }
+        if (!$upload) {
+            $this->returnApiData('上传失败: 未找到文件');
         }
 
-        return $saveName;
+        $this->returnData['code'] = 1;
+        $this->returnData['data'] = $upload['savePath'];
+        $this->returnApiData(lang('Done'));
     }
 
     /**

@@ -195,7 +195,7 @@
                     break;
 
                 case 'edit':
-                    let index = layer.open({
+                    layer.open({
                         title: '编辑',
                         type: 2,
                         shade: 0.2,
@@ -208,6 +208,16 @@
                     break;
 
                 case 'rate':
+                    layer.open({
+                        title: '评级',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        anim: 2,
+                        area: ['100%', '100%'],
+                        content: '{:url("/HouseRate/index")}?house_id=' + obj.data.id,
+                    });
                     break;
             }
         });

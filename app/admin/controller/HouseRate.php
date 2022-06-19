@@ -23,10 +23,24 @@ class HouseRate extends AdminController
      */
     public function index()
     {
-        $house_id = $this->request->param('house_id');
+        $house_id = (int) $this->request->param('house_id');
 
+        if ($house_id <= 0) {
+            $this->error('请提供house_id');
+        }
+
+        $rate = $this->model::getByHouseId($house_id);
+        if (!$rate) {
+            $rate = $this->model::create(['house_id' => $house_id]);
+        }
+
+        $model = new $this->model;
         $this->view->assign([
-            'house_id' => $house_id,
+            'rate' => $rate,
+            'placeRateList' => $model->getPlaceRateList(),
+            'foundationRateList'=> $model->getFoundationRateList(),
+            'mainRateList' => $model->getMainRateList(),
+            'houseSafetyRateList' => $model->getHouseSafetyRateList()
         ]);
         return $this->view->fetch();
     }
@@ -49,7 +63,10 @@ class HouseRate extends AdminController
      */
     public function save(Request $request)
     {
-        //
+        if ($request->isAjax()) {
+            $this->model::save($request->param());
+            $this->success(lang('Done'));
+        }
     }
 
     /**
@@ -60,7 +77,6 @@ class HouseRate extends AdminController
      */
     public function read($id)
     {
-        //
     }
 
     /**
@@ -83,7 +99,12 @@ class HouseRate extends AdminController
      */
     public function update(Request $request, $id)
     {
-        //
+        if ($request->isAjax()) {
+            $rate = $this->model::find($id);
+            $rate->save($request->param());
+            $this->returnData['code'] = 1;
+            $this->success(lang('Done'));
+        }
     }
 
     /**

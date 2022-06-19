@@ -11,6 +11,18 @@ use app\common\model\Area;
 
 class House extends AdminController
 {
+
+    protected $infos = [
+        'doorplate_info' => '门牌照片',
+        'house_info' => '外立面照片',
+        'indoor_info' => '户内照片',
+        'roof_info' => '屋顶照片',
+        'extension_info' => '加建照片',
+        'rust_eaten_info' => '钢筋锈蚀照片',
+        'crack_info' => '裂缝照片',
+        'other_info' => '其他照片',
+    ];
+
     protected function initialize()
     {
         parent::initialize();
@@ -76,6 +88,7 @@ class House extends AdminController
             'crackTypeList' => $model->getCrackTypeList(),
             'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
             'examinatorTypeList' => $model->getExaminatorTypeList(),
+            'infos' => $this->infos,
         ]);
         return $this->view->fetch();
     }
@@ -126,6 +139,7 @@ class House extends AdminController
             'crackTypeList' => $model->getCrackTypeList(),
             'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
             'examinatorTypeList' => $model->getExaminatorTypeList(),
+            'infos' => $this->infos,
         ]);
         return $this->view->fetch();
     }
