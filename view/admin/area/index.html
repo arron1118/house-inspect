@@ -40,6 +40,7 @@
             <thead>
             <tr>
                 <th lay-data="{field: 'id', title: '编号', width: 100}"></th>
+                <th lay-data="{field: 'code', title: '编码'}"></th>
                 <th lay-data="{field: 'title', title: '名称', edit: 'text'}"></th>
                 <th lay-data="{field: 'house', title: '楼房', align: 'center', templet: (row) => row.house_count}"></th>
                 <th lay-data="{field: 'create_time', title: '创建时间', align: 'center'}"></th>
@@ -118,14 +119,10 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             if (obj.event === 'add') {  // 监听添加操作
-                layer.prompt({ title: '请输入名称' }, function (input, index) {
-                    if (input === '') {
-                        layer.msg('请输入名称', { icon: 2 });
-                        return false;
-                    }
-
-                    layer.prompt({ title: '请输入编码' }, function (input, index) {
-                        $.post('{:url("/area/save")}', {title: input}, function (res) {
+                layer.prompt({ title: '请输入名称' }, function (title, index) {
+                    layer.close(index)
+                    layer.prompt({ title: '请输入编码' }, function (code, index) {
+                        $.post('{:url("/area/save")}', { title: title, code: code }, function (res) {
                             if (res.code === 1) {
                                 option.icon = 1
                                 layer.close(index)
