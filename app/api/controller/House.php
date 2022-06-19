@@ -230,7 +230,8 @@ class House extends ApiController
     {
         if ($request->isPost()) {
             $params = $request->param();
-            (new $this->model)->save($params);
+            $house = $this->model::find($id);
+            $house->save($params);
 
             $this->returnData['code'] = 1;
             $this->returnApiData(lang('Done'));

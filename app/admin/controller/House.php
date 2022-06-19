@@ -48,6 +48,8 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
+                ->with(['area'])
+                ->hidden(['area'])
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();
@@ -65,6 +67,16 @@ class House extends AdminController
      */
     public function create()
     {
+        $model = new $this->model;
+        $this->view->assign([
+            'area_id' => $this->request->param('area_id'),
+            'designPaperList' => $model->getDesignPaperList(),
+            'purposeList' => $model->getPurposeList(),
+            'afterChangeList' => $model->getAfterChangeList(),
+            'crackTypeList' => $model->getCrackTypeList(),
+            'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
+            'examinatorTypeList' => $model->getExaminatorTypeList(),
+        ]);
         return $this->view->fetch();
     }
 
@@ -105,7 +117,16 @@ class House extends AdminController
      */
     public function edit($id)
     {
-        $this->view->assign('house', $this->model::find($id));
+        $model = new $this->model;
+        $this->view->assign([
+            'house' => $this->model::find($id),
+            'designPaperList' => $model->getDesignPaperList(),
+            'purposeList' => $model->getPurposeList(),
+            'afterChangeList' => $model->getAfterChangeList(),
+            'crackTypeList' => $model->getCrackTypeList(),
+            'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
+            'examinatorTypeList' => $model->getExaminatorTypeList(),
+        ]);
         return $this->view->fetch();
     }
 

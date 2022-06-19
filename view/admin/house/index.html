@@ -59,11 +59,14 @@
             </thead>
         </table>
         <script type="text/html" id="currentTableBar">
-<!--            <a class="layui-btn layui-btn-xs data-count-edit" lay-event="edit" title="编辑">-->
-<!--                <i class="fa fa-user-edit"></i>-->
-<!--            </a>-->
-            <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" title="删除">
-                <i class="fa fa-trash-can"></i>
+            <a href="javascript:;" class=" text-decoration-none " lay-event="rate" title="评级">
+                评级
+            </a>
+            <a href="javascript:;" class="text-decoration-none  data-count-edit" lay-event="edit" title="编辑">
+                编辑
+            </a>
+            <a href="javascript:;" class="text-decoration-none  data-count-delete" lay-event="delete" title="删除">
+                删除
             </a>
         </script>
 
@@ -131,33 +134,26 @@
          * toolbar监听事件
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
-            if (obj.event === 'add') {  // 监听添加操作
-                let area = $('select[lay-filter="areaFilter"]')
+            switch (obj.event) {  // 监听添加操作
+                case 'add':
+                    let area = $('select[lay-filter="areaFilter"]')
 
-                if (parseInt(area.val()) <= 0) {
-                    option.icon = 2
-                    layer.msg('请选择区域', option)
-                    return false
-                }
-                let index = layer.open({
-                    title: '数据列表',
-                    type: 2,
-                    shade: 0.2,
-                    maxmin: true,
-                    shadeClose: true,
-                    anim: 2,
-                    area: ['100%', '100%'],
-                    content: '{:url("/House/create")}',
-                });
-                // $.post('{:url("/house/save")}', param, function (res) {
-                //     if (res.code === 1) {
-                //         option.icon = 1
-                //         layer.close(index)
-                //         reloadTable(form.val('searchForm'))
-                //     }
-                //
-                //     layer.msg(res.msg, option)
-                // })
+                    if (parseInt(area.val()) <= 0) {
+                        option.icon = 2
+                        layer.msg('请选择区域', option)
+                        return false
+                    }
+                    let index = layer.open({
+                        title: '添加',
+                        type: 2,
+                        shade: 0.2,
+                        maxmin: true,
+                        shadeClose: true,
+                        anim: 2,
+                        area: ['100%', '100%'],
+                        content: '{:url("/House/create")}?area_id=' + area.val(),
+                    });
+                    break;
             }
         });
 
@@ -198,25 +194,20 @@
                     });
                     break;
 
-                case 'showOneData':
+                case 'edit':
                     let index = layer.open({
-                        title: '数据列表',
+                        title: '编辑',
                         type: 2,
                         shade: 0.2,
                         maxmin: true,
                         shadeClose: true,
                         anim: 2,
                         area: ['100%', '100%'],
-                        content: '{:url("/HouseRate/index")}?house_id=' + obj.data.id + '&investigation_times=1',
+                        content: '{:url("/House/edit")}?id=' + obj.data.id,
                     });
                     break;
 
-                case 'showTwoData':
-                    layer.msg('showTwoData')
-                    break;
-
-                case 'showThreeData':
-                    layer.msg('showThreeData');
+                case 'rate':
                     break;
             }
         });
