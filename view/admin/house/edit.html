@@ -37,6 +37,13 @@
                             </div>
                         </div>
                         <div class="layui-form-item">
+                            <label class="layui-form-label" for="district">所属社区:</label>
+                            <div class="layui-input-block" id="district">
+                                <input type="text" name="district"  placeholder=""
+                                       autocomplete="off" class="layui-input" value="{$house.district}">
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
                             <label class="layui-form-label" for="space">面积/层数:</label>
                             <div class="layui-input-block" id="space">
                                 <input type="text" name="space"  placeholder=""
@@ -352,7 +359,7 @@
             <!--                        提交-->
             <div class="layui-form-item">
                 <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
-                        lay-filter="add">保 存
+                        lay-filter="add">完 成
                 </button>
             </div>
         </form>
