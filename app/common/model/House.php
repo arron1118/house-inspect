@@ -22,6 +22,8 @@ class House extends Model
         'other_info',
     ];
 
+    protected $jsonAssoc = true;
+
     public static function onAfterInsert($house): void
     {
     }

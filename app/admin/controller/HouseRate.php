@@ -101,7 +101,7 @@ class HouseRate extends AdminController
     {
         if ($request->isAjax()) {
             $rate = $this->model::find($id);
-            $rate->save($request->param());
+            $rate->save($request->except(['id']));
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));
         }

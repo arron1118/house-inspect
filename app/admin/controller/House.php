@@ -220,7 +220,7 @@ class House extends AdminController
             ];
 
             foreach ($this->infos as $key => $val) {
-                $columns[$key] = [
+                $columns[$key][] = [
                     'image' => '',
                     'description' => ''
                 ];
