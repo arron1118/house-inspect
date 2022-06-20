@@ -130,7 +130,7 @@
                                     <label class="layui-form-label" for="is_owner">房屋是否业主自用:</label>
                                     <div class="layui-input-block" id="is_owner">
                                         <input type="radio" name="is_owner" value="1" title="是" {if ($house.is_owner === 1)}checked{/if}>
-                                        <input type="radio" name="is_owner" value="0" title="否" {if ($house.is_owner === 0)}checked{/if}>
+                                        <input type="radio" name="is_owner" value="0" title="否" {if ($house.is_owner === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -150,7 +150,7 @@
                                     <label class="layui-form-label" for="is_change">房屋用途是否发生改变:</label>
                                     <div class="layui-input-block" id="is_change">
                                         <input type="radio" name="is_change" value="1" title="是" {if ($house.is_change === 1)}checked{/if}>
-                                        <input type="radio" name="is_change" value="0" title="否" {if ($house.is_change === 0)}checked{/if}>
+                                        <input type="radio" name="is_change" value="0" title="否" {if ($house.is_change === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -170,7 +170,7 @@
                                     <label class="layui-form-label" for="is_crack">房屋墙体是否有裂缝、钢筋外露或锈蚀等问题:</label>
                                     <div class="layui-input-block" id="is_crack">
                                         <input type="radio" name="is_crack" value="1" title="是" {if ($house.is_crack === 1)}checked{/if}>
-                                        <input type="radio" name="is_crack" value="0" title="否" {if ($house.is_crack === 0)}checked{/if}>
+                                        <input type="radio" name="is_crack" value="0" title="否" {if ($house.is_crack === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -192,7 +192,7 @@
                                     <div class="layui-input-block" id="is_incline_or_deposition">
                                         <input type="radio" name="is_incline_or_deposition" value="1" title="是"
                                                {if ($house.is_incline_or_deposition === 1)}checked{/if}>
-                                        <input type="radio" name="is_incline_or_deposition" value="0" title="否" {if ($house.is_incline_or_deposition === 0)}checked{/if}>
+                                        <input type="radio" name="is_incline_or_deposition" value="0" title="否" {if ($house.is_incline_or_deposition === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -216,14 +216,14 @@
                                     <label class="layui-form-label" for="is_roof_extension">房屋顶部是否有加建:</label>
                                     <div class="layui-input-block" id="is_roof_extension">
                                         <input type="radio" name="is_roof_extension" value="1" title="是" {if ($house.is_roof_extension === 1)}checked{/if}>
-                                        <input type="radio" name="is_roof_extension" value="0" title="否" {if ($house.is_roof_extension === 0)}checked{/if}>
+                                        <input type="radio" name="is_roof_extension" value="0" title="否" {if ($house.is_roof_extension === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label" for="is_basement_extension">房屋底层是否有加建:</label>
                                     <div class="layui-input-block" id="is_basement_extension">
                                         <input type="radio" name="is_basement_extension" value="1" title="是" {if ($house.is_basement_extension === 1)}checked{/if}>
-                                        <input type="radio" name="is_basement_extension" value="0" title="否" {if ($house.is_basement_extension === 0)}checked{/if}>
+                                        <input type="radio" name="is_basement_extension" value="0" title="否" {if ($house.is_basement_extension === 2)}checked{/if}>
                                     </div>
                                 </div>
                             </div>
@@ -235,7 +235,7 @@
                                     <label class="layui-form-label" for="is_rebuilding_wall">房屋是否增加或减少墙体:</label>
                                     <div class="layui-input-block" id="is_rebuilding_wall">
                                         <input type="radio" name="is_rebuilding_wall" value="1" title="是" {if ($house.is_rebuilding_wall === 1)}checked{/if}>
-                                        <input type="radio" name="is_rebuilding_wall" value="0" title="否" {if ($house.is_rebuilding_wall === 0)}checked{/if}>
+                                        <input type="radio" name="is_rebuilding_wall" value="0" title="否" {if ($house.is_rebuilding_wall === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
@@ -243,14 +243,14 @@
                                     <div class="layui-input-block" id="is_rebuilding_wall_pos">
                                         <input type="radio" name="is_rebuilding_wall_pos" value="1" title="是"
                                                {if ($house.is_rebuilding_wall_pos === 1)}checked{/if}>
-                                        <input type="radio" name="is_rebuilding_wall_pos" value="0" title="否" {if ($house.is_rebuilding_wall_pos === 0)}checked{/if}>
+                                        <input type="radio" name="is_rebuilding_wall_pos" value="0" title="否" {if ($house.is_rebuilding_wall_pos === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label" for="is_new_blown_hole">房屋墙体、楼板是否有新开的洞:</label>
                                     <div class="layui-input-block" id="is_new_blown_hole">
                                         <input type="radio" name="is_new_blown_hole" value="1" title="是" {if ($house.is_new_blown_hole === 1)}checked{/if}>
-                                        <input type="radio" name="is_new_blown_hole" value="0" title="否" {if ($house.is_new_blown_hole === 0)}checked{/if}>
+                                        <input type="radio" name="is_new_blown_hole" value="0" title="否" {if ($house.is_new_blown_hole === 2)}checked{/if}>
                                     </div>
                                 </div>
                             </div>
@@ -262,7 +262,7 @@
                                     <label class="layui-form-label" for="is_house_has_scourge">房屋是否受过火灾等外力损害:</label>
                                     <div class="layui-input-block" id="is_house_has_scourge">
                                         <input type="radio" name="is_house_has_scourge" value="1" title="是" {if ($house.is_house_has_scourge === 1)}checked{/if}>
-                                        <input type="radio" name="is_house_has_scourge" value="0" title="否" {if ($house.is_house_has_scourge === 0)}checked{/if}>
+                                        <input type="radio" name="is_house_has_scourge" value="0" title="否" {if ($house.is_house_has_scourge === 2)}checked{/if}>
                                     </div>
                                 </div>
                             </div>
@@ -274,7 +274,7 @@
                                     <label class="layui-form-label" for="is_removal">房屋是否被拆除:</label>
                                     <div class="layui-input-block" id="is_removal">
                                         <input type="radio" name="is_removal" value="1" title="是" {if ($house.is_removal === 1)}checked{/if}>
-                                        <input type="radio" name="is_removal" value="0" title="否" {if ($house.is_removal === 0)}checked{/if}>
+                                        <input type="radio" name="is_removal" value="0" title="否" {if ($house.is_removal === 2)}checked{/if}>
                                     </div>
                                 </div>
                             </div>
@@ -288,7 +288,7 @@
                                 <label class="layui-form-label" for="is_periphery_excavation">房屋周边是否有开挖土方:</label>
                                 <div class="layui-input-block" id="is_periphery_excavation">
                                     <input type="radio" name="is_periphery_excavation" value="1" title="是" {if ($house.is_periphery_excavation === 1)}checked{/if}>
-                                    <input type="radio" name="is_periphery_excavation" value="0" title="否" {if ($house.is_periphery_excavation === 0)}checked{/if}>
+                                    <input type="radio" name="is_periphery_excavation" value="0" title="否" {if ($house.is_periphery_excavation === 2)}checked{/if}>
                                 </div>
                             </div>
                             <div class="layui-form-item">
@@ -296,7 +296,7 @@
                                        for="is_periphery_construction">房屋周边是否有地铁、管廊、隧道等工程施工:</label>
                                 <div class="layui-input-block" id="is_periphery_construction">
                                     <input type="radio" name="is_periphery_construction" value="1" title="是" {if ($house.is_periphery_construction === 1)}checked{/if}>
-                                    <input type="radio" name="is_periphery_construction" value="0" title="否" {if ($house.is_periphery_construction === 0)}checked{/if}>
+                                    <input type="radio" name="is_periphery_construction" value="0" title="否" {if ($house.is_periphery_construction === 2)}checked{/if}>
                                 </div>
                             </div>
                             <div class="border-top border-bottom">
@@ -307,14 +307,14 @@
                                     <label class="layui-form-label" for="is_periphery_hillside">房屋周边是否有山体或边坡:</label>
                                     <div class="layui-input-block" id="is_periphery_hillside">
                                         <input type="radio" name="is_periphery_hillside" value="1" title="是" {if ($house.is_periphery_hillside === 1)}checked{/if}>
-                                        <input type="radio" name="is_periphery_hillside" value="0" title="否" {if ($house.is_periphery_hillside === 0)}checked{/if}>
+                                        <input type="radio" name="is_periphery_hillside" value="0" title="否" {if ($house.is_periphery_hillside === 2)}checked{/if}>
                                     </div>
                                 </div>
                                 <div class="layui-form-item">
                                     <label class="layui-form-label" for="is_periphery_sink">房屋周边地面是否有塌陷:</label>
                                     <div class="layui-input-block" id="is_periphery_sink">
                                         <input type="radio" name="is_periphery_sink" value="1" title="是" {if ($house.is_periphery_sink === 1)}checked{/if}>
-                                        <input type="radio" name="is_periphery_sink" value="0" title="否" {if ($house.is_periphery_sink === 0)}checked{/if}>
+                                        <input type="radio" name="is_periphery_sink" value="0" title="否" {if ($house.is_periphery_sink === 2)}checked{/if}>
                                     </div>
                                 </div>
                             </div>

@@ -10,8 +10,9 @@ use think\Model;
  */
 class HouseRate extends Model
 {
-    public static function onBeforeInsert($HouseRate)
+    public static function onAfterInsert($HouseRate)
     {
+
     }
 
     public function getPlaceRateList()

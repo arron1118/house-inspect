@@ -21,6 +21,16 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">评级状态</label>
+                        <div class="layui-input-inline">
+                            <select name="rate_status" lay-filter="statusFilter">
+                                <option value="-1">全部</option>
+                                <option value="0">未评级</option>
+                                <option value="1">已评级</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">名称</label>
                         <div class="layui-input-inline">
                             <input type="text" name="title" autocomplete="off" class="layui-input">
@@ -47,7 +57,7 @@
             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i
                     class="fa fa-plus"></i> 添加
             </button>
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even lay-data="">
             <thead>
@@ -57,6 +67,10 @@
                 <th lay-data="{field: 'title', title: '名称', edit: 'text'}"></th>
                 <th lay-data="{field: 'area_title', title: '所属区域'}"></th>
                 <th lay-data="{field: 'address', title: '地址'}"></th>
+                <th lay-data="{field: 'examinator', title: '排查人'}"></th>
+                <th lay-data="{field: 'rate_status', title: '评级状态', templet: function (row) {
+                    return row.rate_status === 1 ? '已评级' : ''
+                }}"></th>
                 <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
                 <th lay-data="{title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'}"></th>
             </tr>
@@ -131,6 +145,18 @@
 
             return false
         });
+        form.on('select(areaFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
+        form.on('select(statusFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
         $('button[type="reset"]').on('click', function () {
             reloadTable({})
         })
