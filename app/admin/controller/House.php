@@ -49,6 +49,7 @@ class House extends AdminController
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
             $areaId = (int) $request->param('area_id', 0);
+            $rate_status = (int) $request->param('rate_status', -1);
             $map = [];
 
             if ($title) {
@@ -57,6 +58,10 @@ class House extends AdminController
 
             if ($areaId) {
                 $map[] = ['area_id', '=', $areaId];
+            }
+
+            if ($rate_status >= 0) {
+                $map[] = ['rate_status', '=', $rate_status];
             }
 
             $this->returnData['total'] = $this->model::where($map)->count();

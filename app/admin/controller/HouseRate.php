@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\common\model\House;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\HouseRate as HouseRateModel;
@@ -32,6 +33,7 @@ class HouseRate extends AdminController
         $rate = $this->model::getByHouseId($house_id);
         if (!$rate) {
             $rate = $this->model::create(['house_id' => $house_id]);
+            House::update(['admin_id' => $this->userInfo->id, 'id' => $house_id]);
         }
 
         $model = new $this->model;
@@ -102,6 +104,7 @@ class HouseRate extends AdminController
         if ($request->isAjax()) {
             $rate = $this->model::find($id);
             $rate->save($request->except(['id']));
+            House::update(['rate_status' => 1, 'id' => $rate->house_id]);
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));
         }

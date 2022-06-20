@@ -27,6 +27,17 @@ class Index extends AdminController
         }
     }
 
+    public function createAdmin($number = 5)
+    {
+        for ($i = 1; $i <= $number; $i ++) {
+            $params = [
+                'username' => 'admin' . $i,
+                'password' => password_hash('123456', PASSWORD_BCRYPT),
+            ];
+            (new Admin())->save($params);
+        }
+    }
+
     public function login(Request $request)
     {
         $this->addAdmin();

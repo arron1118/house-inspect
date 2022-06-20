@@ -46,7 +46,6 @@ class House extends ApiController
 
         $map = [
             ['area_id', '=', $areaId],
-            ['user_id', '=', $this->userInfo->id]
         ];
 
         if ($title) {
@@ -56,6 +55,7 @@ class House extends ApiController
         $this->returnData['code'] = 1;
         $this->returnData['total'] = $this->model::where($map)->count();
         $this->returnData['data'] = $this->model::field('id, title, code, area_id, create_time')
+            ->where('user_id = ' . $this->userInfo->id . ' or user_id = 0')
             ->where($map)
             ->order('id desc')
             ->limit(($page - 1) * $limit, $limit)
