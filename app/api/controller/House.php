@@ -77,14 +77,16 @@ class House extends ApiController
             $params['user_id'] = $this->userInfo->id;
 
             foreach ($this->infos as $key => $val) {
-                $temp = [];
-                for ($i = 0; $i < count($params[$key]['image']); $i ++) {
-                    $temp[$key][] = [
-                        'image' => $params[$key]['image'][$i],
-                        'description' => $params[$key]['description'][$i]
-                    ];
+                if (isset($params[$key]['image'])) {
+                    $temp = [];
+                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                        $temp[$key][] = [
+                            'image' => $params[$key]['image'][$i],
+                            'description' => $params[$key]['description'][$i]
+                        ];
+                    }
+                    $params[$key] = $temp[$key];
                 }
-                $params[$key] = $temp[$key];
             }
 
             $result = (new $this->model)->save($params);
@@ -105,14 +107,10 @@ class House extends ApiController
      */
     public function read($id)
     {
-        if (!$id) {
-            $this->returnApiData('未提供正确的id');
-        }
         $this->returnData['data'] = $this->model::findOrEmpty($id);
         if ($this->returnData['data']->isEmpty()) {
             $this->returnApiData(lang('No data was found'));
         }
-//        dump($this->returnData['data']->doorplate_info);
         $this->returnData['code'] = 1;
         $this->returnApiData(lang('Done'));
     }
@@ -131,14 +129,16 @@ class House extends ApiController
             $house = $this->model::find($id);
 
             foreach ($this->infos as $key => $val) {
-                $temp = [];
-                for ($i = 0; $i < count($params[$key]['image']); $i ++) {
-                    $temp[$key][] = [
-                        'image' => $params[$key]['image'][$i],
-                        'description' => $params[$key]['description'][$i]
-                    ];
+                if (isset($params[$key]['image'])) {
+                    $temp = [];
+                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                        $temp[$key][] = [
+                            'image' => $params[$key]['image'][$i],
+                            'description' => $params[$key]['description'][$i]
+                        ];
+                    }
+                    $params[$key] = $temp[$key];
                 }
-                $params[$key] = $temp[$key];
             }
 
             $house->save($params);
