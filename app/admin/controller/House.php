@@ -49,6 +49,7 @@ class House extends AdminController
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
             $areaId = (int) $request->param('area_id', 0);
+            $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
             $map = [];
 
@@ -58,6 +59,10 @@ class House extends AdminController
 
             if ($areaId) {
                 $map[] = ['area_id', '=', $areaId];
+            }
+
+            if ($status >= 0) {
+                $map[] = ['status', '=', $status];
             }
 
             if ($rate_status >= 0) {
@@ -111,14 +116,16 @@ class House extends AdminController
             $params = $request->param();
 
             foreach ($this->infos as $key => $val) {
-                $temp = [];
-                for ($i = 0; $i < count($params[$key]['image']); $i ++) {
-                    $temp[$key][] = [
-                        'image' => $params[$key]['image'][$i],
-                        'description' => $params[$key]['description'][$i]
-                    ];
+                if (isset($params[$key]['image'])) {
+                    $temp = [];
+                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                        $temp[$key][] = [
+                            'image' => $params[$key]['image'][$i],
+                            'description' => $params[$key]['description'][$i]
+                        ];
+                    }
+                    $params[$key] = $temp[$key];
                 }
-                $params[$key] = $temp[$key];
             }
 
             (new $this->model)->save($params);
@@ -178,15 +185,18 @@ class House extends AdminController
             $house = $this->model::find($id);
 
             foreach ($this->infos as $key => $val) {
-                $temp = [];
-                for ($i = 0; $i < count($params[$key]['image']); $i ++) {
-                    $temp[$key][] = [
-                        'image' => $params[$key]['image'][$i],
-                        'description' => $params[$key]['description'][$i]
-                    ];
+                if (isset($params[$key]['image'])) {
+                    $temp = [];
+                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                        $temp[$key][] = [
+                            'image' => $params[$key]['image'][$i],
+                            'description' => $params[$key]['description'][$i]
+                        ];
+                    }
+                    $params[$key] = $temp[$key];
                 }
-                $params[$key] = $temp[$key];
             }
+            $params['status'] = 1;
 
             $house->save($params);
             $this->returnData['code'] = 1;
@@ -253,5 +263,15 @@ class House extends AdminController
     private function readExcel($file, $appendColumns = [])
     {
         return readExcel($file, $appendColumns);
+    }
+
+    public function checkStatus($id)
+    {
+        $house = $this->model::find($id);
+        if ($house->status) {
+            $this->returnData['code'] = 1;
+            $this->success('已完成');
+        }
+        $this->error('排查未完成，不能评级');
     }
 }

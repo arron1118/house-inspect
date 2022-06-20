@@ -21,9 +21,19 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">状态</label>
+                        <div class="layui-input-inline">
+                            <select name="status" lay-filter="statusFilter">
+                                <option value="-1">全部</option>
+                                <option value="0">未完成</option>
+                                <option value="1">已完成</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">评级状态</label>
                         <div class="layui-input-inline">
-                            <select name="rate_status" lay-filter="statusFilter">
+                            <select name="rate_status" lay-filter="rateStatusFilter">
                                 <option value="-1">全部</option>
                                 <option value="0">未评级</option>
                                 <option value="1">已评级</option>
@@ -54,9 +64,9 @@
     <div class="layuimini-main">
         <button type="button" class="layui-btn layui-btn-sm data-count-edit layui-btn-normal d-none" id="importExcel">导入客户</button>
         <script type="text/html" id="toolbarDemo">
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i
-                    class="fa fa-plus"></i> 添加
-            </button>
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i-->
+<!--                    class="fa fa-plus"></i> 添加-->
+<!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even lay-data="">
@@ -65,9 +75,13 @@
                 <th lay-data="{field: 'id', title: '编号', width: 100}"></th>
                 <th lay-data="{field: 'code', title: '编码'}"></th>
                 <th lay-data="{field: 'title', title: '名称', edit: 'text'}"></th>
-                <th lay-data="{field: 'area_title', title: '所属区域'}"></th>
+                <th lay-data="{field: 'area_title', title: '项目'}"></th>
+                <th lay-data="{field: 'district', title: '社区'}"></th>
                 <th lay-data="{field: 'address', title: '地址'}"></th>
                 <th lay-data="{field: 'examinator', title: '排查人'}"></th>
+                <th lay-data="{field: 'status', title: '状态', templet: function (row) {
+                    return row.status === 1 ? '已完成' : ''
+                }}"></th>
                 <th lay-data="{field: 'rate_status', title: '评级状态', templet: function (row) {
                     return row.rate_status === 1 ? '已评级' : ''
                 }}"></th>
@@ -152,6 +166,12 @@
             reloadTable(params);
         })
         form.on('select(statusFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
+        form.on('select(rateStatusFilter)', function (data) {
             let params = [];
             params[data.elem.name] = data.value
             params = Object.assign({}, form.val('searchForm'), params)
@@ -244,16 +264,23 @@
                     break;
 
                 case 'rate':
-                    layer.open({
-                        title: '评级',
-                        type: 2,
-                        shade: 0.2,
-                        maxmin: true,
-                        shadeClose: true,
-                        anim: 2,
-                        area: ['100%', '100%'],
-                        content: '{:url("/HouseRate/index")}?house_id=' + obj.data.id,
-                    });
+                    $.post('{:url("/House/checkStatus")}', { id: obj.data.id }, function (res) {
+                        if (res.code === 1) {
+                            layer.open({
+                                title: '评级',
+                                type: 2,
+                                shade: 0.2,
+                                maxmin: true,
+                                shadeClose: true,
+                                anim: 2,
+                                area: ['100%', '100%'],
+                                content: '{:url("/HouseRate/index")}?house_id=' + obj.data.id,
+                            });
+                        } else {
+                            layer.msg(res.msg, option)
+                        }
+                    })
+
                     break;
             }
         });

@@ -47,7 +47,7 @@ class AdminController extends BaseController
             $this->returnData['msg'] = $msg;
         }
 
-        $this->returnData['data']['token'] = $this->request->buildToken();
+//        $this->returnData['data']['token'] = $this->request->buildToken();
 
         response($this->returnData, 200, [], 'json')->send();
         exit;
