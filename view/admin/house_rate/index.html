@@ -55,7 +55,7 @@
                     <label class="layui-form-label" for="place_rate">场地排查:</label>
                     <div class="layui-input-block" id="place_rate">
                         {foreach ($placeRateList as $key => $val)}
-                        <input type="radio" name="place_rate" value="{$key}" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
+                        <input type="radio" class="layui-input" name="place_rate" value="{$key}" lay-verify="required" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
                         {/foreach}
                     </div>
                 </div>
@@ -87,7 +87,7 @@
                 <div class="layui-form-item">
                     <label class="layui-form-label" for="suggestion">处理建议:</label>
                     <div class="layui-input-block m-0" id="suggestion">
-                        <textarea name="suggestion"  placeholder=""
+                        <textarea name="suggestion"  placeholder="" lay-verify="required"
                                autocomplete="off" class="layui-textarea"
                                   style="height: 150px;"
                         >{$rate.suggestion}</textarea>
@@ -112,11 +112,31 @@
             laydate = layui.laydate,
             form = layui.form;
 
-        let frameIndex = parent.layer.getFrameIndex(window.name);
+        let frameIndex = parent.layer.getFrameIndex(window.name), option = { icon: 2 };
 
         // 进行登录操作
         form.on('submit(edit)', function (data) {
-            let params = data.field, option = { icon: 2 };
+            let params = data.field;
+
+            if (!params['place_rate']) {
+                layer.msg('请选择"场地排查"', option)
+                return false
+            }
+
+            if (!params['foundation_rate']) {
+                layer.msg('请选择"地基基础排查"', option)
+                return false
+            }
+
+            if (!params['main_rate']) {
+                layer.msg('请选择"主体结构排查"', option)
+                return false
+            }
+
+            if (!params['house_safety_rate']) {
+                layer.msg('请选择"房屋安全隐患排查类别"', option)
+                return false
+            }
 
             $.post("{:url('/HouseRate/update')}", params, function (res) {
                 if (res.code === 1) {

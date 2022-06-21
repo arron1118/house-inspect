@@ -40,6 +40,7 @@ class User extends AdminController
             $this->returnData['code'] = 1;
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
+                ->withCount(['house'])
                 ->order('id desc, login_time desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();

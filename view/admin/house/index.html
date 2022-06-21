@@ -21,6 +21,17 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">社区</label>
+                        <div class="layui-input-inline">
+                            <select name="district" lay-filter="districtFilter">
+                                <option value="0">全部</option>
+                                {foreach $districtList as $key => $val}
+                                <option value="{$key}">{$val}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">状态</label>
                         <div class="layui-input-inline">
                             <select name="status" lay-filter="statusFilter">
@@ -84,7 +95,7 @@
                 <th lay-data="{field: 'area_title', title: '项目'}"></th>
                 <th lay-data="{field: 'district', title: '社区'}"></th>
                 <th lay-data="{field: 'address', title: '地址'}"></th>
-                <th lay-data="{field: 'examinator', title: '排查人'}"></th>
+                <th lay-data="{field: 'user_username', title: '排查人'}"></th>
                 <th lay-data="{field: 'admin_username', title: '评级人'}"></th>
                 <th lay-data="{field: 'status', title: '状态', templet: function (row) {
                     return row.status === 1 ? '已完成' : ''

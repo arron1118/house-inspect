@@ -11,6 +11,11 @@ use think\Model;
 class House extends Model
 {
     protected $json = [
+        'house_usage',
+        'purpose',
+        'after_change',
+        'crack_type',
+        'incline_or_deposition_type',
         'doorplate_info',
         'house_info',
         'indoor_info',
@@ -34,7 +39,7 @@ class House extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->bind(['user_username' => 'username']);
     }
 
     public function houseRate()
@@ -50,6 +55,11 @@ class House extends Model
     public function admin()
     {
         return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);
+    }
+
+    public function getDistrictList()
+    {
+        return [1 => '东方', 2 => '楼岗', 3 => '花果山', 4 => '松涛'];
     }
 
     public function getHouseUsageList()

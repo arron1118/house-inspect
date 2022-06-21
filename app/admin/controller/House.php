@@ -38,6 +38,7 @@ class House extends AdminController
      */
     public function index()
     {
+        $this->view->assign('districtList', (new $this->model)->getDistrictList());
         $this->view->assign('areaList', Area::select());
         return $this->view->fetch();
     }
@@ -48,6 +49,7 @@ class House extends AdminController
             $page = (int) $request->param('page', 1);
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
+            $district = $request->param('district', 0);
             $code = $request->param('code', '');
             $areaId = (int) $request->param('area_id', 0);
             $status = (int) $request->param('status', -1);
@@ -56,6 +58,11 @@ class House extends AdminController
 
             if ($title) {
                 $map[] = ['title', 'like', '%' . $title . '%'];
+            }
+
+            if ($district) {
+                $districtList = (new $this->model)->getDistrictList();
+                $map[] = ['district', 'like', '%' . $districtList[$district] . '%'];
             }
 
             if ($code) {
@@ -76,8 +83,8 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
-                ->with(['area', 'admin'])
-                ->hidden(['area', 'admin'])
+                ->with(['area', 'admin', 'user'])
+                ->hidden(['area', 'admin', 'user'])
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();

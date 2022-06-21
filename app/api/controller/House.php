@@ -40,6 +40,8 @@ class House extends ApiController
         $searchType = $this->params['search_type'] ?? 'title';
         $title = $this->params['title'] ?? '';
         $areaId = $this->params['area_id'] ?? 0;
+        $status = $this->params['status'] ?? -1;
+        $district = $this->params['district'] ?? 0;
 
         if ((int) $areaId <= 0) {
             $this->returnApiData('请提供项目ID: area_id');
@@ -48,6 +50,15 @@ class House extends ApiController
         $map = [
             ['area_id', '=', $areaId],
         ];
+
+        if ($district) {
+            $districtList = (new $this->model)->getDistrictList();
+            $map[] = ['district', 'like', '%' . $districtList[$district] . '%'];
+        }
+
+        if ($status >= 0) {
+            $map[] = ['status', '=', $status];
+        }
 
         switch ($searchType) {
             case 'code':
