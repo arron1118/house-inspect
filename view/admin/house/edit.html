@@ -534,7 +534,6 @@
 
         // 提交
         form.on('submit(add)', function (data) {
-            console.log(data.field)
             $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
