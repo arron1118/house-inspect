@@ -149,14 +149,15 @@ class House extends ApiController
     {
         if ($request->isPost()) {
             $params = $request->except(['id']);
+
+            $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
+            if ($house) {
+                $this->returnApiData('房屋编码已存在');
+            }
+
             $house = $this->model::find($id);
             if (!isset($params['user_id']) || $params['user_id'] <=0) {
                 $params['user_id'] = $this->userInfo->id;
-            }
-
-            $house = $this->model::getByCode($params['code']);
-            if ($house) {
-                $this->returnApiData('房屋编码已存在');
             }
 
             foreach ($this->infos as $key => $val) {

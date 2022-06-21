@@ -213,7 +213,7 @@ class House extends AdminController
         if ($request->isPost()) {
             $params = $request->except(['id']);
 
-            $house = $this->model::getByCode($params['code']);
+            $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
                 $this->error('房屋编码已存在');
             }
