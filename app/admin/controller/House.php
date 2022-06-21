@@ -9,6 +9,7 @@ use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
 use app\common\model\HouseRate;
 use app\common\model\Area;
+use app\common\model\User as UserModel;
 
 class House extends AdminController
 {
@@ -39,7 +40,8 @@ class House extends AdminController
     public function index()
     {
         $this->view->assign('districtList', (new $this->model)->getDistrictList());
-        $this->view->assign('areaList', Area::select());
+        $this->view->assign('areaList', Area::field('id, title')->select());
+        $this->view->assign('userList', UserModel::field('id, username')->select());
         return $this->view->fetch();
     }
 
@@ -52,6 +54,7 @@ class House extends AdminController
             $district = $request->param('district', 0);
             $code = $request->param('code', '');
             $areaId = (int) $request->param('area_id', 0);
+            $user_id = (int) $request->param('user_id', 0);
             $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
             $map = [];
@@ -71,6 +74,10 @@ class House extends AdminController
 
             if ($areaId) {
                 $map[] = ['area_id', '=', $areaId];
+            }
+
+            if ($user_id) {
+                $map[] = ['user_id', '=', $user_id];
             }
 
             if ($status >= 0) {
