@@ -47,6 +47,11 @@ class House extends Model
         return $this->belongsTo(Area::class)->bind(['area_title' => 'title']);
     }
 
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);
+    }
+
     public function getHouseUsageList()
     {
         return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];

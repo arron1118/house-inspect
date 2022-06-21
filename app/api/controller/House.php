@@ -49,7 +49,7 @@ class House extends ApiController
         ];
 
         if ($title) {
-            $map[] = ['title', 'like', '%' . $title . '%'];
+            $map[] = ['code', 'like', '%' . $title . '%'];
         }
 
         $this->returnData['code'] = 1;

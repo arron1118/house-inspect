@@ -19,4 +19,9 @@ class Admin extends Model
     {
         return $value ? date($this->getDateFormat(), $value) : '-';
     }
+
+    public function house($value)
+    {
+        return $this->belongsTo(House::class);
+    }
 }

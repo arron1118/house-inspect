@@ -218,6 +218,15 @@
                             </div>
                             <div class="border-bottom">
                                 <div class="layui-form-item">
+                                    <label class="layui-form-label" for="is_fitment">房屋是否正进行装修:</label>
+                                    <div class="layui-input-block" id="is_fitment">
+                                        <input type="radio" name="is_fitment" value="1" title="是" {if ($house.is_fitment === 1)}checked{/if}>
+                                        <input type="radio" name="is_fitment" value="2" title="否" {if ($house.is_fitment === 2)}checked{/if}>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="border-bottom">
+                                <div class="layui-form-item">
                                     <label class="layui-form-label" for="is_balcony">房屋是否有外挑阳台:</label>
                                     <div class="layui-input-block" id="is_balcony">
                                         <input type="radio" name="is_balcony" value="1" title="是" {if ($house.is_balcony === 1)}checked{/if}>
@@ -344,6 +353,14 @@
                                     <div class="layui-input-block" id="is_periphery_sink">
                                         <input type="radio" name="is_periphery_sink" value="1" title="是" {if ($house.is_periphery_sink === 1)}checked{/if}>
                                         <input type="radio" name="is_periphery_sink" value="2" title="否" {if ($house.is_periphery_sink === 2)}checked{/if}>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" for="periphery_env">房屋周边地域情况:</label>
+                                    <div class="layui-input-block" id="periphery_env">
+                                        {foreach ($peripheryEnvList as $key => $val)}
+                                        <input type="radio" name="periphery_env" value="{$key}" title="{$val}" {if ($house.periphery_env == $key)}checked{/if}>
+                                        {/foreach}
                                     </div>
                                 </div>
                             </div>

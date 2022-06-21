@@ -76,8 +76,8 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
-                ->with(['area'])
-                ->hidden(['area'])
+                ->with(['area', 'admin'])
+                ->hidden(['area', 'admin'])
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();
