@@ -49,7 +49,7 @@ class House extends AdminController
             $page = (int) $request->param('page', 1);
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
-            $district = $request->param('district', '');
+            $district = $request->param('district', 0);
             $code = $request->param('code', '');
             $areaId = (int) $request->param('area_id', 0);
             $status = (int) $request->param('status', -1);
