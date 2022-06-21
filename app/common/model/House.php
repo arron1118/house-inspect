@@ -31,11 +31,21 @@ class House extends Model
 
     public static function onBeforeWrite($house): void
     {
-        $house->house_usage = array_values($house->house_usage);
-        $house->purpose = array_values($house->purpose);
-        $house->after_change = array_values($house->after_change);
-        $house->crack_type = array_values($house->crack_type);
-        $house->incline_or_deposition_type = array_values($house->incline_or_deposition_type);
+        if (isset($house->house_usage)) {
+            $house->house_usage = array_values($house->house_usage);
+        }
+        if (isset($house->purpose)) {
+            $house->purpose = array_values($house->purpose);
+        }
+        if (isset($house->after_change)) {
+            $house->after_change = array_values($house->after_change);
+        }
+        if (isset($house->crack_type)) {
+            $house->crack_type = array_values($house->crack_type);
+        }
+        if (isset($house->incline_or_deposition_type)) {
+            $house->incline_or_deposition_type = array_values($house->incline_or_deposition_type);
+        }
     }
 
     public static function onAfterDelete($house): void
