@@ -113,7 +113,7 @@
                             <label class="layui-form-label" for="house_usage">现有使用功能:</label>
                             <div class="layui-input-block" id="house_usage">
                                 {foreach ($houseUsageList as $key => $val)}
-                                <input type="radio" name="house_usage" value="{$key}" title="{$val}" {if ($house.house_usage == $key)}checked{/if}>
+                                <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if ($house.house_usage == $key)}checked{/if}>
                                 {/foreach}
                                 <label>
                                     <input type="text" name="house_usage_other" value="{$house.house_usage_other}" placeholder="其他">
@@ -145,7 +145,7 @@
                                     <label class="layui-form-label" for="purpose">用途是:</label>
                                     <div class="layui-input-block" id="purpose">
                                         {foreach ($purposeList as $key => $val)}
-                                        <input type="radio" name="purpose" value="{$key}" title="{$val}" {if ($house.purpose == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="purpose[]" value="{$key}" title="{$val}" {if ($house.purpose == $key)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="purpose_other" value="{$house.purpose_other}" placeholder="其他">
@@ -165,7 +165,7 @@
                                     <label class="layui-form-label" for="after_change">改变后为:</label>
                                     <div class="layui-input-block" id="after_change">
                                         {foreach ($afterChangeList as $key => $val)}
-                                        <input type="radio" name="after_change" value="{$key}" title="{$val}" {if ($house.after_change == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="after_change[]" value="{$key}" title="{$val}" {if ($house.after_change == $key)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="after_change_other" value="{$house.after_change_other}" placeholder="其他">
@@ -185,7 +185,7 @@
                                     <label class="layui-form-label" for="crack_type">问题类型:</label>
                                     <div class="layui-input-block" id="crack_type">
                                         {foreach ($crackTypeList as $key => $val)}
-                                        <input type="radio" name="crack_type" value="{$key}" title="{$val}" {if ($house.crack_type == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="crack_type[]" value="{$key}" title="{$val}" {if ($house.crack_type == $key)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="crack_type_other" value="{$house.crack_type_other}" placeholder="其他">
@@ -207,7 +207,7 @@
                                     <label class="layui-form-label" for="incline_or_deposition_type">问题类型:</label>
                                     <div class="layui-input-block" id="incline_or_deposition_type">
                                         {foreach ($inclineOrDepositionTypeList as $key => $val)}
-                                        <input type="radio" name="incline_or_deposition_type" value="{$key}" title="{$val}" {if ($house.incline_or_deposition_type == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="incline_or_deposition_type[]" value="{$key}" title="{$val}" {if ($house.incline_or_deposition_type == $key)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="incline_or_deposition_type_other" value="{$house.incline_or_deposition_type_other}"
@@ -440,7 +440,7 @@
                 style: 'display: flex; flex-direction: row; justify-content: start',
                 class: 'layui-upload',
             }).append($('<div />', {
-                class: 'layui-upload-list w-25 h-25 text-center my-0'
+                class: 'layui-upload-list w-25 h-25 text-center my-0 ' + index + '-img-' + i
             }).append($('<img />', {
                 class: 'layui-upload-img',
                 style: 'height: 80px',
@@ -464,6 +464,11 @@
                     $(this).parentsUntil('.' + item_container).remove()
                 }
             }))))));
+            // 图片放大 你个猪八戒
+            layer.photos({
+                photos: '.' + index + '-img-' + i,
+                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
 
             let uploadInst = upload.render({
                 elem: '#' + index + '_upload_' + i,
@@ -529,6 +534,7 @@
 
         // 提交
         form.on('submit(add)', function (data) {
+            console.log(data.field)
             $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
