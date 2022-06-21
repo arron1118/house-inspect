@@ -42,6 +42,17 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">社区</label>
+                        <div class="layui-input-inline">
+                            <select name="district" lay-filter="districtFilter">
+                                <option value="0">全部</option>
+                                {foreach $districtList as $key => $val}
+                                <option value="{$key}">{$val}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">评级状态</label>
                         <div class="layui-input-inline">
                             <select name="rate_status" lay-filter="rateStatusFilter">

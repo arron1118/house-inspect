@@ -58,6 +58,12 @@
                         <input type="radio" class="layui-input" name="place_rate" value="{$key}" lay-verify="required" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
                         {/foreach}
                     </div>
+                    <div class="layui-input-block m-0">
+                        <tip>评级依据</tip>
+                        <textarea name="place_rate_basis"  placeholder="" lay-verify="required"
+                                  autocomplete="off" class="layui-textarea" rows="3"
+                        >{$rate.place_rate_basis}</textarea>
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label" for="foundation_rate">地基基础排查:</label>
@@ -66,6 +72,12 @@
                         <input type="radio" name="foundation_rate" value="{$key}" title="{$val}" {if ($rate.foundation_rate === $key)}checked{/if}>
                         {/foreach}
                     </div>
+                    <div class="layui-input-block m-0">
+                        <tip>评级依据</tip>
+                        <textarea name="foundation_rate_basis"  placeholder="" lay-verify="required"
+                                  autocomplete="off" class="layui-textarea" rows="3"
+                        >{$rate.foundation_rate_basis}</textarea>
+                    </div>
                 </div>
                 <div class="layui-form-item">
                     <label class="layui-form-label" for="main_rate">主体结构排查:</label>
@@ -73,6 +85,12 @@
                         {foreach ($mainRateList as $key => $val)}
                         <input type="radio" name="main_rate" value="{$key}" title="{$val}" {if ($rate.main_rate === $key)}checked{/if}>
                         {/foreach}
+                    </div>
+                    <div class="layui-input-block m-0">
+                        <tip>评级依据</tip>
+                        <textarea name="main_rate_basis"  placeholder="" lay-verify="required"
+                                  autocomplete="off" class="layui-textarea" rows="3"
+                        >{$rate.main_rate_basis}</textarea>
                     </div>
                 </div>
                 <div class="layui-form-item">
@@ -88,8 +106,7 @@
                     <label class="layui-form-label" for="suggestion">处理建议:</label>
                     <div class="layui-input-block m-0" id="suggestion">
                         <textarea name="suggestion"  placeholder="" lay-verify="required"
-                               autocomplete="off" class="layui-textarea"
-                                  style="height: 150px;"
+                               autocomplete="off" class="layui-textarea" rows="5"
                         >{$rate.suggestion}</textarea>
                     </div>
                 </div>

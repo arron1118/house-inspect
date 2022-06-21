@@ -29,8 +29,13 @@ class House extends Model
 
     protected $jsonAssoc = true;
 
-    public static function onAfterInsert($house): void
+    public static function onBeforeWrite($house): void
     {
+        $house->house_usage = array_values($house->house_usage);
+        $house->purpose = array_values($house->purpose);
+        $house->after_change = array_values($house->after_change);
+        $house->crack_type = array_values($house->crack_type);
+        $house->incline_or_deposition_type = array_values($house->incline_or_deposition_type);
     }
 
     public static function onAfterDelete($house): void
