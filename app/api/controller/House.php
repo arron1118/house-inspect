@@ -94,6 +94,11 @@ class House extends ApiController
             $params = $request->param();
             $params['user_id'] = $this->userInfo->id;
 
+            $house = $this->model::getByCode($params['code']);
+            if ($house) {
+                $this->returnApiData('房屋编码已存在');
+            }
+
             foreach ($this->infos as $key => $val) {
                 if (isset($params[$key]['image'])) {
                     $temp = [];
@@ -147,6 +152,11 @@ class House extends ApiController
             $house = $this->model::find($id);
             if (!$params['user_id']) {
                 $params['user_id'] = $this->userInfo->id;
+            }
+
+            $house = $this->model::getByCode($params['code']);
+            if ($house) {
+                $this->returnApiData('房屋编码已存在');
             }
 
             foreach ($this->infos as $key => $val) {
