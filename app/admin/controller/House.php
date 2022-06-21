@@ -48,6 +48,7 @@ class House extends AdminController
             $page = (int) $request->param('page', 1);
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
+            $code = $request->param('code', '');
             $areaId = (int) $request->param('area_id', 0);
             $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
@@ -55,6 +56,10 @@ class House extends AdminController
 
             if ($title) {
                 $map[] = ['title', 'like', '%' . $title . '%'];
+            }
+
+            if ($code) {
+                $map[] = ['code', 'like', '%' . $code . '%'];
             }
 
             if ($areaId) {
@@ -93,6 +98,9 @@ class House extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'area_id' => $this->request->param('area_id'),
+            'houseUsageList' => $model->getHouseUsageList(),
+            'peripheryEnvList' => $model->getPeripheryEnvList(),
+            'balconyTypeList' => $model->getBalconyTypeList(),
             'designPaperList' => $model->getDesignPaperList(),
             'purposeList' => $model->getPurposeList(),
             'afterChangeList' => $model->getAfterChangeList(),
@@ -160,6 +168,9 @@ class House extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'house' => $this->model::find($id),
+            'houseUsageList' => $model->getHouseUsageList(),
+            'peripheryEnvList' => $model->getPeripheryEnvList(),
+            'balconyTypeList' => $model->getBalconyTypeList(),
             'designPaperList' => $model->getDesignPaperList(),
             'purposeList' => $model->getPurposeList(),
             'afterChangeList' => $model->getAfterChangeList(),
