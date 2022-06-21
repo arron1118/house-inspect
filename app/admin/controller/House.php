@@ -245,13 +245,6 @@ class House extends AdminController
                 'area_id' => $this->request->param('area_id')
             ];
 
-//            foreach ($this->infos as $key => $val) {
-//                $columns[$key][] = [
-//                    'image' => '',
-//                    'description' => ''
-//                ];
-//            }
-
             $data = readExcel($file, $columns);
             try {
                 $res = (new $this->model)->saveAll($data);
