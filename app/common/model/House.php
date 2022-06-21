@@ -47,9 +47,24 @@ class House extends Model
         return $this->belongsTo(Area::class)->bind(['area_title' => 'title']);
     }
 
-    public function getDesignPaperList()
+    public function getHouseUsageList()
     {
         return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];
+    }
+
+    public function getDesignPaperList()
+    {
+        return [1 => '完整建筑结构设计图纸', 2 => '部分建筑结构设计图纸', 3 => '没有建筑结构设计图纸'];
+    }
+
+    public function getPeripheryEnvList()
+    {
+        return [1 => '大中型学校', 2 => '医院', 3 => '集市市场'];
+    }
+
+    public function getBalconyTypeList()
+    {
+        return [1 => '挑梁式阳台', 2 => '挑板式阳台', 9 => '其他'];
     }
 
     public function getPurposeList()
