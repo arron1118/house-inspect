@@ -37,6 +37,7 @@ class House extends ApiController
     {
         $page = $this->params['page'] ?? 1;
         $limit = $this->params['limit'] ?? 10;
+        $searchType = $this->params['search_type'] ?? 'title';
         $title = $this->params['title'] ?? '';
         $areaId = $this->params['area_id'] ?? 0;
 
@@ -48,13 +49,19 @@ class House extends ApiController
             ['area_id', '=', $areaId],
         ];
 
-        if ($title) {
-            $map[] = ['code', 'like', '%' . $title . '%'];
+        switch ($searchType) {
+            case 'code':
+                $map[] = ['code', 'like', '%' . $title . '%'];
+                break;
+
+            default:
+                $map[] = ['title', 'like', '%' . $title . '%'];
+                break;
         }
 
         $this->returnData['code'] = 1;
         $this->returnData['total'] = $this->model::where($map)->count();
-        $this->returnData['data'] = $this->model::field('id, title, code, area_id, status, create_time')
+        $this->returnData['data'] = $this->model::field('id, title, code, district, area_id, status, create_time')
             ->where('user_id = ' . $this->userInfo->id . ' or user_id = 0')
             ->where($map)
             ->order('id desc')
