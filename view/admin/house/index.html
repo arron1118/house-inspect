@@ -42,12 +42,12 @@
                         </div>
                     </div>
                     <div class="layui-inline">
-                        <label class="layui-form-label">社区</label>
+                        <label class="layui-form-label">排查员</label>
                         <div class="layui-input-inline">
-                            <select name="district" lay-filter="districtFilter">
+                            <select name="user_id" lay-filter="userFilter">
                                 <option value="0">全部</option>
-                                {foreach $districtList as $key => $val}
-                                <option value="{$key}">{$val}</option>
+                                {foreach $userList as $key => $val}
+                                <option value="{$val.id}">{$val.username}</option>
                                 {/foreach}
                             </select>
                         </div>
@@ -194,7 +194,19 @@
             params = Object.assign({}, form.val('searchForm'), params)
             reloadTable(params);
         })
+        form.on('select(districtFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
         form.on('select(statusFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
+        form.on('select(userFilter)', function (data) {
             let params = [];
             params[data.elem.name] = data.value
             params = Object.assign({}, form.val('searchForm'), params)
