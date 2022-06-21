@@ -37,6 +37,7 @@ class House extends ApiController
     {
         $page = $this->params['page'] ?? 1;
         $limit = $this->params['limit'] ?? 10;
+        $searchType = $this->params['search_type'] ?? 'title';
         $title = $this->params['title'] ?? '';
         $areaId = $this->params['area_id'] ?? 0;
 
@@ -48,8 +49,14 @@ class House extends ApiController
             ['area_id', '=', $areaId],
         ];
 
-        if ($title) {
-            $map[] = ['code', 'like', '%' . $title . '%'];
+        switch ($searchType) {
+            case 'code':
+                $map[] = ['code', 'like', '%' . $title . '%'];
+                break;
+
+            default:
+                $map[] = ['title', 'like', '%' . $title . '%'];
+                break;
         }
 
         $this->returnData['code'] = 1;
