@@ -11,6 +11,11 @@ use think\Model;
 class House extends Model
 {
     protected $json = [
+        'house_usage',
+        'purpose',
+        'after_change',
+        'crack_type',
+        'incline_or_deposition_type',
         'doorplate_info',
         'house_info',
         'indoor_info',
@@ -34,7 +39,7 @@ class House extends Model
 
     public function user()
     {
-        return $this->belongsTo(User::class);
+        return $this->belongsTo(User::class)->bind(['user_username' => 'username']);
     }
 
     public function houseRate()

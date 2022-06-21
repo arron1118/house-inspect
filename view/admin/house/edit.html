@@ -113,7 +113,7 @@
                             <label class="layui-form-label" for="house_usage">现有使用功能:</label>
                             <div class="layui-input-block" id="house_usage">
                                 {foreach ($houseUsageList as $key => $val)}
-                                <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if ($house.house_usage == $key)}checked{/if}>
+                                <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if !empty($house.house_usage) && in_array($key, $house.house_usage)}checked{/if}>
                                 {/foreach}
                                 <label>
                                     <input type="text" name="house_usage_other" value="{$house.house_usage_other}" placeholder="其他">
@@ -145,7 +145,7 @@
                                     <label class="layui-form-label" for="purpose">用途是:</label>
                                     <div class="layui-input-block" id="purpose">
                                         {foreach ($purposeList as $key => $val)}
-                                        <input type="checkbox" lay-skin="primary" name="purpose[]" value="{$key}" title="{$val}" {if ($house.purpose == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="purpose[]" value="{$key}" title="{$val}" {if !empty($house.purpose) && in_array($key, $house.purpose)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="purpose_other" value="{$house.purpose_other}" placeholder="其他">
@@ -165,7 +165,7 @@
                                     <label class="layui-form-label" for="after_change">改变后为:</label>
                                     <div class="layui-input-block" id="after_change">
                                         {foreach ($afterChangeList as $key => $val)}
-                                        <input type="checkbox" lay-skin="primary" name="after_change[]" value="{$key}" title="{$val}" {if ($house.after_change == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="after_change[]" value="{$key}" title="{$val}" {if !empty($house.after_change) && in_array($key, $house.after_change)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="after_change_other" value="{$house.after_change_other}" placeholder="其他">
@@ -185,7 +185,7 @@
                                     <label class="layui-form-label" for="crack_type">问题类型:</label>
                                     <div class="layui-input-block" id="crack_type">
                                         {foreach ($crackTypeList as $key => $val)}
-                                        <input type="checkbox" lay-skin="primary" name="crack_type[]" value="{$key}" title="{$val}" {if ($house.crack_type == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="crack_type[]" value="{$key}" title="{$val}" {if !empty($house.crack_type) && in_array($key, $house.crack_type)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="crack_type_other" value="{$house.crack_type_other}" placeholder="其他">
@@ -207,7 +207,7 @@
                                     <label class="layui-form-label" for="incline_or_deposition_type">问题类型:</label>
                                     <div class="layui-input-block" id="incline_or_deposition_type">
                                         {foreach ($inclineOrDepositionTypeList as $key => $val)}
-                                        <input type="checkbox" lay-skin="primary" name="incline_or_deposition_type[]" value="{$key}" title="{$val}" {if ($house.incline_or_deposition_type == $key)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="incline_or_deposition_type[]" value="{$key}" title="{$val}" {if !empty($house.incline_or_deposition_type) && in_array($key, $house.incline_or_deposition_type)}checked{/if}>
                                         {/foreach}
                                         <label>
                                             <input type="text" name="incline_or_deposition_type_other" value="{$house.incline_or_deposition_type_other}"
@@ -418,7 +418,6 @@
         let option = { icon: 0 };
 
         let makeHtml = function (index, item, data = null) {
-            console.log(data)
             let item_container = index + '_container', cont = $('.' + item_container), i = cont.children().length;
             cont.append($('<div />', {
                 class: 'layui-row layui-col-space15'
