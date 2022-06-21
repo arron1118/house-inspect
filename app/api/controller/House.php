@@ -150,7 +150,7 @@ class House extends ApiController
         if ($request->isPost()) {
             $params = $request->except(['id']);
             $house = $this->model::find($id);
-            if (!$params['user_id']) {
+            if (!isset($params['user_id']) || $params['user_id'] <=0) {
                 $params['user_id'] = $this->userInfo->id;
             }
 
