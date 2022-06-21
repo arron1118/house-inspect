@@ -24,7 +24,7 @@ if (!function_exists('readExcel')) {
             $height = $sheet->getCellByColumnAndRow(7, $i)->getValue();
             $space = $sheet->getCellByColumnAndRow(11, $i)->getValue() . '/' . $sheet->getCellByColumnAndRow(9, $i)->getValue();
             $address = $sheet->getCellByColumnAndRow(4, $i)->getValue() . $sheet->getCellByColumnAndRow(13, $i)->getValue();
-            $completion_time = $sheet->getCellByColumnAndRow(7, $i)->getValue();
+//            $completion_time = $sheet->getCellByColumnAndRow(7, $i)->getValue();
 
             $log[] = array_merge($appendColumns, [
                 'title' => trim($title),
