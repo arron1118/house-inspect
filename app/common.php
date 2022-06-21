@@ -33,7 +33,7 @@ if (!function_exists('readExcel')) {
                 'height' => trim($height ?? ''),
                 'space' => trim($space),
                 'address' => trim($address),
-                'completion_time' => trim($completion_time),
+//                'completion_time' => trim($completion_time),
             ]);
         }
 
