@@ -387,10 +387,11 @@
                 style: 'display: flex; flex-direction: row; justify-content: start',
                 class: 'layui-upload',
             }).append($('<div />', {
-                class: 'layui-upload-list w-25 h-25 text-center my-0'
+                class: 'layui-upload-list w-25 h-25 text-center my-0 layer-photos-demo ' + index + '-img-' + i,
             }).append($('<img />', {
                 class: 'layui-upload-img',
                 style: 'height: 80px',
+                layerSrc: '',
             })).append($('<input />', {
                 type: 'hidden',
                 name: index + '[image][]'
@@ -409,6 +410,11 @@
                     $(this).parentsUntil('.' + item_container).remove()
                 }
             }))))));
+
+            layer.photos({
+                photos: '.' + index + '-img-' + i,
+                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+            });
 
             let uploadInst = upload.render({
                 elem: '#' + index + '_upload_' + i,
