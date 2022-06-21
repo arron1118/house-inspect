@@ -145,6 +145,9 @@ class House extends ApiController
         if ($request->isPost()) {
             $params = $request->except(['id']);
             $house = $this->model::find($id);
+            if (!$params['user_id']) {
+                $params['user_id'] = $this->userInfo->id;
+            }
 
             foreach ($this->infos as $key => $val) {
                 if (isset($params[$key]['image'])) {
