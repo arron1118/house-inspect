@@ -52,6 +52,11 @@ class House extends Model
         return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);
     }
 
+    public function getDistrictList()
+    {
+        return [1 => '东方', 2 => '楼岗', 3 => '花果山', 4 => '松涛'];
+    }
+
     public function getHouseUsageList()
     {
         return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];

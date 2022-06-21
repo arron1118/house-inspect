@@ -55,7 +55,7 @@
                     <label class="layui-form-label" for="place_rate">场地排查:</label>
                     <div class="layui-input-block" id="place_rate">
                         {foreach ($placeRateList as $key => $val)}
-                        <input type="radio" name="place_rate" value="{$key}" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
+                        <input type="radio" class="layui-input" name="place_rate" value="{$key}" lay-verify="required" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
                         {/foreach}
                     </div>
                 </div>
@@ -118,6 +118,11 @@
         form.on('submit(edit)', function (data) {
             let params = data.field, option = { icon: 2 };
 
+            if (!params['place_rate']) {
+                console.log(params)
+            }
+            console.log(data);
+            return false
             $.post("{:url('/HouseRate/update')}", params, function (res) {
                 if (res.code === 1) {
                     option.icon = 1
