@@ -4,6 +4,7 @@ declare (strict_types = 1);
 namespace app\admin\controller;
 
 use think\db\exception\DbException;
+use think\facade\Log;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
@@ -218,6 +219,7 @@ class House extends AdminController
     {
         if ($request->isPost()) {
             $params = $request->except(['id']);
+            Log::info(json_encode($params));
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
