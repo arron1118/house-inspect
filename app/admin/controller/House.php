@@ -137,6 +137,12 @@ class House extends AdminController
         if ($request->isPost()) {
             $params = $request->param();
 
+            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
+            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
+            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
+            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
+            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+
             $house = $this->model::getByCode($params['code']);
             if ($house) {
                 $this->error('房屋编码已存在');
@@ -213,6 +219,12 @@ class House extends AdminController
         if ($request->isPost()) {
             $params = $request->except(['id']);
 
+            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
+            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
+            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
+            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
+            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
                 $this->error('房屋编码已存在');
@@ -235,6 +247,7 @@ class House extends AdminController
             $params['status'] = 1;
 
             $house->save($params);
+            $this->returnData['data'] = $params;
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));
         }
