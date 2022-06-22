@@ -31,6 +31,7 @@ class House extends AdminController
         parent::initialize();
 
         $this->model = HouseModel::class;
+        $this->districtList = (new $this->model)->getDistrictList();
     }
 
     /**
@@ -40,9 +41,9 @@ class House extends AdminController
      */
     public function index()
     {
-        $this->view->assign('districtList', (new $this->model)->getDistrictList());
-        $this->view->assign('areaList', Area::field('id, title')->select());
-        $this->view->assign('userList', UserModel::field('id, username')->select());
+        $this->view->assign('districtList', $this->districtList);
+        $this->view->assign('areaList', Area::field('id, title')->order('id desc')->select());
+        $this->view->assign('userList', UserModel::field('id, username')->order('id desc, login_time desc')->select());
         return $this->view->fetch();
     }
 
@@ -58,6 +59,7 @@ class House extends AdminController
             $user_id = (int) $request->param('user_id', 0);
             $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
+            $districtList = $this->districtList;
             $map = [];
 
             if ($title) {
@@ -65,8 +67,7 @@ class House extends AdminController
             }
 
             if ($district) {
-                $districtList = (new $this->model)->getDistrictList();
-                $map[] = ['district', 'like', '%' . $districtList[$district] . '%'];
+                $map[] = ['district', '=', $district];
             }
 
             if ($code) {
@@ -91,6 +92,9 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
+                ->withAttr('district', function ($value, $data) use ($districtList) {
+                    return $districtList[$value];
+                })
                 ->with(['area', 'admin', 'user'])
                 ->hidden(['area', 'admin', 'user'])
                 ->order('id desc')

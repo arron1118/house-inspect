@@ -55,6 +55,11 @@ class House extends Model
         return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);
     }
 
+//    public function getDistrictAttr($value)
+//    {
+//        return $this->getDistrictList()[$value];
+//    }
+
     public function getDistrictList()
     {
         return [1 => '东方', 2 => '楼岗', 3 => '花果山', 4 => '松涛'];
