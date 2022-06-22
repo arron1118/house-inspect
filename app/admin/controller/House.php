@@ -113,15 +113,16 @@ class House extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'area_id' => $this->request->param('area_id'),
-            'houseUsageList' => $model->getHouseUsageList(),
-            'peripheryEnvList' => $model->getPeripheryEnvList(),
-            'balconyTypeList' => $model->getBalconyTypeList(),
-            'designPaperList' => $model->getDesignPaperList(),
-            'purposeList' => $model->getPurposeList(),
-            'afterChangeList' => $model->getAfterChangeList(),
-            'crackTypeList' => $model->getCrackTypeList(),
-            'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
-            'examinatorTypeList' => $model->getExaminatorTypeList(),
+            'HouseUsageList' => $model->getHouseUsageList(),
+            'DistrictList' => $model->getDistrictList(),
+            'RelatedDataList' => $model->getRelatedDataList(),
+            'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
+            'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
+            'StructureList' => $model->getStructureList(),
+            'BasisTypeList' => $model->getBasisTypeList(),
+            'HouseExtensionList' => $model->getHouseExtensionList(),
+            'HouseChangeList' => $model->getHouseChangeList(),
+            'HouseChangeFloorDataList' => $model->getHouseChangeFloorDataList(),
             'infos' => $this->infos,
         ]);
         return $this->view->fetch();
@@ -139,10 +140,8 @@ class House extends AdminController
             $params = $request->param();
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+            $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
+            $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
             $house = $this->model::getByCode($params['code']);
             if ($house) {
@@ -219,13 +218,10 @@ class House extends AdminController
     {
         if ($request->isPost()) {
             $params = $request->except(['id']);
-            Log::info(json_encode($params));
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+            $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
+            $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
