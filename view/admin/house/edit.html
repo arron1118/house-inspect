@@ -127,130 +127,111 @@
                               </div>
                               <div class="layui-col-lg12">
                                   <div class="layui-form-item">
-                                      <label class="layui-form-label" for="structural_style">结构形式:</label>
-                                      <div class="layui-input-block" id="structural_style">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="1" title="剪力墙">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="2" title="框架">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="3" title="砖混">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="4" title="排架">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="5" title="钢结构">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="6" title="空旷砖房">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="7" title="木结构">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="8" title="砖土瓦房">
-                                          <input type="checkbox" lay-skin="primary" name="structural_style[]" value="9" title="其他">
-                                          <label>
-                                              <input type="text" name="structural_style_other" value="" placeholder="其他">
-                                          </label>
+                                      <label class="layui-form-label" for="structure">结构形式:</label>
+                                      <div class="layui-input-block" id="structure">
+                                          <input type="radio" lay-skin="primary" name="structure" value="1" title="剪力墙">
                                       </div>
                                   </div>
                               </div>
                               <div class="layui-col-lg12">
                                   <div class="layui-form-item">
-                                      <label class="layui-form-label" for="base_type">基础类型:</label>
-                                      <div class="layui-input-block" id="base_type">
-                                          <input type="checkbox" lay-skin="primary" name="base_type[]" value="1" title="天然或独立基础">
-                                          <input type="checkbox" lay-skin="primary" name="base_type[]" value="2" title="条形基础">
-                                          <input type="checkbox" lay-skin="primary" name="base_type[]" value="3" title="片筏或箱型">
-                                          <input type="checkbox" lay-skin="primary" name="base_type[]" value="4" title="桩基础">
-                                          <input type="checkbox" lay-skin="primary" name="base_type[]" value="5" title="其他">
-                                          <label>
-                                              <input type="text" name="base_type_other" value="" placeholder="其他">
-                                          </label>
+                                      <label class="layui-form-label" for="basis_type">基础类型:</label>
+                                      <div class="layui-input-block" id="basis_type">
+                                          <input type="radio" lay-skin="primary" name="basis_type" value="1" title="天然或独立基础">
                                       </div>
                                   </div>
                               </div>
                               <div class="layui-col-lg12">
                                   <div class="layui-form-item">
-                                      <label class="layui-form-label" for="relevant_information">相关资料:</label>
-                                      <div class="layui-input-block" id="relevant_information">
-                                          <input type="checkbox" lay-skin="primary" name="relevant_information[]" value="1" title="完整建筑结构设计图纸">
-                                          <input type="checkbox" lay-skin="primary" name="relevant_information[]" value="2" title="部分建筑结构设计图纸">
-                                          <input type="checkbox" lay-skin="primary" name="relevant_information[]" value="3" title="排查或鉴定报告">
-                                          <input type="checkbox" lay-skin="primary" name="relevant_information[]" value="4" title="无图纸或报告">
+                                      <label class="layui-form-label" for="related_data">相关资料:</label>
+                                      <div class="layui-input-block" id="related_data">
+                                          <input type="radio" lay-skin="primary" name="related_data" value="1" title="完整建筑结构设计图纸">
                                       </div>
                                   </div>
                               </div>
                           </div>
                       </div>
-                        <div class="page2">
-                            <div class="border-top py-4 mb-2">
+                        <div class="page2 border-top">
+                            <div class="py-4 mb-2">
                                <div class="layui-font-20 layui-font-blue"> 二，房屋使用安全排查</div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block" id="is_crack">
-                                        <input type="radio" name="is_crack" value="1" title="危险">
-                                        <input type="radio" name="is_crack" value="2" title="潜在危险">
-                                        <input type="radio" name="is_crack" value="3" title="暂无危险">
+                                    <div class="layui-input-block" id="house_safety_investigation">
+                                        <input type="radio" name="house_safety_investigation" value="1" title="危险">
+                                        <input type="radio" name="house_safety_investigation" value="2" title="潜在危险">
+                                        <input type="radio" name="house_safety_investigation" value="3" title="暂无危险">
                                     </div>
                                 </div>
                             </div>
                             <div class="border-bottom">
                                 <div class="layui-col-lg6">
                                         <div class="layui-form-item">
-                                            <label class="layui-form-label" for="base_type">使用功能:</label>
-                                            <div class="layui-input-block" id="base_type">
-                                                <input type="checkbox" lay-skin="primary" name="base_type[]" value="1" title="无改变">
-                                                <input type="checkbox" lay-skin="primary" name="base_type[]" value="2" title="改变">
+                                            <label class="layui-form-label" for="is_usage_change">使用功能:</label>
+                                            <div class="layui-input-block" id="is_usage_change">
+                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="2" title="无改变">
+                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="1" title="改变">
                                                 <label>
-                                                    <input type="text" name="base_type_other" value="" placeholder="由...改变为...">
+                                                    由：<input type="text" name="is_usage_change_from" value="" placeholder="由...">
+                                                    改变为：<input type="text" name="is_usage_change_to" value="" placeholder="改变为...">
                                                 </label>
                                             </div>
                                         </div>
                                 </div>
                                 <div class="layui-col-lg6">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label" for="base_type">使用荷载:</label>
-                                        <div class="layui-input-block" id="base_type">
-                                            <input type="checkbox" lay-skin="primary" name="base_type[]" value="1" title="无明显增加">
-                                            <input type="checkbox" lay-skin="primary" name="base_type[]" value="2" title="明显增加">
+                                        <label class="layui-form-label" for="is_usage_onus">使用荷载:</label>
+                                        <div class="layui-input-block" id="is_usage_onus">
+                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="2" title="无明显增加">
+                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="1" title="明显增加">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-lg-12">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label" for="is_roof_extension">加建:</label>
-                                        <div class="layui-input-block" id="is_roof_extension">
-                                            <input type="checkbox" name="is_roof_extension" value="1" title="房屋顶部有加建">
-                                            <input type="checkbox" name="is_roof_extension" value="2" title="房屋底层有夹层加建">
-                                            <input type="checkbox" name="is_roof_extension" value="3" title="房屋底层开挖地下室">
-                                            <input type="checkbox" name="is_roof_extension" value="4" title="无">
+                                        <label class="layui-form-label" for="house_extension">加建:</label>
+                                        <div class="layui-input-block" id="house_extension">
+                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="1" title="房屋顶部有加建">
+                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="2" title="房屋底层有夹层加建">
+                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="3" title="房屋底层开挖地下室">
+                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="9" title="无">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-lg-12">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label" for="is_roof_extension">改建:</label>
-                                        <div class="layui-input-block" id="is_roof_extension">
-                                            <label>
-                                                <input type="text" name="is_roof_extension" value="1" placeholder="拆除第几层的">
-                                            </label>
-                                            <input type="radio" name="is_roof_extension" value="2" title="承重墙">
-                                            <input type="radio" name="is_roof_extension" value="3" title="梁">
-                                            <input type="radio" name="is_roof_extension" value="4" title="板">
-                                            <input type="radio" name="is_roof_extension" value="4" title="存在新增洞口">
-                                            <input type="radio" name="is_roof_extension" value="4" title="无">
+                                        <label class="layui-form-label" for="house_change">改建:</label>
+                                        <div class="layui-input-block" id="house_change">
+                                            <input type="radio" name="house_change" value="1" title="有">
+                                            <div>
+                                                <label>
+                                                    <input type="text" name="house_change_floor" value="" placeholder="拆除第几层的">
+                                                </label>
+                                                <input type="checkbox" lay-skin="primary" name="house_change_floor_data" value="1" title="承重墙">
+                                            </div>
+                                            <input type="radio" name="house_change" value="2" title="存在新增洞口">
+                                            <input type="radio" name="house_change" value="9" title="无">
                                         </div>
                                     </div>
                                 </div>
                                 <div class="layui-lg-12">
                                     <div class="layui-form-item">
-                                        <label class="layui-form-label" for="is_roof_extension">灾害影响:</label>
-                                        <div class="layui-input-block" id="is_roof_extension">
+                                        <label class="layui-form-label" for="is_house_has_scourge">灾害影响:</label>
+                                        <div class="layui-input-block" id="is_house_has_scourge">
                                             <div>房屋是否受过火灾等外力损害：</div>
-                                            <input type="radio" name="is_roof_extension" value="1" title="是">
-                                            <input type="radio" name="is_roof_extension" value="2" title="否">
+                                            <input type="radio" name="is_house_has_scourge" value="1" title="是">
+                                            <input type="radio" name="is_house_has_scourge" value="2" title="否">
                                         </div>
                                     </div>
                                 </div>
                             </div>
                         </div>
-                        <div class="page3">
-                            <div class="border-top py-4 mb-2">
+                        <div class="page3 border-top">
+                            <div class="py-4 mb-2">
                                 <div class="layui-font-20 layui-font-blue"> 三，房屋周边环境安全排查</div>
                                 <div class="layui-form-item">
-                                    <div class="layui-input-block" id="is_crack">
-                                        <input type="radio" name="is_crack" value="1" title="危险">
-                                        <input type="radio" name="is_crack" value="2" title="潜在危险">
-                                        <input type="radio" name="is_crack" value="3" title="暂无危险">
+                                    <div class="layui-input-block" id="periphery_safety_investigation">
+                                        <input type="radio" name="periphery_safety_investigation" value="1" title="危险">
+                                        <input type="radio" name="periphery_safety_investigation" value="2" title="潜在危险">
+                                        <input type="radio" name="periphery_safety_investigation" value="3" title="暂无危险">
                                     </div>
                                 </div>
                             </div>
@@ -485,6 +466,7 @@
 
         // 提交
         form.on('submit(add)', function (data) {
+            console.log(data.field)
             $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
