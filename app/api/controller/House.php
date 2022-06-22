@@ -94,13 +94,12 @@ class House extends ApiController
         if ($request->isPost()) {
             $params = $request->param();
             $params['user_id'] = $this->userInfo->id;
-            Log::info($params);
 
-            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+//            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
+//            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
+//            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
+//            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
+//            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
 
             $house = $this->model::getByCode($params['code']);
             if ($house) {
@@ -120,7 +119,7 @@ class House extends ApiController
                 }
             }
 
-            $result = (new $this->model)->save($params);
+//            $result = (new $this->model)->save($params);
 
             $this->returnData['code'] = 1;
             $this->returnData['data'] = $params;
@@ -157,13 +156,12 @@ class House extends ApiController
     {
         if ($request->isPost()) {
             $params = $request->except(['id']);
-            Log::info($params);
 
-            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+//            $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
+//            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
+//            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
+//            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
+//            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
@@ -188,7 +186,7 @@ class House extends ApiController
                 }
             }
 
-            $house->save($params);
+//            $house->save($params);
 
             $this->returnData['code'] = 1;
             $this->returnData['data'] = $params;
