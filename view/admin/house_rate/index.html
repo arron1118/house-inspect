@@ -62,7 +62,7 @@
                         <div>
                             {foreach $FoundationRateList as $key => $val}
                             <div>
-                                <input type="checkbox" lay-skin="primary" name="foundation_rate[]" value="{$key}" title="{$val}" {if in_array($key, $rate.foundation_rate)}checked{/if}>
+                                <input type="checkbox" lay-skin="primary" name="foundation_rate[]" value="{$key}" title="{$val}" {if isset($rate.foundation_rate) && in_array($key, $rate.foundation_rate)}checked{/if}>
                             </div>
                             {/foreach}
                         </div>
@@ -82,7 +82,7 @@
                         <div>混凝土构件：</div>
                         {foreach $HouseDangerFrameRateList as $key => $val}
                         <div>
-                            <input type="checkbox" lay-skin="primary" name="house_danger_frame_rate[]" value="{$key}" title="{$val}" {if in_array($key,$rate.house_danger_frame_rate)}checked{/if}>
+                            <input type="checkbox" lay-skin="primary" name="house_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_frame_rate) && in_array($key,$rate.house_danger_frame_rate)}checked{/if}>
                         </div>
                         {/foreach}
                     </div>
@@ -90,7 +90,7 @@
                         <div>悬挑梁、板（雨篷）：</div>
                         {foreach $HouseDangerRoofRateList as $key => $val}
                         <div>
-                            <input type="checkbox" lay-skin="primary" name="house_danger_roof_rate[]" value="{$key}" title="{$val}" {if in_array($key, $rate.house_danger_roof_rate)}checked{/if}>
+                            <input type="checkbox" lay-skin="primary" name="house_danger_roof_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_roof_rate) && in_array($key, $rate.house_danger_roof_rate)}checked{/if}>
                         </div>
                         {/foreach}
                     </div>
@@ -101,7 +101,7 @@
                         <div>混凝土构件：</div>
                         {foreach $HouseLatentDangerFrameRateList as $key => $val}
                         <div>
-                            <input type="checkbox" lay-skin="primary" name="house_latent_danger_frame_rate[]" value="{$key}" title="{$val}" {if in_array($key, $rate.house_latent_danger_frame_rate)}checked{/if}>
+                            <input type="checkbox" lay-skin="primary" name="house_latent_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_latent_danger_frame_rate) && in_array($key, $rate.house_latent_danger_frame_rate)}checked{/if}>
                         </div>
                         {/foreach}
                     </div>
@@ -110,7 +110,7 @@
                     <label class="layui-form-label" for="house_safety_remark">其他需要说明的危险性问题:</label>
                     <div class="layui-input-block" id="house_safety_remark">
                         <textarea name="house_safety_remark" class="layui-textarea" lay-verify="required"
-                                  placeholder="请输入其他问题"></textarea>
+                                  placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
                     </div>
                 </div>
 

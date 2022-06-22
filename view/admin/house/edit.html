@@ -103,7 +103,7 @@
                                      </div>
                                  </div>
                              </div>
-                              <div class="layui-col-lg12">
+                              <div class="layui-col-lg6">
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="contact">房屋安全责任人及联系方式:</label>
                                       <div class="layui-input-block" id="contact">
@@ -112,11 +112,23 @@
                                       </div>
                                   </div>
                               </div>
+                              <div class="layui-col-lg6">
+                                  <div class="layui-form-item">
+                                      <label class="layui-form-label">社区</label>
+                                      <div class="layui-input-block">
+                                          <select name="district" lay-filter="districtFilter" lay-verify="required">
+                                              {foreach $DistrictList as $key => $val}
+                                              <option value="{$key}" {if $key === $house.district}selected{/if}>{$val}</option>
+                                              {/foreach}
+                                          </select>
+                                      </div>
+                                  </div>
+                              </div>
                               <div class="layui-col-lg12">
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="house_usage">现有使用功能:</label>
                                       <div class="layui-input-block" id="house_usage">
-                                          {foreach ($houseUsageList as $key => $val)}
+                                          {foreach ($HouseUsageList as $key => $val)}
                                           <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if !empty($house.house_usage) && in_array($key, $house.house_usage)}checked{/if}>
                                           {/foreach}
                                           <label>
@@ -129,7 +141,9 @@
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="structure">结构形式:</label>
                                       <div class="layui-input-block" id="structure">
-                                          <input type="radio" lay-skin="primary" name="structure" value="1" title="剪力墙">
+                                          {foreach ($StructureList as $key => $val)}
+                                          <input type="radio" lay-skin="primary" name="structure" value="{$key}" title="{$val}" {if $key === $house.structure}checked{/if}>
+                                          {/foreach}
                                       </div>
                                   </div>
                               </div>
@@ -137,7 +151,9 @@
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="basis_type">基础类型:</label>
                                       <div class="layui-input-block" id="basis_type">
-                                          <input type="radio" lay-skin="primary" name="basis_type" value="1" title="天然或独立基础">
+                                          {foreach ($BasisTypeList as $key => $val)}
+                                          <input type="radio" lay-skin="primary" name="basis_type" value="{$key}" title="{$val}" {if $key === $house.basis_type}checked{/if}>
+                                          {/foreach}
                                       </div>
                                   </div>
                               </div>
@@ -145,7 +161,9 @@
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="related_data">相关资料:</label>
                                       <div class="layui-input-block" id="related_data">
-                                          <input type="radio" lay-skin="primary" name="related_data" value="1" title="完整建筑结构设计图纸">
+                                          {foreach ($RelatedDataList as $key => $val)}
+                                          <input type="radio" lay-skin="primary" name="related_data" value="{$key}" title="{$val}" {if $key === $house.related_data}checked{/if}>
+                                          {/foreach}
                                       </div>
                                   </div>
                               </div>
@@ -156,9 +174,9 @@
                                <div class="layui-font-20 layui-font-blue"> 二，房屋使用安全排查</div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block" id="house_safety_investigation">
-                                        <input type="radio" name="house_safety_investigation" value="1" title="危险">
-                                        <input type="radio" name="house_safety_investigation" value="2" title="潜在危险">
-                                        <input type="radio" name="house_safety_investigation" value="3" title="暂无危险">
+                                        {foreach ($HouseSafetyInvestigationList as $key => $val)}
+                                        <input type="radio" name="house_safety_investigation" value="{$key}" title="{$val}" {if $key === $house.house_safety_investigation}checked{/if}>
+                                        {/foreach}
                                     </div>
                                 </div>
                             </div>
@@ -167,11 +185,11 @@
                                         <div class="layui-form-item">
                                             <label class="layui-form-label" for="is_usage_change">使用功能:</label>
                                             <div class="layui-input-block" id="is_usage_change">
-                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="2" title="无改变">
-                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="1" title="改变">
+                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="2" title="无改变" {if ($house.is_usage_change === 2)}checked{/if}>
+                                                <input type="radio" lay-skin="primary" name="is_usage_change" value="1" title="" {if ($house.is_usage_change === 1)}checked{/if}>
                                                 <label>
-                                                    由：<input type="text" name="is_usage_change_from" value="" placeholder="由...">
-                                                    改变为：<input type="text" name="is_usage_change_to" value="" placeholder="改变为...">
+                                                    由：<input type="text" name="is_usage_change_from" value="" placeholder="">
+                                                    改变为：<input type="text" name="is_usage_change_to" value="" placeholder="">
                                                 </label>
                                             </div>
                                         </div>
@@ -180,8 +198,8 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label" for="is_usage_onus">使用荷载:</label>
                                         <div class="layui-input-block" id="is_usage_onus">
-                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="2" title="无明显增加">
-                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="1" title="明显增加">
+                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="2" title="无明显增加" {if ($house.is_usage_onus === 2)}checked{/if}>
+                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="1" title="明显增加" {if ($house.is_usage_onus === 1)}checked{/if}>
                                         </div>
                                     </div>
                                 </div>
@@ -189,10 +207,9 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label" for="house_extension">加建:</label>
                                         <div class="layui-input-block" id="house_extension">
-                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="1" title="房屋顶部有加建">
-                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="2" title="房屋底层有夹层加建">
-                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="3" title="房屋底层开挖地下室">
-                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="9" title="无">
+                                            {foreach ($HouseExtensionList as $key => $val)}
+                                            <input type="checkbox" lay-skin="primary" name="house_extension[]" value="{$key}" title="{$val}" {if !empty($house.house_extension) && in_array($key, $house.house_extension)}checked{/if}>
+                                            {/foreach}
                                         </div>
                                     </div>
                                 </div>
@@ -200,15 +217,17 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label" for="house_change">改建:</label>
                                         <div class="layui-input-block" id="house_change">
-                                            <input type="radio" name="house_change" value="1" title="有">
+                                            <input type="radio" name="house_change" value="1" title="" {if ($house.house_change === 1)}checked{/if}>
                                             <div>
                                                 <label>
                                                     <input type="text" name="house_change_floor" value="" placeholder="拆除第几层的">
                                                 </label>
-                                                <input type="checkbox" lay-skin="primary" name="house_change_floor_data" value="1" title="承重墙">
+                                                {foreach ($HouseExtensionList as $key => $val)}
+                                                <input type="checkbox" lay-skin="primary" name="house_change_floor_data[]" value="{$key}" title="{$val}" {if !empty($house.house_change_floor_data) && in_array($key, $house.house_change_floor_data)}checked{/if}>
+                                                {/foreach}
                                             </div>
-                                            <input type="radio" name="house_change" value="2" title="存在新增洞口">
-                                            <input type="radio" name="house_change" value="9" title="无">
+                                            <input type="radio" name="house_change" value="2" title="存在新增洞口" {if ($house.house_change === 2)}checked{/if}>
+                                            <input type="radio" name="house_change" value="9" title="无" {if ($house.house_change === 9)}checked{/if}>
                                         </div>
                                     </div>
                                 </div>
@@ -217,8 +236,8 @@
                                         <label class="layui-form-label" for="is_house_has_scourge">灾害影响:</label>
                                         <div class="layui-input-block" id="is_house_has_scourge">
                                             <div>房屋是否受过火灾等外力损害：</div>
-                                            <input type="radio" name="is_house_has_scourge" value="1" title="是">
-                                            <input type="radio" name="is_house_has_scourge" value="2" title="否">
+                                            <input type="radio" name="is_house_has_scourge" value="1" title="是" {if ($house.is_house_has_scourge === 1)}checked{/if}>
+                                            <input type="radio" name="is_house_has_scourge" value="2" title="否" {if ($house.is_house_has_scourge === 2)}checked{/if}>
                                         </div>
                                     </div>
                                 </div>
@@ -229,9 +248,9 @@
                                 <div class="layui-font-20 layui-font-blue"> 三，房屋周边环境安全排查</div>
                                 <div class="layui-form-item">
                                     <div class="layui-input-block" id="periphery_safety_investigation">
-                                        <input type="radio" name="periphery_safety_investigation" value="1" title="危险">
-                                        <input type="radio" name="periphery_safety_investigation" value="2" title="潜在危险">
-                                        <input type="radio" name="periphery_safety_investigation" value="3" title="暂无危险">
+                                        {foreach $PeripherySafetyInvestigationList as $key => $val}
+                                        <input type="radio" name="periphery_safety_investigation" value="{$key}" title="{$val}" {if $key === $house.periphery_safety_investigation}checked{/if}>
+                                        {/foreach}
                                     </div>
                                 </div>
                             </div>
@@ -281,11 +300,8 @@
                         {foreach ($infos as $key => $val)}
                         <div class="d-none" id="{$key}_data">{:json_encode($house[$key])}</div>
                         {/foreach}
-
-                                <div class="infos-content" id="app">
-                                </div>
-
-
+                        <div class="infos-content" id="app">
+                        </div>
                     </div>
 
                 </div>

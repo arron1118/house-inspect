@@ -197,15 +197,16 @@ class House extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'house' => $this->model::find($id),
-            'houseUsageList' => $model->getHouseUsageList(),
-            'peripheryEnvList' => $model->getPeripheryEnvList(),
-            'balconyTypeList' => $model->getBalconyTypeList(),
-            'designPaperList' => $model->getDesignPaperList(),
-            'purposeList' => $model->getPurposeList(),
-            'afterChangeList' => $model->getAfterChangeList(),
-            'crackTypeList' => $model->getCrackTypeList(),
-            'inclineOrDepositionTypeList' => $model->getInclineOrDepositionTypeList(),
-            'examinatorTypeList' => $model->getExaminatorTypeList(),
+            'HouseUsageList' => $model->getHouseUsageList(),
+            'DistrictList' => $model->getDistrictList(),
+            'RelatedDataList' => $model->getRelatedDataList(),
+            'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
+            'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
+            'StructureList' => $model->getStructureList(),
+            'BasisTypeList' => $model->getBasisTypeList(),
+            'HouseExtensionList' => $model->getHouseExtensionList(),
+            'HouseChangeList' => $model->getHouseChangeList(),
+            'HouseChangeFloorDataList' => $model->getHouseChangeFloorDataList(),
             'infos' => $this->infos,
         ]);
         return $this->view->fetch();
