@@ -51,68 +51,104 @@
                     <h1>评 级</h1>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label" for="place_rate">场地排查:</label>
-                    <div class="layui-input-block" id="place_rate">
-                        {foreach ($placeRateList as $key => $val)}
-                        <input type="radio" class="layui-input" name="place_rate" value="{$key}" lay-verify="required" title="{$val}" {if ($rate.place_rate === $key)}checked{/if}>
-                        {/foreach}
+                <div class="layui-form-item border-top">
+                    <label class="layui-form-label" for="foundation">地基基础安仝排查:</label>
+                    <div class="layui-input-block" id="foundation">
+                        <input type="radio" class="layui-input" name="foundation" value="1"  lay-verify="required" title="危险">
+                        <input type="radio" class="layui-input" name="foundation" value="2"  lay-verify="required" title="潜在危險">
+                        <input type="radio" class="layui-input" name="foundation" value="3"  lay-verify="required" title="暂无危險">
                     </div>
-                    <div class="layui-input-block m-0">
-                        <tip>评级依据</tip>
-                        <textarea name="place_rate_basis"  placeholder="" lay-verify="required"
-                                  autocomplete="off" class="layui-textarea" rows="3"
-                        >{$rate.place_rate_basis}</textarea>
+                    <div class="layui-input-block" id="foundation_type">
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="foundation_type[]" value="1" title="未发现任何沉降和位移迹象">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="foundation_type[]" value="2" title="室外地面存在裂缝，填充墙产生沉降裂缝，但主体結构未出现沉降裂缝或整体倾斜">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="foundation_type[]" value="3" title="砌体墙单条竖向裂缝宽度大于10mm，或单道墙体产生多条平行的竖向裂缝或斜向裂缝、其中最大裂缝宽度大于 0.5mm">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="foundation_type[]" value="4" title="承重墙体产生贯穿裂缝、混凝土柱产生环状裂缝、梁产生多条平行斜裂缝、剪力墙出现竖向裂缝">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="foundation_type[]" value="5" title="建筑物出现明显傾斜或结构缝处出现严重挤压损伤">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item border-top">
+                    <label class="layui-form-label" for="superstructure_safety">上部结构安全排查:</label>
+                    <div class="layui-input-block" id="superstructure_safety">
+                        <input type="radio" class="layui-input" name="superstructure_safety" value="1"  lay-verify="required" title="危险">
+                        <input type="radio" class="layui-input" name="superstructure_safety" value="2"  lay-verify="required" title="潜在危險">
+                        <input type="radio" class="layui-input" name="superstructure_safety" value="3"  lay-verify="required" title="暂无危險">
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label" for="foundation_rate">地基基础排查:</label>
-                    <div class="layui-input-block" id="foundation_rate">
-                        {foreach ($foundationRateList as $key => $val)}
-                        <input type="radio" name="foundation_rate" value="{$key}" title="{$val}" {if ($rate.foundation_rate === $key)}checked{/if}>
-                        {/foreach}
-                    </div>
-                    <div class="layui-input-block m-0">
-                        <tip>评级依据</tip>
-                        <textarea name="foundation_rate_basis"  placeholder="" lay-verify="required"
-                                  autocomplete="off" class="layui-textarea" rows="3"
-                        >{$rate.foundation_rate_basis}</textarea>
-                    </div>
-                </div>
-                <div class="layui-form-item">
-                    <label class="layui-form-label" for="main_rate">主体结构排查:</label>
-                    <div class="layui-input-block" id="main_rate">
-                        {foreach ($mainRateList as $key => $val)}
-                        <input type="radio" name="main_rate" value="{$key}" title="{$val}" {if ($rate.main_rate === $key)}checked{/if}>
-                        {/foreach}
-                    </div>
-                    <div class="layui-input-block m-0">
-                        <tip>评级依据</tip>
-                        <textarea name="main_rate_basis"  placeholder="" lay-verify="required"
-                                  autocomplete="off" class="layui-textarea" rows="3"
-                        >{$rate.main_rate_basis}</textarea>
+                    <label class="layui-form-label" for="superstructure_safety_danger">危险:</label>
+                    <div class="layui-input-block" id="superstructure_safety_danger">
+                        <div>混凝土构件：</div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_danger[]" value="1" title="较多柱、梁、墙和楼板因钢筋锈蚀造成胀裂，缝宽大于1mm或保护层剥落、钢筋外露">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_danger[]" value="2" title="柱有竖向受压裂缝">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_danger[]" value="3" title="柱一侧有宽度大于 1mm 的水平裂缝，另一侧混凝土压碎">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_danger[]" value="4" title="梁跨中下宽上窄的竖向裂缝，裂缝向上延伸达梁高的2/3，且梁底缝宽大于0.5mm">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_danger[]" value="5" title="梁端部有宽度大于 0.4mm 的斜向裂缝">
+                        </div>
                     </div>
                 </div>
                 <div class="layui-form-item">
-                    <label class="layui-form-label" for="house_safety_rate">房屋安全隐患排查类别:</label>
-                    <div class="layui-input-block" id="house_safety_rate">
-                        {foreach ($houseSafetyRateList as $key => $val)}
-                        <input type="radio" name="house_safety_rate" value="{$key}" title="{$val}" {if ($rate.house_safety_rate === $key)}checked{/if}>
-                        {/foreach}
+                    <label class="layui-form-label" for="superstructure_safety_pre_danger">潜在危险:</label>
+                    <div class="layui-input-block" id="superstructure_safety_pre_danger">
+                        <div>混凝土构件：</div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_pre_danger[]" value="1" title="柱、梁、板出现裂缝，但为非结构受力裂缝">
+                        </div>
+                        <div>
+                            <input type="checkbox" lay-skin="primary" name="superstructure_safety_pre_danger[]" value="2" title="个别柱、梁和楼板因钢筋锈蚀造成胀裂或保护层剥落、钢筋外露">
+                        </div>
+                    </div>
+                </div>
+                <div class="layui-form-item">
+                    <label class="layui-form-label" for="superstructure_safety_danger_other">其他需要说明的危险性问题:</label>
+                    <div class="layui-input-block" id="superstructure_safety_danger_other">
+                        <textarea name="superstructure_safety_danger_other" class="layui-textarea"
+                                  placeholder="请输入其他问题"></textarea>
                     </div>
                 </div>
 
-                <div class="layui-form-item">
-                    <label class="layui-form-label" for="suggestion">处理建议:</label>
-                    <div class="layui-input-block m-0" id="suggestion">
-                        <textarea name="suggestion"  placeholder="" lay-verify="required"
-                               autocomplete="off" class="layui-textarea" rows="5"
-                        >{$rate.suggestion}</textarea>
+                <div class="layui-form-item border-top">
+                    <label class="layui-form-label" for="conclusion">排查结论:</label>
+                    <div class="layui-input-block" id="conclusion">
+                        <div>
+                            <input class="layui-input" type="checkbox" lay-skin="primary" name="conclusion[]" value="1" title="A类建锁物，可继续使用，或仅需对损伤进行处理后可继续使用">
+                        </div>
+                        <div>
+                            <input class="layui-input" type="checkbox" lay-skin="primary" name="conclusion[]" value="2" title="B类建筑物，可观察使用，但应对损伤进行处理，当房屋存在异常情况时应及时进行检测鉴定">
+                        </div>
+                        <div>
+                            <input class="layui-input" type="checkbox" lay-skin="primary" name="conclusion[]" value="3" title="C1类建负物，需采取修繕，加固或拆除加建部分等措施后可消除安全隐患的房屋">
+                        </div>
+                       <div>
+                           <input class="layui-input" type="checkbox" lay-skin="primary" name="conclusion[]" value="4" title="C2类建筑物，需进行检测鉴定的房屋">
+                       </div>
+                        <div>
+                            <input class="layui-input" type="checkbox" lay-skin="primary" name="conclusion[]" value="5" title="C3类建筑物，需立即停止使用的房屋">
+                        </div>
                     </div>
                 </div>
-                <div class="layui-form-item">
+
+                <div class="layui-form-item my-5">
                     <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
-                            lay-filter="edit">保 存
+                            lay-filter="grade">保 存
                     </button>
                 </div>
             </form>
@@ -124,36 +160,14 @@
 
 {block name="js"}
 <script>
-    layui.use(['form','laydate'], function () {
+    layui.use(['form'], function () {
         let $ = layui.jquery,
-            laydate = layui.laydate,
             form = layui.form;
 
-        let frameIndex = parent.layer.getFrameIndex(window.name), option = { icon: 2 };
-
-        // 进行登录操作
-        form.on('submit(edit)', function (data) {
+        form.on('submit(grade)', function (data) {
             let params = data.field;
-
-            if (!params['place_rate']) {
-                layer.msg('请选择"场地排查"', option)
-                return false
-            }
-
-            if (!params['foundation_rate']) {
-                layer.msg('请选择"地基基础排查"', option)
-                return false
-            }
-
-            if (!params['main_rate']) {
-                layer.msg('请选择"主体结构排查"', option)
-                return false
-            }
-
-            if (!params['house_safety_rate']) {
-                layer.msg('请选择"房屋安全隐患排查类别"', option)
-                return false
-            }
+            console.log(params)
+            return false
 
             $.post("{:url('/HouseRate/update')}", params, function (res) {
                 if (res.code === 1) {
