@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app\api\controller;
 
+use think\facade\Log;
 use think\Request;
 use app\common\controller\ApiController;
 use app\common\model\House as HouseModel;
@@ -93,6 +94,7 @@ class House extends ApiController
         if ($request->isPost()) {
             $params = $request->param();
             $params['user_id'] = $this->userInfo->id;
+            Log::info($params);
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
@@ -155,6 +157,7 @@ class House extends ApiController
     {
         if ($request->isPost()) {
             $params = $request->except(['id']);
+            Log::info($params);
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
