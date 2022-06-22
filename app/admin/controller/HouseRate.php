@@ -42,7 +42,6 @@ class HouseRate extends AdminController
             'HouseDangerRoofRateList' => $model->getHouseDangerRoofRateList(),
             'HouseLatentDangerFrameRateList' => $model->getHouseLatentDangerFrameRateList(),
             'FinalRateList' => $model->getFinalRateList(),
-            'DistrictList' => $model->getDistrictList(),
         ]);
         return $this->view->fetch();
     }
