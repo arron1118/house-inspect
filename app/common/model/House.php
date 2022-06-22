@@ -12,10 +12,8 @@ class House extends Model
 {
     protected $json = [
         'house_usage',
-        'purpose',
-        'after_change',
-        'crack_type',
-        'incline_or_deposition_type',
+        'house_extension',
+        'house_change_floor_data',
         'doorplate_info',
         'house_info',
         'indoor_info',
@@ -31,11 +29,6 @@ class House extends Model
 
     public static function onBeforeWrite($house): void
     {
-//        $house->house_usage = isset($house->house_usage) ? array_values($house->house_usage) : [];
-//        $house->purpose = isset($house->purpose) ? array_values($house->purpose) : [];
-//        $house->after_change = isset($house->after_change) ? array_values($house->after_change) : [];
-//        $house->crack_type = isset($house->crack_type) ? array_values($house->crack_type) : [];
-//        $house->incline_or_deposition_type = isset($house->incline_or_deposition_type) ? array_values($house->incline_or_deposition_type) : [];
     }
 
     public static function onAfterDelete($house): void
@@ -62,6 +55,11 @@ class House extends Model
         return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);
     }
 
+//    public function getDistrictAttr($value)
+//    {
+//        return $this->getDistrictList()[$value];
+//    }
+
     public function getDistrictList()
     {
         return [1 => '东方', 2 => '楼岗', 3 => '花果山', 4 => '松涛'];
@@ -72,43 +70,43 @@ class House extends Model
         return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];
     }
 
-    public function getDesignPaperList()
+    public function getRelatedDataList()
     {
-        return [1 => '完整建筑结构设计图纸', 2 => '部分建筑结构设计图纸', 3 => '没有建筑结构设计图纸'];
+        return [1 => '完整建筑结构设计图纸', 2 => '部分建筑结构设计图纸', 3 => '排查或鉴定报告', 4 => '无图纸或报告'];
     }
 
-    public function getPeripheryEnvList()
+    public function getHouseSafetyInvestigationList()
     {
-        return [1 => '大中型学校', 2 => '医院', 3 => '集市市场'];
+        return [1 => '危险', 2 => '潜在危险', 3 => '暂无危险'];
     }
 
-    public function getBalconyTypeList()
+    public function getPeripherySafetyInvestigationList()
     {
-        return [1 => '挑梁式阳台', 2 => '挑板式阳台', 9 => '其他'];
+        return [1 => '危险', 2 => '潜在危险', 3 => '暂无危险'];
     }
 
-    public function getPurposeList()
+    public function getStructureList()
     {
-        return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];
+        return [1 => '剪力墙', 2 => '框架', 3 => '砖混', 4 => '排架', 5 => '钢结构', 6 => '空旷砖房', 7 => '木结构', 8 => '砖土瓦房', 9 => '其他'];
     }
 
-    public function getAfterChangeList()
+    public function getBasisTypeList()
     {
-        return [1 => '厂房', 2 => '住宅', 3 => '商业', 4 => '商住', 5 => '办公', 9 => '其他'];
+        return [1 => '天然或独立基础', 2 => '条形基础', 3 => '片筏及箱型', 4 => '桩基础', 9 => '其他'];
     }
 
-    public function getCrackTypeList()
+    public function getHouseExtensionList()
     {
-        return [1 => '裂缝', 2 => '钢筋外露', 3 => '钢筋锈蚀', 9 => '其他'];
+        return [1 => '房屋顶部有加建', 2 => '房屋底层有夹层加建', 3 => '房屋底层开挖地下室', 9 => '无'];
     }
 
-    public function getInclineOrDepositionTypeList()
+    public function getHouseChangeList()
     {
-        return [1 => '倾斜', 2 => '沉降', 9 => '其他'];
+        return [1 => '有', 2 => '存在新增洞口', 9 => '无'];
     }
 
-    public function getExaminatorTypeList()
+    public function getHouseChangeFloorDataList()
     {
-        return [1 => '市级', 2 => '区级', 3 => '街道', 4 => '社区', 5 => '网络'];
+        return [1 => '承重墙', 2 => '梁', 3 => '板'];
     }
 }

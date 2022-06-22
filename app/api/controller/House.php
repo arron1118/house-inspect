@@ -96,10 +96,8 @@ class House extends ApiController
             $params['user_id'] = $this->userInfo->id;
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+            $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
+            $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
             $house = $this->model::getByCode($params['code']);
             if ($house) {
@@ -158,10 +156,8 @@ class House extends ApiController
             $params = $request->except(['id']);
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
-            $params['purpose'] = isset($params['purpose']) ? array_values($params['purpose']) : [];
-            $params['after_change'] = isset($params['after_change']) ? array_values($params['after_change']) : [];
-            $params['crack_type'] = isset($params['crack_type']) ? array_values($params['crack_type']) : [];
-            $params['incline_or_deposition_type'] = isset($params['incline_or_deposition_type']) ? array_values($params['incline_or_deposition_type']) : [];
+            $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
+            $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
@@ -210,5 +206,13 @@ class House extends ApiController
         }
 
         $this->returnApiData();
+    }
+
+    public function getDistrictList()
+    {
+        $this->returnData['data'] = (new $this->model)->getDistrictList();
+
+        $this->returnData['code'] = 1;
+        $this->returnApiData(lang('Done'));
     }
 }

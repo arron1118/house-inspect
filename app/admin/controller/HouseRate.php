@@ -35,10 +35,13 @@ class HouseRate extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'rate' => $rate,
-            'placeRateList' => $model->getPlaceRateList(),
-            'foundationRateList'=> $model->getFoundationRateList(),
-            'mainRateList' => $model->getMainRateList(),
-            'houseSafetyRateList' => $model->getHouseSafetyRateList()
+            'FoundationSafetyRateList' => $model->getFoundationSafetyRateList(),
+            'FoundationRateList'=> $model->getFoundationRateList(),
+            'HouseSafetyRateList' => $model->getHouseSafetyRateList(),
+            'HouseDangerFrameRateList' => $model->getHouseDangerFrameRateList(),
+            'HouseDangerRoofRateList' => $model->getHouseDangerRoofRateList(),
+            'HouseLatentDangerFrameRateList' => $model->getHouseLatentDangerFrameRateList(),
+            'FinalRateList' => $model->getFinalRateList(),
         ]);
         return $this->view->fetch();
     }
@@ -98,8 +101,26 @@ class HouseRate extends AdminController
     public function update(Request $request, $id)
     {
         if ($request->isAjax()) {
+            $params = $request->except(['id']);
+
+            if (!isset($params['foundation_rate'])) {
+                $this->error('"地基基础安全排查 -> 详细内容"未选择');
+            }
+
+            if (!isset($params['house_danger_frame_rate'])) {
+                $this->error('"上部结构安全排查 -> 危险(混凝土构件)"未选择');
+            }
+
+            if (!isset($params['house_danger_roof_rate'])) {
+                $this->error('"上部结构安全排查 -> 悬挑梁、板（雨篷）"未选择');
+            }
+
+            if (!isset($params['house_latent_danger_frame_rate'])) {
+                $this->error('"潜在危险(混凝土构件)"未选择');
+            }
+
             $rate = $this->model::find($id);
-            $rate->save($request->except(['id']));
+            $rate->save($params);
             HouseModel::update(['rate_status' => 1, 'id' => $rate->house_id]);
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));

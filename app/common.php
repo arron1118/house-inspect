@@ -16,11 +16,17 @@ if (!function_exists('readExcel')) {
         $highestRow = $sheet->getHighestRow();
         $highestColumnIndex = \PhpOffice\PhpSpreadsheet\Cell\Coordinate::columnIndexFromString($highestColumn);
         $log = [];
+        $districtList = array_flip((new \app\common\model\House())->getDistrictList());
 
         for ($i = 2; $i < $highestRow; $i++) {
             $title = $sheet->getCellByColumnAndRow(2, $i)->getValue();
             $code = $sheet->getCellByColumnAndRow(3, $i)->getValue();
-            $district = $sheet->getCellByColumnAndRow(6, $i)->getValue();
+            $district = trim($sheet->getCellByColumnAndRow(6, $i)->getValue());
+
+            if ($district !== '') {
+                $district = $districtList[$district];
+            }
+
             $height = $sheet->getCellByColumnAndRow(7, $i)->getValue();
             $space = $sheet->getCellByColumnAndRow(11, $i)->getValue() . '/' . $sheet->getCellByColumnAndRow(9, $i)->getValue();
             $address = $sheet->getCellByColumnAndRow(4, $i)->getValue() . $sheet->getCellByColumnAndRow(13, $i)->getValue();
