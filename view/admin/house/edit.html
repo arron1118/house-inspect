@@ -1,7 +1,6 @@
-{extend name='public/base' /}
+<{extend name='public/base' /}
 {block name='css'}
 {include file='public/bootstrap' /}
-<link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
 <style>
     .kuohao:before{
         content: "(";
@@ -10,6 +9,9 @@
     .kuohao:after{
         content: ")";
         color: black;
+    }
+    .layui-layer-imgbar a{
+        text-decoration: none;
     }
 </style>
 {/block}
@@ -340,8 +342,6 @@
 {/block}
 
 {block name='js'}
-<script src="https://unpkg.com/vue@2.6.13/dist/vue.js"></script>
-<script src="https://unpkg.com/element-ui/lib/index.js"></script>
 <script>
     layui.use(['jquery', 'layer', 'form', 'element', 'laydate', 'upload'], function () {
         let $ = layui.jquery,
@@ -376,8 +376,9 @@
             }).append($('<div />', {
                 class: 'layui-upload-list w-25 h-25 text-center my-0 ' + index + '-img-' + i
             }).append($('<img />', {
-                style: 'height: 80px',
+                style: 'height: 80px; text-decoration: none',
                 src: data?.image,
+                alt: data?.description
             })).append($('<input />', {
                 type: 'hidden',
                 name: index + '[image][]',
@@ -397,21 +398,27 @@
                     $(this).parentsUntil('.' + item_container).remove()
                 }
             }))))));
-            // 图片放大 你个猪八戒
+            // 图片放大 你个猪八戒   '.' + index + '-img-' + i
             layer.photos({
-                photos: '.' + index + '-img-' + i,
-                anim: 5 //0-6的选择，指定弹出图片动画类型，默认随机（请注意，3.0之前的版本用shift参数）
+                photos: '.infos-content'
+                ,zIndex: 999999999
+                ,shade: 0.2
+                ,shift: 0
             });
 
             // 图片缩放 mousewheel DOMMouseScroll ".layui-upload-list img",
-            // $(document).on("mousewheel DOMMouseScroll", function (e){
+            $('.infos-content img').on('mousewheel DOMMouseScroll', function (){
+                console.log('888')
+            })
+            // $(document).on("mousewheel DOMMouseScroll", '.infos-content img', function (e){
             //     console.log('pppppp', e)
-            //     var delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1:-1)) ||
-            //         (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1:1));
-            //     var imagep = $(".layui-upload-list").parent().parent();
-            //     var image = $(".layui-upload-list").parent();
-            //     var h = image.height();
-            //     var w = image.width();
+            //     return false
+            //     const delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||
+            //         (e.originalEvent.detail && (e.originalEvent.detail > 0 ? -1 : 1));
+            //     const imagep = $(".layui-upload-list").parent().parent();
+            //     const image = $(".layui-upload-list").parent();
+            //     let h = image.height();
+            //     let w = image.width();
             //     if(delta > 0){
             //         if(h<(window.innerHeight)){
             //             h = h*1.05;
@@ -420,7 +427,7 @@
             //     } else if(delta < 0){
             //         if(h > 100){
             //             h = h*0.95;
-            //             w = w*0/95;
+            //             w = w*0.95;
             //         }
             //     }
             //     imagep.css("top", (window.innerHeight - h) / 2);
@@ -486,15 +493,6 @@
             })));
 
             div.appendTo(container);
-            //
-            // new Vue({
-            //     el: '#app',
-            //     data(){
-            //         return{
-            //
-            //         }
-            //     }
-            // })
             let info_data = JSON.parse($('#' + index + '_data').text());
             $.each(info_data, function (info_index, info_item) {
                 makeHtml(index, item, info_item)
@@ -529,3 +527,4 @@
 
 </script>
 {/block}
+>
