@@ -143,7 +143,7 @@
                                          <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if !empty($house.house_usage) && in_array($key, $house.house_usage)}checked{/if}>
                                          {/foreach}
                                          <label>
-                                             <input type="text" name="house_usage_other" value="{$house.house_usage_other}" placeholder="其他">
+                                             <span class="kuohao"><input type="text" name="house_usage_other" value="{$house.house_usage_other}" placeholder="" class="border-0"></span>
                                          </label>
                                      </div>
                                  </div>
@@ -186,8 +186,8 @@
                                            <input type="radio" lay-skin="primary" name="is_usage_change" value="2" title="无改变" {if ($house.is_usage_change === 2)}checked{/if}>
                                            <input type="radio" lay-skin="primary" name="is_usage_change" value="1" title="" {if ($house.is_usage_change === 1)}checked{/if}>
                                            <label>
-                                               由：<input type="text" name="is_usage_change_from" value="" placeholder="">
-                                               改变为：<input type="text" name="is_usage_change_to" value="" placeholder="">
+                                               由：<span class="kuohao"><input type="text" name="is_usage_change_from" value="" placeholder="" class="border-0"></span>
+                                               改变为：<span class="kuohao"><input type="text" name="is_usage_change_to" value="" placeholder="" class="border-0"></span>
                                            </label>
                                        </div>
                                    </div>
@@ -220,15 +220,15 @@
                                     <div class="layui-form-item">
                                         <label class="layui-form-label" for="house_change">改建:</label>
                                         <div class="layui-input-block" id="house_change">
-                                            <input type="radio" name="house_change" value="2" title="存在新增洞口" {if ($house.house_change === 2)}checked{/if}>
-                                            <input type="radio" name="house_change" value="9" title="无" {if ($house.house_change === 9)}checked{/if}>
                                             <input type="radio" name="house_change" value="1" title="" {if ($house.house_change === 1)}checked{/if}>
-                                            <span>拆除 <span class="kuohao"><input type="text" class="border-0" name="house_change_floor" value="" placeholder=""> </span>层的:</span>
-                                            <span class="kuohao">
+                                            <span>拆除 <span class="kuohao"><input type="text" class="border-0" name="house_change_floor" value="" placeholder=""> </span>层的</span>
+                                            <span class="kuohao me-5">
                                             {foreach ($HouseChangeFloorDataList as $key => $val)}
                                             <input type="checkbox" lay-skin="primary" name="house_change_floor_data[]" value="{$key}" title="{$val}" {if !empty($house.house_change_floor_data) && in_array($key, $house.house_change_floor_data)}checked{/if}>
                                             {/foreach}
                                             </span>
+                                            <input type="radio" name="house_change" value="2" title="存在新增洞口" {if ($house.house_change === 2)}checked{/if}>
+                                            <input type="radio" name="house_change" value="9" title="无" {if ($house.house_change === 9)}checked{/if}>
                                         </div>
                                     </div>
                                 </div>
