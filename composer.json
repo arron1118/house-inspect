@@ -17,7 +17,7 @@
         {
             "name": "yunwuxin",
             "email": "448901948@qq.com"
-        }        
+        }
     ],
     "require": {
         "php": ">=7.2.5",
@@ -28,7 +28,8 @@
         "topthink/think-helper": "^3.1",
         "phpoffice/phpspreadsheet": "1.22",
         "phpoffice/phpword": "^0.18.3",
-        "topthink/think-image": "^1.0"
+        "topthink/think-image": "^1.0",
+      "ext-zip": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
