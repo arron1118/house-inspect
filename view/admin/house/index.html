@@ -53,6 +53,17 @@
                         </div>
                     </div>
                     <div class="layui-inline">
+                        <label class="layui-form-label">评级人</label>
+                        <div class="layui-input-inline">
+                            <select name="user_id" lay-filter="userFilter">
+                                <option value="0">全部</option>
+                                {foreach $userList as $key => $val}
+                                <option value="{$val.id}">{$val.username}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
                         <label class="layui-form-label">评级状态</label>
                         <div class="layui-input-inline">
                             <select name="rate_status" lay-filter="rateStatusFilter">
@@ -108,12 +119,8 @@
                 <th lay-data="{field: 'address', title: '地址'}"></th>
                 <th lay-data="{field: 'user_username', title: '排查人'}"></th>
                 <th lay-data="{field: 'admin_username', title: '评级人'}"></th>
-                <th lay-data="{field: 'status', title: '状态', templet: function (row) {
-                    return row.status === 1 ? '已完成' : ''
-                }}"></th>
-                <th lay-data="{field: 'rate_status', title: '评级状态', templet: function (row) {
-                    return row.rate_status === 1 ? '已评级' : ''
-                }}"></th>
+                <th lay-data="{field: 'status', title: '状态'}"></th>
+                <th lay-data="{field: 'rate_status', title: '评级状态'}"></th>
                 <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
                 <th lay-data="{title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'}"></th>
             </tr>

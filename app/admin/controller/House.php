@@ -95,6 +95,12 @@ class House extends AdminController
                 ->withAttr('district', function ($value, $data) use ($districtList) {
                     return $districtList[$value];
                 })
+                ->withAttr('status', function ($value) {
+                    return $value === 1 ? '已完成' : '';
+                })
+                ->withAttr('rate_status', function ($value) {
+                    return $value === 1 ? '已评级' : '';
+                })
                 ->with(['area', 'admin', 'user'])
                 ->hidden(['area', 'admin', 'user'])
                 ->order('id desc')
