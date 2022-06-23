@@ -35,6 +35,8 @@ class HouseRate extends AdminController
         $model = new $this->model;
         $this->view->assign([
             'rate' => $rate,
+            'StructureList' => $model->getStructureList(),
+            'BasisTypeList' => $model->getBasisTypeList(),
             'FoundationSafetyRateList' => $model->getFoundationSafetyRateList(),
             'FoundationRateList'=> $model->getFoundationRateList(),
             'HouseSafetyRateList' => $model->getHouseSafetyRateList(),

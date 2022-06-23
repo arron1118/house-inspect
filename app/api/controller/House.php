@@ -53,8 +53,7 @@ class House extends ApiController
         ];
 
         if ($district) {
-            $districtList = (new $this->model)->getDistrictList();
-            $map[] = ['district', 'like', '%' . $districtList[$district] . '%'];
+            $map[] = ['district', '=', $district];
         }
 
         if ($status >= 0) {

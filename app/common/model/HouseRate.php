@@ -24,6 +24,16 @@ class HouseRate extends Model
 
     }
 
+    public function getStructureList()
+    {
+        return [1 => '剪力墙', 2 => '框架', 3 => '砖混', 4 => '排架', 5 => '钢结构', 6 => '空旷砖房', 7 => '木结构', 8 => '砖土瓦房', 9 => '其他'];
+    }
+
+    public function getBasisTypeList()
+    {
+        return [1 => '天然或独立基础', 2 => '条形基础', 3 => '片筏及箱型', 4 => '桩基础', 9 => '其他'];
+    }
+
     public function getFoundationSafetyRateList()
     {
         return [1 => '危险', 2 => '潜在危险', 3 => '暂无危险'];

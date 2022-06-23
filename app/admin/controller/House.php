@@ -93,7 +93,7 @@ class House extends AdminController
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
                 ->withAttr('district', function ($value, $data) use ($districtList) {
-                    return $districtList[$value];
+                    return $value > 0 ?? $districtList[$value];
                 })
                 ->withAttr('status', function ($value) {
                     return $value === 1 ? '已完成' : '';
@@ -128,8 +128,6 @@ class House extends AdminController
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
             'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
-            'StructureList' => $model->getStructureList(),
-            'BasisTypeList' => $model->getBasisTypeList(),
             'HouseExtensionList' => $model->getHouseExtensionList(),
             'HouseChangeList' => $model->getHouseChangeList(),
             'HouseChangeFloorDataList' => $model->getHouseChangeFloorDataList(),
@@ -208,8 +206,6 @@ class House extends AdminController
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
             'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
-            'StructureList' => $model->getStructureList(),
-            'BasisTypeList' => $model->getBasisTypeList(),
             'HouseExtensionList' => $model->getHouseExtensionList(),
             'HouseChangeList' => $model->getHouseChangeList(),
             'HouseChangeFloorDataList' => $model->getHouseChangeFloorDataList(),
@@ -325,4 +321,44 @@ class House extends AdminController
         }
         $this->error('排查未完成，不能评级');
     }
+
+    public function productDownload()
+    {
+        $id = intval(input('id', 0));
+        $product = $this->model::where('id', $id)->find();
+        if(empty($product)){
+            $this->error('作品不存在');
+        }
+
+        $photoOrigin = $this->model::where('product_id', $id)->column('photo_origin');
+        if(empty($photoOrigin)){
+            $this->error('作品不存在图片');
+        }
+
+        $tmpFile = tempnam(sys_get_temp_dir(), 'photo_');
+        if(!$tmpFile){
+            $this->error('system error');
+        }
+
+        $zip = new \ZipArchive();
+        $zip->open($tmpFile, \ZipArchive::CREATE);
+
+        foreach($photoOrigin as $v){
+            $fileContent = file_get_contents($v);
+            $zip->addFromString(basename($v), $fileContent);
+        }
+
+        $zip->close();
+
+        $out = "{$product['activity_id']}-{$product['id']}-".mb_substr($product['name'], 0, 10).'.zip';
+
+        header('Content-Type: application/zip');
+        header('Content-disposition: attachment; filename='.$out);
+        header('Content-Length: ' . filesize($tmpFile));
+        readfile($tmpFile);
+
+        unlink($tmpFile);
+        exit;
+    }
+
 }
