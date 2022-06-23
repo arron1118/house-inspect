@@ -50,7 +50,24 @@
                 <div class="layui-form-item logo-title">
                     <h1>评 级</h1>
                 </div>
-
+               <div>
+                   <div class="layui-form-item">
+                       <label class="layui-form-label" for="structure">结构形式:</label>
+                       <div class="layui-input-block" id="structure">
+                           {foreach ($StructureList as $key => $val)}
+                           <input type="radio" lay-skin="primary" name="structure" value="{$key}" title="{$val}" {if $key === $house.structure}checked{/if}>
+                           {/foreach}
+                       </div>
+                   </div>
+                   <div class="layui-form-item">
+                       <label class="layui-form-label" for="basis_type">基础类型:</label>
+                       <div class="layui-input-block" id="basis_type">
+                           {foreach ($BasisTypeList as $key => $val)}
+                           <input type="radio" lay-skin="primary" name="basis_type" value="{$key}" title="{$val}" {if $key === $house.basis_type}checked{/if}>
+                           {/foreach}
+                       </div>
+                   </div>
+               </div>
                 <div class="layui-form-item border-top mb-4">
                     <label class="layui-form-label" for="foundation_safety_rate">地基基础安全排查:</label>
                     <div class="layui-input-block" id="foundation_safety_rate">
@@ -113,7 +130,6 @@
                                   placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
                     </div>
                 </div>
-
                 <div class="layui-form-item border-top">
                     <label class="layui-form-label" for="final_rate">排查结论:</label>
                     <div class="layui-input-block" id="final_rate">
