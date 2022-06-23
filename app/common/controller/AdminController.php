@@ -68,7 +68,7 @@ class AdminController extends BaseController
     public function upload()
     {
         $site_watermark_engine = SiteConfig::getByKeyword('site_watermark_engine');
-        $upload = (new Attachment())->upload(request()->file('file'), 'attachment', (bool)(int) $site_watermark_engine->value);
+        $upload = (new Attachment())->upload(request()->file('file'), 'attachment', (bool)(int) $site_watermark_engine->value, ['admin_id' => $this->userInfo->id]);
 
         if (!$upload) {
             $this->error('上传失败: 未找到文件');

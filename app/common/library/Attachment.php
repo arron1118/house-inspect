@@ -20,7 +20,7 @@ class Attachment
      * @param false $watermark
      * @return false|string[]|void
      */
-    public function upload($file, string $savePath = 'attachment', bool $watermark = false)
+    public function upload($file, string $savePath = 'attachment', bool $watermark = false, $params = [])
     {
         try {
             if (!$file) {
@@ -53,16 +53,17 @@ class Attachment
 
             try {
                 // 保存上传记录
-                $attachment = new AttachmentModel();
-                $attachment->admin_id = 1;
-                $attachment->url = $saveName;
-                $attachment->mime_type = $file->getOriginalMime();
-                $attachment->file_extension = $file->getOriginalExtension();
-                $attachment->storage = 'local';
-                $attachment->sha1 = $file->sha1();
-                $attachment->file_name = str_replace('.' . $file->getOriginalExtension(), '', $file->getOriginalName());
-                $attachment->file_size = $file->getSize();
-                $attachment->save();
+                $data = [
+                    'url' => $saveName,
+                    'mime_type' => $file->getOriginalMime(),
+                    'file_extension' => $file->getOriginalExtension(),
+                    'storage' => 'local',
+                    'sha1' => $file->sha1(),
+                    'file_name' => str_replace('.' . $file->getOriginalExtension(), '', $file->getOriginalName()),
+                    'file_size' => $file->getSize(),
+                ];
+                $data = array_merge($data, $params);
+                AttachmentModel::create($data);
             } catch (DbException $dbException) {
                 exit($dbException);
             }

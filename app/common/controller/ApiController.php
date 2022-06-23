@@ -217,9 +217,10 @@ class ApiController extends BaseController
         $site_watermark_engine = SiteConfig::getByKeyword('site_watermark_engine');
 
         $files = request()->file($fileName);
+        $this->returnData['files'] = $files;
         if ($files) {
             foreach ($files as $file) {
-                $upload = (new Attachment())->upload($file, 'attachment', (bool) (int) $site_watermark_engine->value);
+                $upload = (new Attachment())->upload($file, 'attachment', (bool) (int) $site_watermark_engine->value, ['user_id' => $this->userInfo->id]);
 
                 if (!$upload) {
                     $this->returnApiData('上传失败: 未找到文件');
