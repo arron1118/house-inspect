@@ -93,7 +93,9 @@ class House extends AdminController
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
                 ->withAttr('district', function ($value, $data) use ($districtList) {
-                    return $value > 0 ?? $districtList[$value];
+                    if ($value > 0) {
+                        return $districtList[$value];
+                    }
                 })
                 ->withAttr('status', function ($value) {
                     return $value === 1 ? '已完成' : '';
