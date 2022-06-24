@@ -19,11 +19,6 @@
 {block name='body'}
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <script type="text/html" id="toolbarDemo">
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i
-                    class="fa fa-plus"></i> 添加
-            </button>
-        </script>
         <form class="layui-form layuimini-form" lay-filter="customer-add-form" action="">
             <input type="hidden" name="area_id" value="{$house.area_id}" />
             <input type="hidden" name="id" value="{$house.id}" />
@@ -45,7 +40,7 @@
                                  <div class="layui-form-item">
                                      <label class="layui-form-label">排查人员</label>
                                      <div class="layui-input-block">
-                                         <select name="district" lay-filter="districtFilter" lay-verify="required">
+                                         <select name="user_id" lay-filter="districtFilter" lay-verify="required">
                                              <option value="0">请选择排查人员</option>
                                              {foreach $userList as $key => $val}
                                              <option value="{$val.id}" {if $val.id === $house.user_id}selected{/if}>{$val.username}</option>
@@ -223,6 +218,15 @@
                                        <div class="layui-input-block" id="is_usage_onus">
                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="2" title="无明显增加" {if ($house.is_usage_onus === 2)}checked{/if}>
                                            <input type="radio" lay-skin="primary" name="is_usage_onus" value="1" title="明显增加" {if ($house.is_usage_onus === 1)}checked{/if}>
+                                       </div>
+                                   </div>
+                               </div>
+                               <div class="layui-col-lg6">
+                                   <div class="layui-form-item">
+                                       <label class="layui-form-label" for="is_balcony">是否有悬挑阳台:</label>
+                                       <div class="layui-input-block" id="is_balcony">
+                                           <input type="radio" lay-skin="primary" name="is_balcony" value="1" title="是" {if ($house.is_balcony === 1)}checked{/if}>
+                                           <input type="radio" lay-skin="primary" name="is_balcony" value="2" title="否" {if ($house.is_balcony === 2)}checked{/if}>
                                        </div>
                                    </div>
                                </div>
@@ -474,10 +478,10 @@
         });
         // 图片放大 你个猪八戒   '.' + index + '-img-' + i
         layer.photos({
-            photos: '.infos-content'
-            ,zIndex: 999999999999
-            ,shade: 0.2
-            ,shift: 0
+            photos: '.infos-content',
+            zIndex: 999999999999,
+            shade: 0.2,
+            shift: 0
         });
         $(document).on("mousewheel DOMMouseScroll", '.layui-layer-phimg', function (e){
             const delta = (e.originalEvent.wheelDelta && (e.originalEvent.wheelDelta > 0 ? 1 : -1)) ||
@@ -487,10 +491,8 @@
             let h = image.height();
             let w = image.width();
             if (delta > 0) {
-                if (h < (window.innerHeight)) {
-                    h = h * 1.05;
-                    w = w * 1.05;
-                }
+                h = h * 1.05;
+                w = w * 1.05;
             } else if (delta < 0) {
                 if (h > 100) {
                     h = h * 0.95;
@@ -535,16 +537,16 @@
                 if (res.code === 1) {
                     option.icon = 6
 
-                    layer.msg(res.msg, option, function () {
+                    parent.layer.msg(res.msg, option, function () {
                         parent.layer.close(frameIndex);
                         parent.layui.table.reload('currentTable', {
                             page: {
                                 curr: 1
                             }
-                        });
+                        }, true);
                     });
                 } else {
-                    layer.msg(res.msg, option);
+                    parent.layer.msg(res.msg, option);
                 }
             });
 

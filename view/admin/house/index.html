@@ -107,27 +107,9 @@
 <!--                    class="fa fa-plus"></i> 添加-->
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 导出</button>
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 导出</button>-->
         </script>
-        <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even lay-data="">
-            <thead>
-            <tr>
-                <th lay-data="{type: 'checkbox', fixed: 'left' }"></th>
-                <th lay-data="{field: 'id', title: '编号', width: 100}"></th>
-                <th lay-data="{field: 'code', title: '编码'}"></th>
-                <th lay-data="{field: 'title', title: '名称', edit: 'text'}"></th>
-                <th lay-data="{field: 'area_title', title: '项目'}"></th>
-                <th lay-data="{field: 'district', title: '社区'}"></th>
-                <th lay-data="{field: 'address', title: '地址'}"></th>
-                <th lay-data="{field: 'user_username', title: '排查人'}"></th>
-                <th lay-data="{field: 'admin_username', title: '评级人'}"></th>
-                <th lay-data="{field: 'status', title: '状态'}"></th>
-                <th lay-data="{field: 'rate_status', title: '评级状态'}"></th>
-                <th lay-data="{field: 'create_time', title: '创建时间'}"></th>
-                <th lay-data="{title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'}"></th>
-            </tr>
-            </thead>
-        </table>
+        <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
         <script type="text/html" id="currentTableBar">
             <a href="javascript:;" class=" text-decoration-none " lay-event="rate" title="评级">
                 评级
@@ -155,7 +137,8 @@
 
         let option = { icon: 0 }, area_id = 0;
 
-        table.init('currentTableFilter', {
+        window.houseTable = table.render({
+            elem: '#currentTableId',
             url: '{:url("/house/getHouseList")}',
             id: 'currentTable',
             toolbar: '#toolbarDemo',
@@ -173,6 +156,21 @@
                     'count': res.total
                 }
             },
+            cols: [[
+                {type: 'checkbox', fixed: 'left' },
+                {field: 'id', title: '编号', width: 100},
+                {field: 'code', title: '编码'},
+                {field: 'title', title: '名称', edit: 'text'},
+                {field: 'area_title', title: '项目'},
+                {field: 'district', title: '社区'},
+                {field: 'address', title: '地址'},
+                {field: 'user_username', title: '排查人'},
+                {field: 'admin_username', title: '评级人'},
+                {field: 'status', title: '状态'},
+                {field: 'rate_status', title: '评级状态'},
+                {field: 'create_time', title: '创建时间'},
+                {title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'},
+            ]],
             page: {
                 limits: [15, 30, 45, 60],
                 limit: 15,
