@@ -156,8 +156,8 @@
                                   <div class="layui-form-item">
                                       <label class="layui-form-label" for="is_owner_business">是否经营性自建房:</label>
                                       <div class="layui-input-block" id="is_owner_business">
-                                          <input type="radio" name="is_owner_business" value="1" title="是" {if ($house.is_owner_business === 1)}checked{/if}>
-                                          <input type="radio" name="is_owner_business" value="2" title="否" {if ($house.is_owner_business === 2)}checked{/if}>
+                                          <input type="radio" name="is_owner_business" value="1" lay-filter="is_owner_business" lay-verify="isOwnerBusiness" title="是" {if ($house.is_owner_business === 1)}checked{/if}>
+                                          <input type="radio" name="is_owner_business" value="2" lay-filter="is_owner_business" lay-verify="isOwnerBusiness " title="否" {if ($house.is_owner_business === 2)}checked{/if}>
                                       </div>
                                   </div>
                               </div>
@@ -459,7 +459,6 @@
                 makeHtml(index, item, info_item)
             })
         });
-
         // 图片放大 你个猪八戒   '.' + index + '-img-' + i
         layer.photos({
             photos: '.infos-content'
@@ -493,9 +492,32 @@
             imagep.width(w)
         })
 
+        // 自定义检验表单
+        // form.verify({
+            // isOwnerBusiness: function (value, item){
+            //     console.log('8',value)
+            //     console.log('9',item)
+            //     const verifyName = $(item).attr('name'),
+            //         verifyType = $(item).attr('type'),
+            //         formElem = $(item).parent('.layui-form'),
+            //         verifyElem = formElem.find('input[name='+verifyName+']'),
+            //         isTrue = verifyElem.is(':checked'),
+            //         focusElem = verifyElem.next().find('i.layui-icon');
+            //     if(!isTrue || !value){
+            //         focusElem.css(verifyType==='radio'?{"color":"#FF5722"}:{"border-color":"#FF5722"});
+            //         focusElem.first().attr("tabIndex","1").css("outline","0").blur(function (){
+            //             focusElem.css(verifyType==='radio'?{"color":""}:{"border-color":""});
+            //         }).focus();
+            //         return '必填项不能为空';
+            //     }
+            // }
+        // });
+        // form.on('radio(is_owner_business)', function(data){
+        //     console.log(data.elem); //得到radio原始DOM对象
+        //     console.log(data.value); //被点击的radio的value值
+        // });
         // 提交
         form.on('submit(add)', function (data) {
-            console.log(data.field)
             $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
