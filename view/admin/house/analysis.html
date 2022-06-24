@@ -1,0 +1,165 @@
+{extend name='public/base' /}
+{block name='css'}
+{include file='public/bootstrap' /}
+{/block}
+
+{block name='body'}
+<div class="container-fluid">
+    <div class="row mb-3 shadow-sm bg-white rounded">
+        <div class="col pt-3">
+            <form class="layui-form layui-form-pane" lay-filter="searchForm" action="">
+                <div class="d-none" id="SelectList">{:json_encode($SelectList)}</div>
+                <div class="layui-form-item">
+                    <div class="layui-inline">
+                        <label class="layui-form-label">区域</label>
+                        <div class="layui-input-inline">
+                            <select name="area_id" lay-filter="area">
+                                <option value="0">全部</option>
+                                {foreach $AreaList as $key => $val}
+                                <option value="{$val.id}">{$val.title}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    <div class="layui-inline">
+                        <label class="layui-form-label">排查结论</label>
+                        <div class="layui-input-inline">
+                            <select name="area_id" lay-filter="finalRate">
+                                <option value="0">全部</option>
+                                {foreach $FinalRateList as $key => $val}
+                                <option value="{$key}">{$val}</option>
+                                {/foreach}
+                            </select>
+                        </div>
+                    </div>
+                    {foreach $SelectList as $key => $val}
+                    <div class="layui-inline">
+                        <label class="layui-form-label">{$val}</label>
+                        <div class="layui-input-inline">
+                            <select name="{$key}" lay-filter="{$key}">
+                                <option value="0">全部</option>
+                                <option value="1">是</option>
+                                <option value="2">否</option>
+                            </select>
+                        </div>
+                    </div>
+                    {/foreach}
+                    <div class="layui-inline">
+                        <button type="submit" class="layui-btn layui-btn-normal" lay-submit
+                                lay-filter="data-search-btn"><i class="layui-icon"></i> 搜 索
+                        </button>
+                    </div>
+                    <div class="layui-inline">
+                        <button type="reset" class="layui-btn layui-btn-primary"><i class="fa fa-refresh"></i> 重 置
+                        </button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+<div class="layuimini-container">
+    <div class="layuimini-main">
+        <button type="button" class="layui-btn layui-btn-sm data-count-edit layui-btn-normal d-none" id="importExcel">导入客户</button>
+        <script type="text/html" id="toolbarDemo">
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i-->
+<!--                    class="fa fa-plus"></i> 添加-->
+<!--            </button>-->
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
+<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 导出</button>-->
+        </script>
+        <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
+    </div>
+</div>
+{/block}
+
+{block name='js'}
+<script>
+    layui.use(['jquery', 'layer', 'table', 'form', 'upload'], function () {
+        let $ = layui.jquery,
+            layer = layui.layer,
+            table = layui.table,
+            upload = layui.upload,
+            form = layui.form;
+
+        let option = { icon: 0 }, area_id = 0;
+
+        window.houseTable = table.render({
+            elem: '#currentTableId',
+            url: '{:url("/house/getHouseList")}',
+            id: 'currentTable',
+            toolbar: '#toolbarDemo',
+            defaultToolbar: ['filter', 'exports', 'print', {
+                title: '提示',
+                layEvent: 'LAYTABLE_TIPS',
+                icon: 'layui-icon-tips'
+            }],
+            where: {
+                status: 1
+            },
+            //异步请求，格式化数据
+            parseData: function (res) {
+                return {
+                    'code': 0,
+                    'msg': '',
+                    'data': res.data,
+                    'count': res.total
+                }
+            },
+            cols: [[
+                {type: 'checkbox', fixed: 'left' },
+                {field: 'id', title: '编号', width: 100},
+                {field: 'code', title: '编码'},
+                {field: 'title', title: '名称'},
+                {field: 'area_title', title: '项目'},
+                {field: 'district', title: '社区'},
+                {field: 'address', title: '地址'},
+                {field: 'user_username', title: '排查人'},
+                {field: 'admin_username', title: '评级人'},
+                {field: 'status', title: '状态'},
+                {field: 'rate_status', title: '评级状态'},
+                {field: 'create_time', title: '创建时间'},
+            ]],
+            page: {
+                limits: [15, 30, 45, 60],
+                limit: 15,
+            },
+            skin: 'line',
+            even: true,
+        })
+
+        let reloadTable = function (params = {}) {
+            //执行搜索重载
+            table.reload('currentTable', {
+                page: {
+                    curr: 1
+                },
+                where: params
+            }, true);
+        }
+        // 监听搜索操作
+        form.on('submit(data-search-btn)', function (data) {
+            //执行搜索重载
+            reloadTable(data.field)
+
+            return false
+        });
+
+        // const selectList = ['house_extension', 'is_owner_business', 'is_balcony', 'house_change', 'is_crack', 'is_incline_or_deposition', 'is_rust_eaten']
+        const selectList = JSON.parse($('#SelectList').text())
+        $.each(selectList, function (index, item) {
+            console.log(index)
+            form.on('select(' + index + ')', function (data) {
+                console.log(data)
+                let params = [];
+                params[data.elem.name] = data.value
+                params = Object.assign({}, form.val('searchForm'), params)
+                reloadTable(params);
+            })
+        })
+        $('button[type="reset"]').on('click', function () {
+            reloadTable({})
+        })
+    })
+</script>
+{/block}

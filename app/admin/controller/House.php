@@ -8,14 +8,31 @@ use think\facade\Log;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
-use app\common\model\HouseRate;
+use app\common\model\HouseRate as HouseRateModel;
 use app\common\model\Area;
 use app\common\model\Admin as AdminModel;
 use app\common\model\User as UserModel;
 
 class House extends AdminController
 {
+    /**
+     * 筛选项
+     * @var string[]
+     */
+    protected $SelectList = [
+        'house_extension' => '是否有加建',
+        'is_owner_business' => '经营自建房',
+        'is_balcony' => '悬挑阳台',
+        'house_change' => '是否有扩建',
+        'is_crack' => '是否有裂缝',
+        'is_incline_or_deposition' => '是否有沉降',
+        'is_rust_eaten' => '钢筋锈蚀',
+    ];
 
+    /**
+     * 照片信息
+     * @var string[]
+     */
     protected $infos = [
         'doorplate_info' => '门牌照片',
         'house_info' => '外立面照片',
@@ -49,9 +66,25 @@ class House extends AdminController
         return $this->view->fetch();
     }
 
+    /**
+     * 数据统计
+     *
+     * @return \think\Response
+     */
+    public function analysis()
+    {
+        $this->view->assign([
+            'SelectList' => $this->SelectList,
+            'AreaList' => Area::field('id, title')->order('id desc')->select(),
+            'FinalRateList' => (new HouseRateModel)->getFinalRateList(),
+        ]);
+        return $this->view->fetch();
+    }
+
     public function getHouseList(Request $request)
     {
         if ($request->isAjax()) {
+            $districtList = $this->DistrictList;
             $page = (int) $request->param('page', 1);
             $limit = (int) $request->param('limit', 10);
             $title = $request->param('title', '');
@@ -62,7 +95,13 @@ class House extends AdminController
             $admin_id = (int) $request->param('admin_id', 0);
             $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
-            $districtList = $this->DistrictList;
+            $house_extension = (int) $request->param('house_extension', 0);
+            $is_owner_business = (int) $request->param('is_owner_business', 0);
+            $is_balcony = (int) $request->param('is_balcony', 0);
+            $house_change = (int) $request->param('house_change', 0);
+            $is_crack = (int) $request->param('is_crack', 0);
+            $is_incline_or_deposition = (int) $request->param('is_incline_or_deposition', 0);
+            $is_rust_eaten = (int) $request->param('is_rust_eaten', 0);
             $map = [];
 
             if ($title) {
@@ -95,6 +134,22 @@ class House extends AdminController
 
             if ($rate_status >= 0) {
                 $map[] = ['rate_status', '=', $rate_status];
+            }
+
+            if ($is_balcony > 0) {
+                $map[] = ['is_balcony', '=', $is_balcony];
+            }
+
+            if ($is_owner_business > 0) {
+                $map[] = ['is_owner_business', '=', $is_owner_business];
+            }
+
+            if ($house_change > 0) {
+                $map[] = $house_change === 2 ? ['house_change', '=', 9] : ['house_change', 'in', [1, 2]];
+            }
+
+            if ($is_owner_business > 0) {
+                $map[] = ['is_owner_business', '=', $is_owner_business];
             }
 
             $this->returnData['total'] = $this->model::where($map)->count();

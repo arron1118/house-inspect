@@ -25,6 +25,12 @@ return [
                         "target" => "_self"
                     ],
                     [
+                        "title" => "数据统计",
+                        "href" => (string) url('/house/analysis'),
+                        "icon" => "fa fa-chart-area",
+                        "target" => "_self"
+                    ],
+                    [
                         "title" => "房屋管理",
                         "href" => (string) url('/house/index'),
                         "icon" => "fa fa-house",

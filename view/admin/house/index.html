@@ -160,7 +160,7 @@
                 {type: 'checkbox', fixed: 'left' },
                 {field: 'id', title: '编号', width: 100},
                 {field: 'code', title: '编码'},
-                {field: 'title', title: '名称', edit: 'text'},
+                {field: 'title', title: '名称'},
                 {field: 'area_title', title: '项目'},
                 {field: 'district', title: '社区'},
                 {field: 'address', title: '地址'},
@@ -195,41 +195,15 @@
 
             return false
         });
-        form.on('select(areaFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
-        })
-        form.on('select(districtFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
-        })
-        form.on('select(statusFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
-        })
-        form.on('select(userFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
-        })
-        form.on('select(adminFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
-        })
-        form.on('select(rateStatusFilter)', function (data) {
-            let params = [];
-            params[data.elem.name] = data.value
-            params = Object.assign({}, form.val('searchForm'), params)
-            reloadTable(params);
+
+        const selectList = ['area', 'district', 'status', 'user', 'admin', 'rateStatus']
+        $.each(selectList, function (index, item) {
+            form.on('select(' + item + 'Filter)', function (data) {
+                let params = [];
+                params[data.elem.name] = data.value
+                params = Object.assign({}, form.val('searchForm'), params)
+                reloadTable(params);
+            })
         })
         $('button[type="reset"]').on('click', function () {
             reloadTable({})
