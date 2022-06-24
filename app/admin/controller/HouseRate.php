@@ -105,21 +105,10 @@ class HouseRate extends AdminController
         if ($request->isAjax()) {
             $params = $request->except(['id']);
 
-            if (!isset($params['foundation_rate'])) {
-                $this->error('"地基基础安全排查 -> 详细内容"未选择');
-            }
-
-            if (!isset($params['house_danger_frame_rate'])) {
-                $this->error('"上部结构安全排查 -> 危险(混凝土构件)"未选择');
-            }
-
-            if (!isset($params['house_danger_roof_rate'])) {
-                $this->error('"上部结构安全排查 -> 悬挑梁、板（雨篷）"未选择');
-            }
-
-            if (!isset($params['house_latent_danger_frame_rate'])) {
-                $this->error('"潜在危险(混凝土构件)"未选择');
-            }
+            $params['foundation_rate'] = isset($params['foundation_rate']) ? array_values($params['foundation_rate']) : [];
+            $params['house_danger_frame_rate'] = isset($params['house_danger_frame_rate']) ? array_values($params['house_danger_frame_rate']) : [];
+            $params['house_danger_roof_rate'] = isset($params['house_danger_roof_rate']) ? array_values($params['house_danger_roof_rate']) : [];
+            $params['house_latent_danger_frame_rate'] = isset($params['house_latent_danger_frame_rate']) ? array_values($params['house_latent_danger_frame_rate']) : [];
 
             $rate = $this->model::find($id);
             $rate->save($params);

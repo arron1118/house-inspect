@@ -105,14 +105,27 @@ class Attachment extends AdminController
             $this->error('作品不存在图片');
         }
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'photo_');
-        if (!$tmpFile) {
-            $this->error('system error');
+//        $tmpFile = tempnam(sys_get_temp_dir(), 'photo_');
+//        $dir = 'photo_';
+        $tmpFile = '';
+//        if (!is_dir($dir)) {
+//            if (!mkdir($dir) && !is_dir($dir)) {
+//                throw new \RuntimeException(sprintf('Directory "%s" was not created', $dir));
+//            }
+//        }
+        $fileName = '房屋排查.zip';
+        if (!is_file($fileName)) {
+            dump($fileName);
+            touch($fileName);
         }
+//        if (!$tmpFile) {
+//            $this->error('system error');
+//        }
 
         $zip = new \ZipArchive();
-        $zip->open($tmpFile, \ZipArchive::CREATE);
-
+        $zip->open($fileName, \ZipArchive::CREATE);
+        dump($zip);
+/*
         foreach ($photoOrigin as $k => $v) {
             $fileContent = file_get_contents($v['url']);
             $zip->addFromString(basename($v['sha1']), $fileContent);
@@ -128,6 +141,6 @@ class Attachment extends AdminController
         readfile($tmpFile);
 
         unlink($tmpFile);
-        exit;
+        exit;*/
     }
 }

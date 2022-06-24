@@ -75,7 +75,7 @@ class House extends ApiController
         $this->returnData['data'] = $this->model::field('id, title, code, district, area_id, status, create_time')
             ->where('user_id = ' . $this->userInfo->id . ' or user_id = 0')
             ->where($map)
-            ->order('id desc')
+            ->order('id desc, update_time desc')
             ->limit(($page - 1) * $limit, $limit)
             ->select();
 

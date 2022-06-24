@@ -25,7 +25,7 @@
                         <div class="layui-input-inline">
                             <select name="district" lay-filter="districtFilter">
                                 <option value="0">全部</option>
-                                {foreach $districtList as $key => $val}
+                                {foreach $DistrictList as $key => $val}
                                 <option value="{$key}">{$val}</option>
                                 {/foreach}
                             </select>
@@ -55,9 +55,9 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">评级人</label>
                         <div class="layui-input-inline">
-                            <select name="user_id" lay-filter="userFilter">
+                            <select name="admin_id" lay-filter="adminFilter">
                                 <option value="0">全部</option>
-                                {foreach $userList as $key => $val}
+                                {foreach $adminList as $key => $val}
                                 <option value="{$val.id}">{$val.username}</option>
                                 {/foreach}
                             </select>
@@ -216,6 +216,12 @@
             reloadTable(params);
         })
         form.on('select(userFilter)', function (data) {
+            let params = [];
+            params[data.elem.name] = data.value
+            params = Object.assign({}, form.val('searchForm'), params)
+            reloadTable(params);
+        })
+        form.on('select(adminFilter)', function (data) {
             let params = [];
             params[data.elem.name] = data.value
             params = Object.assign({}, form.val('searchForm'), params)

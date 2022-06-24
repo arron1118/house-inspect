@@ -41,6 +41,19 @@
                               </div>
                           </div>
                          <div class="layui-row layui-col-space10">
+                             <div class="layui-col">
+                                 <div class="layui-form-item">
+                                     <label class="layui-form-label">排查人员</label>
+                                     <div class="layui-input-block">
+                                         <select name="district" lay-filter="districtFilter" lay-verify="required">
+                                             <option value="0">请选择排查人员</option>
+                                             {foreach $userList as $key => $val}
+                                             <option value="{$val.id}" {if $val.id === $house.user_id}selected{/if}>{$val.username}</option>
+                                             {/foreach}
+                                         </select>
+                                     </div>
+                                 </div>
+                             </div>
                              <div class="layui-col-lg6">
                                  <div class="layui-form-item">
                                      <label class="layui-form-label" for="title">房屋名称:</label>

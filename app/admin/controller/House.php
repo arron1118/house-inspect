@@ -10,6 +10,7 @@ use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
 use app\common\model\HouseRate;
 use app\common\model\Area;
+use app\common\model\Admin as AdminModel;
 use app\common\model\User as UserModel;
 
 class House extends AdminController
@@ -31,7 +32,9 @@ class House extends AdminController
         parent::initialize();
 
         $this->model = HouseModel::class;
-        $this->districtList = (new $this->model)->getDistrictList();
+        $this->DistrictList = (new $this->model)->getDistrictList();
+        $this->view->assign('DistrictList', $this->DistrictList);
+        $this->view->assign('userList', UserModel::field('id, username')->order('id desc, login_time desc')->select());
     }
 
     /**
@@ -41,9 +44,8 @@ class House extends AdminController
      */
     public function index()
     {
-        $this->view->assign('districtList', $this->districtList);
         $this->view->assign('areaList', Area::field('id, title')->order('id desc')->select());
-        $this->view->assign('userList', UserModel::field('id, username')->order('id desc, login_time desc')->select());
+        $this->view->assign('adminList', AdminModel::field('id, username')->order('id desc, login_time desc')->select());
         return $this->view->fetch();
     }
 
@@ -57,9 +59,10 @@ class House extends AdminController
             $code = $request->param('code', '');
             $areaId = (int) $request->param('area_id', 0);
             $user_id = (int) $request->param('user_id', 0);
+            $admin_id = (int) $request->param('admin_id', 0);
             $status = (int) $request->param('status', -1);
             $rate_status = (int) $request->param('rate_status', -1);
-            $districtList = $this->districtList;
+            $districtList = $this->DistrictList;
             $map = [];
 
             if ($title) {
@@ -82,6 +85,10 @@ class House extends AdminController
                 $map[] = ['user_id', '=', $user_id];
             }
 
+            if ($admin_id) {
+                $map[] = ['admin_id', '=', $admin_id];
+            }
+
             if ($status >= 0) {
                 $map[] = ['status', '=', $status];
             }
@@ -92,7 +99,7 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->count();
             $this->returnData['data'] = $this->model::where($map)
-                ->withAttr('district', function ($value, $data) use ($districtList) {
+                ->withAttr('district', function ($value) use ($districtList) {
                     if ($value > 0) {
                         return $districtList[$value];
                     }
@@ -204,7 +211,6 @@ class House extends AdminController
         $this->view->assign([
             'house' => $this->model::find($id),
             'HouseUsageList' => $model->getHouseUsageList(),
-            'DistrictList' => $model->getDistrictList(),
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
             'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
