@@ -148,6 +148,10 @@ class House extends AdminController
                 $map[] = $house_change === 2 ? ['house_change', '=', 9] : ['house_change', 'in', [1, 2]];
             }
 
+            if ($house_extension > 0) {
+                $map[] = $house_extension === 2 ? ['house_extension', '=', [9]] : ['house_extension', 'in', [1, 2]];
+            }
+
             if ($is_owner_business > 0) {
                 $map[] = ['is_owner_business', '=', $is_owner_business];
             }
