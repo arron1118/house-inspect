@@ -102,7 +102,9 @@ class House extends AdminController
             $is_crack = (int) $request->param('is_crack', 0);
             $is_incline_or_deposition = (int) $request->param('is_incline_or_deposition', 0);
             $is_rust_eaten = (int) $request->param('is_rust_eaten', 0);
+            $final_rate = (int) $request->param('final_rate', 0);
             $map = [];
+            $mapOr = [];
 
             if ($title) {
                 $map[] = ['title', 'like', '%' . $title . '%'];
@@ -136,28 +138,102 @@ class House extends AdminController
                 $map[] = ['rate_status', '=', $rate_status];
             }
 
+            // 有无阳台
             if ($is_balcony > 0) {
                 $map[] = ['is_balcony', '=', $is_balcony];
             }
 
+            // 经营性自建房
             if ($is_owner_business > 0) {
                 $map[] = ['is_owner_business', '=', $is_owner_business];
             }
 
+            // 有无扩建
             if ($house_change > 0) {
                 $map[] = $house_change === 2 ? ['house_change', '=', 9] : ['house_change', 'in', [1, 2]];
             }
 
+            // 有无加建
             if ($house_extension > 0) {
-                $map[] = $house_extension === 2 ? ['house_extension', '=', [9]] : ['house_extension', 'in', [1, 2]];
+                if ($house_extension === 2) {
+                    $map[] = ['house_extension', 'like', '%9%'];
+                } else {
+                    $mapOr = function ($query) {
+                        $query->where("house_extension not like '%9%' and house_extension != '[]' and house_extension != ''");
+                    };
+                }
             }
 
-            if ($is_owner_business > 0) {
-                $map[] = ['is_owner_business', '=', $is_owner_business];
+            // 有无沉降
+            if ($is_incline_or_deposition > 0) {
+                $where = $is_incline_or_deposition === 1 ? 'foundation_rate like "%5%"' : 'foundation_rate not like "%5%"';
+                $rate = HouseRateModel::where($where)->column('house_id');
+                $map[] = ['id', 'in', $rate];
             }
 
-            $this->returnData['total'] = $this->model::where($map)->count();
-            $this->returnData['data'] = $this->model::where($map)
+            // 排查结论
+            if ($final_rate > 0) {
+                $rate = HouseRateModel::where('final_rate', $final_rate)->column('house_id');
+                $map[] = ['id', 'in', $rate];
+            }
+
+            // 锈蚀
+            if ($is_rust_eaten > 0) {
+                $where = $is_rust_eaten === 1 ? 'house_danger_frame_rate like "%1%" or house_danger_roof_rate like "%4%" or house_latent_danger_frame_rate like "%2%"'
+                    : 'house_danger_frame_rate not like "%1%" or house_danger_roof_rate not like "%4%" or house_latent_danger_frame_rate not like "%2%"';
+                $rate = HouseRateModel::where($where)->column('house_id');
+                $map[] = ['id', 'in', $rate];
+            }
+
+            // 裂缝
+            if ($is_crack > 0) {
+                $fields = ['foundation_rate', 'house_danger_frame_rate', 'house_latent_danger_frame_rate', 'house_latent_danger_frame_rate'];
+                $where = '';
+                foreach ($fields as $val) {
+                    if ($is_crack === 1) {
+                        switch ($val) {
+                            case 'foundation_rate':
+                                $where .= ' (' . $val . ' like "%2%" or ' . $val . ' like "%3%" or ' . $val . ' like "%4%") ';
+                                break;
+
+                            case 'house_danger_frame_rate':
+                                $where .= ' or (' . $val . ' != "" and ' . $val . ' != "[]" and ' . $val . ' not like "%1%") ';
+                                break;
+
+                            case 'house_danger_roof_rate':
+                                $where .= ' or (' . $val . ' != "" and ' . $val . ' !="[]" and ' . $val . ' not like "%4%") ';
+                                break;
+
+                            case 'house_latent_danger_frame_rate':
+                                $where .= ' or (' . $val . ' like "%1%") ';
+                                break;
+                        }
+                    }  else {
+                        switch ($val) {
+                            case 'foundation_rate':
+                                $where .= '(' . $val . ' not like "%2%" and ' . $val . ' not like "%3%" and ' . $val . ' not like "%4%")';
+                                break;
+
+                            case 'house_danger_frame_rate':
+                                $where .= ' or (' . $val . ' = "" or ' . $val . ' = "[]" or ' . $val . ' like "%1%") ';
+                                break;
+
+                            case 'house_danger_roof_rate':
+                                $where .= ' or (' . $val . ' = "" or ' . $val . ' ="[]" or ' . $val . ' like "%4%") ';
+                                break;
+
+                            case 'house_latent_danger_frame_rate':
+                                $where .= ' or (' . $val . ' not like "%1%") ';
+                                break;
+                        }
+                    }
+                }
+                $rate = HouseRateModel::where($where)->column('house_id');
+                $map[] = ['id', 'in', $rate];
+            }
+
+            $this->returnData['total'] = $this->model::where($map)->where($mapOr)->count();
+            $this->returnData['data'] = $this->model::where($map)->where($mapOr)
                 ->withAttr('district', function ($value) use ($districtList) {
                     if ($value > 0) {
                         return $districtList[$value];
