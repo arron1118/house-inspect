@@ -13,7 +13,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">区域</label>
                         <div class="layui-input-inline">
-                            <select name="area_id" lay-filter="area">
+                            <select name="area_id" lay-filter="area_id">
                                 <option value="0">全部</option>
                                 {foreach $AreaList as $key => $val}
                                 <option value="{$val.id}">{$val.title}</option>
@@ -24,7 +24,7 @@
                     <div class="layui-inline">
                         <label class="layui-form-label">排查结论</label>
                         <div class="layui-input-inline">
-                            <select name="area_id" lay-filter="finalRate">
+                            <select name="final_rate" lay-filter="final_rate">
                                 <option value="0">全部</option>
                                 {foreach $FinalRateList as $key => $val}
                                 <option value="{$key}">{$val}</option>
@@ -147,10 +147,10 @@
 
         // const selectList = ['house_extension', 'is_owner_business', 'is_balcony', 'house_change', 'is_crack', 'is_incline_or_deposition', 'is_rust_eaten']
         const selectList = JSON.parse($('#SelectList').text())
+        selectList.final_rate = '排查结论'
+        selectList.area_id = '区域'
         $.each(selectList, function (index, item) {
-            console.log(index)
             form.on('select(' + index + ')', function (data) {
-                console.log(data)
                 let params = [];
                 params[data.elem.name] = data.value
                 params = Object.assign({}, form.val('searchForm'), params)
