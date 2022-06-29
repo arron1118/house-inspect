@@ -31,7 +31,7 @@ class HouseRate extends Model
 
     public function getBasisTypeList()
     {
-        return [1 => '天然或独立基础', 2 => '条形基础', 3 => '片筏及箱型', 4 => '桩基础', 9 => '其他'];
+        return [1 => '天然地基浅基础', 2 => '条形基础', 3 => '片筏及箱型', 4 => '桩基础', 9 => '其他'];
     }
 
     public function getFoundationSafetyRateList()

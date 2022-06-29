@@ -465,43 +465,50 @@ class House extends AdminController
         $this->error('排查未完成，不能评级');
     }
 
-    public function productDownload()
+    public function exportImages(Request $request)
     {
-        $id = intval(input('id', 0));
-        $product = $this->model::where('id', $id)->find();
-        if(empty($product)){
-            $this->error('作品不存在');
+        $ids = $request->param('ids', '');
+        if (!$ids) {
+            $this->error();
         }
 
-        $photoOrigin = $this->model::where('product_id', $id)->column('photo_origin');
-        if(empty($photoOrigin)){
-            $this->error('作品不存在图片');
-        }
+        $fields = 'code, ' . implode(',', array_keys($this->infos));
+        $house = $this->model::where('id', 'in', $ids)->column($fields);
+        $this->returnData['house'] = $house;
+        $this->returnData['infos'] = array_keys($this->infos);
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'photo_');
-        if(!$tmpFile){
-            $this->error('system error');
-        }
+        $tmpFile = tempnam(sys_get_temp_dir(), 'fangwupaicha');
 
         $zip = new \ZipArchive();
         $zip->open($tmpFile, \ZipArchive::CREATE);
-
-        foreach($photoOrigin as $v){
-            $fileContent = file_get_contents($v);
-            $zip->addFromString(basename($v), $fileContent);
+        foreach ($house as $k => $v) {
+            foreach ($this->infos as $key => $val) {
+                if ($v[$key]) {
+                    foreach ($v[$key] as $value) {
+                        $file = public_path() . $value['image'];
+                        if (file_exists($file)) {
+                            $fileContent = file_get_contents($file);
+                            $zip->addFromString($v['code'] . '/' . $val . '/' . basename($file), $fileContent);
+                        }
+                    }
+                }
+            }
         }
 
         $zip->close();
+        $this->returnData['zip'] = $zip;
+//        $this->returnData['zip_count'] = $zip->count();
 
-        $out = "{$product['activity_id']}-{$product['id']}-".mb_substr($product['name'], 0, 10).'.zip';
+        $out = '房屋排查_' . date('Y-m-d_H:i:s') . '.zip';
+        $this->success(lang('Done'));
 
-        header('Content-Type: application/zip');
-        header('Content-disposition: attachment; filename='.$out);
-        header('Content-Length: ' . filesize($tmpFile));
-        readfile($tmpFile);
-
-        unlink($tmpFile);
-        exit;
+//        return download($tmpFile, $out);
+//        header('Content-Type: application/zip');
+//        header('Content-disposition: attachment; filename=' . $out);
+//        header('Content-Length: ' . filesize($tmpFile));
+//        readfile($tmpFile);
+//        unlink($tmpFile);
+//        exit;
     }
 
 }
