@@ -244,13 +244,7 @@
                     let checkStatus = table.checkStatus('currentTable').data;
                     console.log(checkStatus)
                     let ids = '';
-                    // if (['distribution', 'changeCate', 'delete'].includes(obj.event)) {
                     let temp = [];
-                    // if (checkStatus.length <= 0) {
-                    //     layer.msg('请选择客户', option);
-                    //     return false;
-                    // }
-
                     $.each(checkStatus, (index, item) => {
                         temp.push(item.id)
                     })
