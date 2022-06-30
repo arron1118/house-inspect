@@ -111,10 +111,10 @@ class Attachment extends AdminController
 
     public function downImages()
     {
-        $ids = '310,599,1052,1290,1333,1803,1902,2057,2197,2243';
+        $ids = '310';
         $fields = 'code, ' . implode(',', array_keys($this->infos));
         $house = \app\common\model\House::where('id', 'in', $ids)->field($fields)->select()->toArray();
-        $out = '房屋排查_' . date('Y_m_d_H_i_s') . '.zip';
+        $out = '房屋排查_' . date('Y_m_d_H_i_s');
         $zip = new Zipdown();
         $zip->zip_file($house, $out);
     }

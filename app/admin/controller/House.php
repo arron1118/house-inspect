@@ -474,41 +474,57 @@ class House extends AdminController
 
         $fields = 'code, ' . implode(',', array_keys($this->infos));
         $house = $this->model::where('id', 'in', $ids)->column($fields);
-        $this->returnData['house'] = $house;
-        $this->returnData['infos'] = array_keys($this->infos);
+        set_time_limit(0);
+        ini_set('memory_limit', '1024M');
+        $zipName = '房屋排查_' . date('Y_m_d_H_i_s') . '.zip';
+        // 实例化类,使用本类，linux需开启zlib，windows需取消php_zip.dll前的注释
+        $zip = new \ZipArchive;
+        /*
+        * 通过ZipArchive的对象处理zip文件
+        * $zip->open这个方法如果对zip文件对象操作成功，$zip->open这个方法会返回TRUE
+        * $zip->open这个方法第一个参数表示处理的zip文件名。
+        * 这里重点说下第二个参数，它表示处理模式
+        * ZipArchive::OVERWRITE 总是以一个新的压缩包开始，此模式下如果已经存在则会被覆盖。
+        * ZipArchive::OVERWRITE 不会新建，只有当前存在这个压缩包的时候，它才有效
+        * */
+        if ($zip->open($zipName, \ZIPARCHIVE::CREATE) !== true) {
+            $this->error('无法打开文件，或者文件创建失败');
+        }
 
-        $tmpFile = tempnam(sys_get_temp_dir(), 'fangwupaicha');
-
-        $zip = new \ZipArchive();
-        $zip->open($tmpFile, \ZipArchive::CREATE);
+        // 文件打包
         foreach ($house as $k => $v) {
             foreach ($this->infos as $key => $val) {
                 if ($v[$key]) {
                     foreach ($v[$key] as $value) {
                         $file = public_path() . $value['image'];
                         if (file_exists($file)) {
-                            $fileContent = file_get_contents($file);
-                            $zip->addFromString($v['code'] . '/' . $val . '/' . basename($file), $fileContent);
+                            $zip->addFile($file, $v['code'] . '/' . $val . '/' . basename($file));
                         }
                     }
                 }
             }
         }
-
+        // 关闭
         $zip->close();
-        $this->returnData['zip'] = $zip;
-//        $this->returnData['zip_count'] = $zip->count();
+        // 验证文件是否存在
+        if (!file_exists($zipName)) {
+            $this->error("文件不存在");
+        }
 
-        $out = '房屋排查_' . date('Y-m-d_H:i:s') . '.zip';
-        $this->success(lang('Done'));
-
-//        return download($tmpFile, $out);
-//        header('Content-Type: application/zip');
-//        header('Content-disposition: attachment; filename=' . $out);
-//        header('Content-Length: ' . filesize($tmpFile));
-//        readfile($tmpFile);
-//        unlink($tmpFile);
-//        exit;
+        // ob_clean();
+        // 下载压缩包
+//            header("Cache-Control: public");
+//            header("Content-Description: File Transfer");
+//        header('Content-disposition: attachment; filename=' . basename($zipName)); //文件名
+//        header("Content-Type: application/zip"); //zip格式的
+//        header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
+//        header('Content-Length: ' . filesize($zipName)); //告诉浏览器，文件大小
+//            header('Accept-Length: ' . filesize($zipName));
+////            ob_end_clean();
+//        @readfile($zipName);//ob_end_clean();
+//        @unlink($zipName);//删除压缩包
+//        exit();
+        return download($zipName, $zipName);
     }
 
 }

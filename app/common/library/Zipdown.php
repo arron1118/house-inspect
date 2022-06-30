@@ -33,7 +33,10 @@ class Zipdown
      */
     public function zip_file($files = [], $zipName = '', $wen = true, $isDown = true)
     {
-        $zip_file_path = 'zip/';
+//        ob_start();
+        set_time_limit(0);
+        ini_set('memory_limit', '1024M');
+        $zip_file_path = '';
         // 文件名为空则生成文件名
         if (empty($zipName)) {
             $zipName = $zip_file_path . date('YmdHis') . '.zip';
@@ -50,7 +53,7 @@ class Zipdown
         * ZipArchive::OVERWRITE 总是以一个新的压缩包开始，此模式下如果已经存在则会被覆盖。
         * ZipArchive::OVERWRITE 不会新建，只有当前存在这个压缩包的时候，它才有效
         * */
-        if ($zip->open($zipName, \ZIPARCHIVE::OVERWRITE | \ZIPARCHIVE::CREATE) !== true) {
+        if ($zip->open($zipName, \ZIPARCHIVE::CREATE) !== true) {
             exit('无法打开文件，或者文件创建失败');
         }
         // 文件夹打包处理
@@ -92,14 +95,17 @@ class Zipdown
         if ($isDown) {
             // ob_clean();
             // 下载压缩包
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
+//            header("Cache-Control: public");
+//            header("Content-Description: File Transfer");
             header('Content-disposition: attachment; filename=' . basename($zipName)); //文件名
             header("Content-Type: application/zip"); //zip格式的
             header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
             header('Content-Length: ' . filesize($zipName)); //告诉浏览器，文件大小
+//            header('Accept-Length: ' . filesize($zipName));
+//            ob_end_clean();
             @readfile($zipName);//ob_end_clean();
-            @unlink(app()->getRootPath() . 'public/' . $zipName);//删除压缩包
+            @unlink($zipName);//删除压缩包
+            exit();
         } else {
             // 直接返回压缩包地址
             return $zipName;

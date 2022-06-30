@@ -215,7 +215,7 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             let area = $('select[lay-filter="areaFilter"]')
 
-            if (parseInt(area.val()) <= 0) {
+            if (parseInt(area.val()) <= 0 && obj.event !== 'exportImages') {
                 option.icon = 2
                 layer.msg('请选择区域', option)
                 return false
@@ -242,6 +242,7 @@
 
                 case 'exportImages':
                     let checkStatus = table.checkStatus('currentTable').data;
+                    console.log(checkStatus)
                     let ids = '';
                     // if (['distribution', 'changeCate', 'delete'].includes(obj.event)) {
                     let temp = [];
@@ -258,14 +259,22 @@
                         ids = temp.join(',')
                     }
                     // }
-                    console.log(ids)
-                    $.post('{:url("/house/exportImages")}', { ids: ids }, function (res) {
-                        console.log(res)
-                        if (res.code === 1) {
-                            option.icon = 1
-                        }
+                    console.log('获得ids', ids)
 
-                        layer.msg(res.msg, option)
+                    $.ajax({
+                        url: '{:url("/house/exportImages")}',
+                        method: 'post',
+                        responseType: 'blob',
+                        data: {
+                            ids: ids
+                        },
+                        success: function (res) {
+                            console.log(res)
+                            if (res.code === 0) {
+                                option.icon = 1
+                            }
+                            layer.msg(res.msg, option)
+                        }
                     })
                     break;
             }
