@@ -530,9 +530,8 @@ class House extends AdminController
 
     public function exportReport($id)
     {
-        $house = $this->model::with(['houseRate'])->find($id);
         $report = new Report();
-        $report->createReport($house);
+        $report->createReport($id);
     }
 
 }
