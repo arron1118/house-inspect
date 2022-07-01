@@ -414,11 +414,13 @@
                 }
             }))))));
 
+            let loading = null;
             let uploadInst = upload.render({
                 elem: '#' + index + '_upload_' + i,
                 url: '{:url("/house/upload")}',
                 accept: 'images',
                 before: function (obj) {
+                    loading = layer.load();
                     const el = this.item;
                     $(this.item).siblings('.upload-image').html('')
                     //预读本地文件示例，不支持ie8
@@ -427,6 +429,7 @@
                     });
                 },
                 done: function (res) {
+                    layer.close(loading)
                     if (res.code === 1) {
                         option.icon = 1;
                         this.item.parentsUntil('.' + item_container).find('input[name="' + index + '[image][]"]').val(res.data.savePath);
