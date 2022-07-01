@@ -107,7 +107,7 @@
 <!--                    class="fa fa-plus"></i> 添加-->
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportImages"><i class="fa fa-file-import"></i> 导出图片 </button>
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportImages"><i class="fa fa-file-import"></i> 下载图片 </button>
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
         <script type="text/html" id="currentTableBar">
@@ -244,13 +244,7 @@
                     let checkStatus = table.checkStatus('currentTable').data;
                     console.log(checkStatus)
                     let ids = '';
-                    // if (['distribution', 'changeCate', 'delete'].includes(obj.event)) {
                     let temp = [];
-                    // if (checkStatus.length <= 0) {
-                    //     layer.msg('请选择客户', option);
-                    //     return false;
-                    // }
-
                     $.each(checkStatus, (index, item) => {
                         temp.push(item.id)
                     })
@@ -258,24 +252,25 @@
                     if (temp.length > 0) {
                         ids = temp.join(',')
                     }
-                    // }
-                    console.log('获得ids', ids)
+                    console.log('获得ids,有可能只能下载一个文件', ids)
+                    if(ids === ''){
+                        option.icon = 0
+                        layer.msg('请选择要下载的文件', option)
+                        return false
+                    }
 
-                    $.ajax({
-                        url: '{:url("/house/exportImages")}',
-                        method: 'post',
-                        responseType: 'blob',
-                        data: {
-                            ids: ids
-                        },
-                        success: function (res) {
-                            console.log(res)
-                            if (res.code === 0) {
-                                option.icon = 1
-                            }
-                            layer.msg(res.msg, option)
-                        }
-                    })
+                    let url = '{:url("/house/exportImages")}';
+                    let form = $("<form />");
+                        form.attr("action", url);
+                        form.attr("method", "post");
+                        let input1=$("<input />");
+                            input1.attr("type", "hidden");
+                            input1.attr("name","ids");
+                            input1.attr("value", ids);
+                    $("body").append(form);
+                            form.append(input1);
+                            form.submit();
+                            form.remove();
                     break;
             }
         });
