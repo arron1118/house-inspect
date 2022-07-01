@@ -3,6 +3,7 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\common\library\Report;
 use think\db\exception\DbException;
 use think\facade\Log;
 use think\Request;
@@ -513,18 +514,25 @@ class House extends AdminController
 
         // ob_clean();
         // 下载压缩包
-//            header("Cache-Control: public");
-//            header("Content-Description: File Transfer");
-//        header('Content-disposition: attachment; filename=' . basename($zipName)); //文件名
-//        header("Content-Type: application/zip"); //zip格式的
-//        header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
-//        header('Content-Length: ' . filesize($zipName)); //告诉浏览器，文件大小
-//            header('Accept-Length: ' . filesize($zipName));
-////            ob_end_clean();
-//        @readfile($zipName);//ob_end_clean();
-//        @unlink($zipName);//删除压缩包
-//        exit();
-        return download($zipName, $zipName);
+            header("Cache-Control: public");
+            header("Content-Description: File Transfer");
+        header('Content-disposition: attachment; filename=' . basename($zipName)); //文件名
+        header("Content-Type: application/zip"); //zip格式的
+        header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
+        header('Content-Length: ' . filesize($zipName)); //告诉浏览器，文件大小
+            header('Accept-Length: ' . filesize($zipName));
+//            ob_end_clean();
+        @readfile($zipName);//ob_end_clean();
+        @unlink($zipName);//删除压缩包
+        exit();
+//        return download($zipName, $zipName);
+    }
+
+    public function exportReport($id)
+    {
+        $house = $this->model::with(['rate'])->find($id);
+        $report = new Report();
+        $report->createReport($house);
     }
 
 }
