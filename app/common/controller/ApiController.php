@@ -106,7 +106,7 @@ class ApiController extends BaseController
                 $this->returnApiData('登录过期，请重新登录');
             }
 
-            $this->returnData['code'] = 0;
+            $this->returnData['code'] = 1;
         }
     }
 

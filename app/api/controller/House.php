@@ -136,6 +136,7 @@ class House extends ApiController
     {
         $this->returnData['data'] = $this->model::findOrEmpty($id);
         if ($this->returnData['data']->isEmpty()) {
+            $this->returnData['code'] = 0;
             $this->returnApiData(lang('No data was found'));
         }
         $this->returnData['code'] = 1;
@@ -160,6 +161,7 @@ class House extends ApiController
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
+                $this->returnData['code'] = 0
                 $this->returnApiData('房屋编码已存在');
             }
 
