@@ -15,6 +15,6 @@ class Report
         $textrun = $section->addTextRun();
         $textrun->addText('Welcome to my world!!!');
         $writer = IOFactory::createWriter($phpword);
-        $writer->save(date('Y_m_d_H_i_s') . '.docx');
+        $writer->save(public_path() . '/report/' . date('Y_m_d_H_i_s') . '.docx');
     }
 }
