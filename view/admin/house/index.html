@@ -196,6 +196,18 @@
             return false
         });
 
+        let url = '{:url("/house/exportImages")}';
+        $("body").append($("<form />", {
+            class: 'layui-form',
+            action: url,
+            method: 'post',
+            id: 'exportForm',
+            'lay-filter': 'exportForm',
+        }).append($("<input />", {
+            type: 'hidden',
+            name: 'ids',
+        })));
+
         const selectList = ['area', 'district', 'status', 'user', 'admin', 'rateStatus']
         $.each(selectList, function (index, item) {
             form.on('select(' + item + 'Filter)', function (data) {
@@ -242,35 +254,25 @@
 
                 case 'exportImages':
                     let checkStatus = table.checkStatus('currentTable').data;
-                    console.log(checkStatus)
                     let ids = '';
                     let temp = [];
                     $.each(checkStatus, (index, item) => {
                         temp.push(item.id)
                     })
 
-                    if (temp.length > 0) {
-                        ids = temp.join(',')
-                    }
-                    console.log('获得ids,有可能只能下载一个文件', ids)
-                    if(ids === ''){
-                        option.icon = 0
+                    if(!temp.length){
                         layer.msg('请选择要下载的文件', option)
                         return false
                     }
 
-                    let url = '{:url("/house/exportImages")}';
-                    let form = $("<form />");
-                        form.attr("action", url);
-                        form.attr("method", "post");
-                        let input1=$("<input />");
-                            input1.attr("type", "hidden");
-                            input1.attr("name","ids");
-                            input1.attr("value", ids);
-                    $("body").append(form);
-                            form.append(input1);
-                            form.submit();
-                            form.remove();
+                    if(temp.length > 5){
+                        layer.msg('最多选择5条数据', option)
+                        return false
+                    }
+
+                    ids = temp.join(',')
+                    $('form[lay-filter="exportForm"] > input[name=ids]').val(ids);
+                    $('form[lay-filter="exportForm"]').submit();
                     break;
             }
         });
