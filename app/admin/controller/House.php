@@ -344,7 +344,14 @@ class House extends AdminController
      */
     public function edit($id)
     {
+        $rate = HouseRateModel::getByHouseId($id);
+        if (!$rate) {
+            $rate = HouseRateModel::create(['house_id' => $id]);
+            HouseModel::update(['admin_id' => $this->userInfo->id, 'id' => $id]);
+        }
+        //
         $model = new $this->model;
+        $houseRateModel = new HouseRateModel;
         $this->view->assign([
             'house' => $this->model::find($id),
             'HouseUsageList' => $model->getHouseUsageList(),
@@ -355,6 +362,17 @@ class House extends AdminController
             'HouseChangeList' => $model->getHouseChangeList(),
             'HouseChangeFloorDataList' => $model->getHouseChangeFloorDataList(),
             'infos' => $this->infos,
+            // 评级
+            'rate' => $rate,
+            'StructureList' => $houseRateModel->getStructureList(),
+            'BasisTypeList' => $houseRateModel->getBasisTypeList(),
+            'FoundationSafetyRateList' => $houseRateModel->getFoundationSafetyRateList(),
+            'FoundationRateList'=> $houseRateModel->getFoundationRateList(),
+            'HouseSafetyRateList' => $houseRateModel->getHouseSafetyRateList(),
+            'HouseDangerFrameRateList' => $houseRateModel->getHouseDangerFrameRateList(),
+            'HouseDangerRoofRateList' => $houseRateModel->getHouseDangerRoofRateList(),
+            'HouseLatentDangerFrameRateList' => $houseRateModel->getHouseLatentDangerFrameRateList(),
+            'FinalRateList' => $houseRateModel->getFinalRateList(),
         ]);
         return $this->view->fetch();
     }

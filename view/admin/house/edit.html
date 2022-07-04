@@ -15,22 +15,28 @@
     .layui-layer-imgbar a {
         text-decoration: none;
     }
+    .noneButton {
+        display: none;
+    }
 </style>
 {/block}
 
 {block name='body'}
 <div class="layuimini-container">
     <div class="layuimini-main">
-        <form class="layui-form layuimini-form" lay-filter="customer-add-form" action="">
-            <input type="hidden" name="area_id" value="{$house.area_id}"/>
-            <input type="hidden" name="id" value="{$house.id}"/>
-            <div class="layui-tab">
+
+            <div class="layui-tab" lay-filter="tabFilter">
                 <ul class="layui-tab-title">
                     <li class="layui-this">房屋基础信息</li>
                     <li>现场照片</li>
+                    <li>评级</li>
                 </ul>
                 <div class="layui-tab-content">
-                    <div class="layui-tab-item layui-show">
+
+                    <form class="layui-form layuimini-form" lay-filter="customer-add-form" action="">
+                        <input type="hidden" name="area_id" value="{$house.area_id}"/>
+                        <input type="hidden" name="id" value="{$house.id}"/>
+                        <div class="layui-tab-item layui-show">
                         <div class="page1 border-bottom">
                             <div class="layui-row pb-4">
                                 <div class="layui-col-lg12">
@@ -335,7 +341,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="layui-tab-item container">
+                        <div class="layui-tab-item container">
                         <div class="d-none" id="infos">{:json_encode($infos)}</div>
                         {foreach ($infos as $key => $val)}
                         <div class="d-none" id="{$key}_data">{:json_encode($house[$key])}</div>
@@ -343,15 +349,123 @@
                         <div class="infos-content" id="app">
                         </div>
                     </div>
+                        <div class="layui-form-item submitButton">
+                            <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
+                                    lay-filter="add">完 成
+                            </button>
+                        </div>
+                    </form>
+
+                    <div class="layui-tab-item container">
+                        <form class="layui-form layuimini-form" action="">
+                            <input type="hidden" name="id" value="{$rate.id}">
+                            <div class="layui-form-item logo-title text-center layui-font-blue">
+                                <h1>评 级</h1>
+                            </div>
+                            <div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" for="structure">结构形式:</label>
+                                    <div class="layui-input-block" id="structure">
+                                        {foreach ($StructureList as $key => $val)}
+                                        <input type="radio" lay-skin="primary" name="structure" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.structure}checked{/if}>
+                                        {if $key === 6}<br />{/if}
+                                        {/foreach}
+                                        <input type="text" name="structure_other" class="border-0 border-bottom" value="{$rate.structure_other}" {if $rate.structure_other === 9}lay-verify="required"{/if}>
+                                    </div>
+                                </div>
+                                <div class="layui-form-item">
+                                    <label class="layui-form-label" for="basis_type">基础类型:</label>
+                                    <div class="layui-input-block" id="basis_type">
+                                        {foreach ($BasisTypeList as $key => $val)}
+                                        <input type="radio" lay-skin="primary" name="basis_type" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.basis_type}checked{/if}>
+                                        {/foreach}
+                                        <input type="text" name="basis_type_other" class="border-0 border-bottom" value="{$rate.basis_type_other}" {if $rate.basis_type === 9}lay-verify="required"{/if}>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item border-top mb-4">
+                                <label class="layui-form-label" for="foundation_safety_rate">地基基础安全排查:</label>
+                                <div class="layui-input-block" id="foundation_safety_rate">
+                                    {foreach $FoundationSafetyRateList as $key => $val}
+                                    <input type="radio" class="layui-input" name="foundation_safety_rate" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.foundation_safety_rate}checked{/if}>
+                                    {/foreach}
+                                </div>
+                                <div class="layui-input-block" id="foundation_rate">
+                                    <div>
+                                        {foreach $FoundationRateList as $key => $val}
+                                        <div>
+                                            <input type="checkbox" lay-skin="primary" name="foundation_rate[]" value="{$key}" title="{$val}" {if isset($rate.foundation_rate) && in_array($key, $rate.foundation_rate)}checked{/if}>
+                                        </div>
+                                        {/foreach}
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="layui-form-item border-top">
+                                <label class="layui-form-label" for="house_safety_rate">上部结构安全排查:</label>
+                                <div class="layui-input-block" id="house_safety_rate">
+                                    {foreach $HouseSafetyRateList as $key => $val}
+                                    <input type="radio" class="layui-input" name="house_safety_rate" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.house_safety_rate}checked{/if}>
+                                    {/foreach}
+                                </div>
+                            </div>
+                            <div class="layui-form-item mb-4">
+                                <label class="layui-form-label" for="house_danger_frame_rate">危险:</label>
+                                <div class="layui-input-block mb-4" id="house_danger_frame_rate">
+                                    <div>混凝土构件：</div>
+                                    {foreach $HouseDangerFrameRateList as $key => $val}
+                                    <div>
+                                        <input type="checkbox" lay-skin="primary" name="house_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_frame_rate) && in_array($key,$rate.house_danger_frame_rate)}checked{/if}>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                                <div class="layui-input-block" id="house_danger_roof_rate">
+                                    <div>悬挑梁、板（雨篷）：</div>
+                                    {foreach $HouseDangerRoofRateList as $key => $val}
+                                    <div>
+                                        <input type="checkbox" lay-skin="primary" name="house_danger_roof_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_roof_rate) && in_array($key, $rate.house_danger_roof_rate)}checked{/if}>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                            <div class="layui-form-item mb-4">
+                                <label class="layui-form-label" for="house_latent_danger_frame_rate">潜在危险:</label>
+                                <div class="layui-input-block" id="house_latent_danger_frame_rate">
+                                    <div>混凝土构件：</div>
+                                    {foreach $HouseLatentDangerFrameRateList as $key => $val}
+                                    <div>
+                                        <input type="checkbox" lay-skin="primary" name="house_latent_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_latent_danger_frame_rate) && in_array($key, $rate.house_latent_danger_frame_rate)}checked{/if}>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+                            <div class="layui-form-item mb-4">
+                                <label class="layui-form-label" for="house_safety_remark">其他需要说明的危险性问题:</label>
+                                <div class="layui-input-block" id="house_safety_remark">
+                        <textarea name="house_safety_remark" class="layui-textarea" lay-verify="required"
+                                  placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
+                                </div>
+                            </div>
+                            <div class="layui-form-item border-top">
+                                <label class="layui-form-label" for="final_rate">排查结论:</label>
+                                <div class="layui-input-block" id="final_rate">
+                                    {foreach $FinalRateList as $key => $val}
+                                    <div>
+                                        <input class="layui-input" type="radio" lay-skin="primary" name="final_rate" value="{$key}" title="{$val}" {if $key === $rate.final_rate}checked{/if}>
+                                    </div>
+                                    {/foreach}
+                                </div>
+                            </div>
+
+                            <div class="layui-form-item my-5 submitButton2">
+                                <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
+                                        lay-filter="grade">评 级
+                                </button>
+                            </div>
+                        </form>
+                    </div>
                 </div>
             </div>
-            <!--                        提交-->
-            <div class="layui-form-item">
-                <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
-                        lay-filter="add">完 成
-                </button>
-            </div>
-        </form>
+
     </div>
 </div>
 {/block}
@@ -366,7 +480,6 @@
             form = layui.form;
         let frameIndex = parent.layer.getFrameIndex(window.name);
         let option = {icon: 0};
-
         let makeHtml = function (index, item, data = null) {
             let item_container = index + '_container', cont = $('.' + item_container), i = cont.children().length;
             cont.append($('<div />', {
@@ -508,30 +621,22 @@
             imagep.width(w)
         })
 
-        // 自定义检验表单
-        // form.verify({
-        // isOwnerBusiness: function (value, item){
-        //     console.log('8',value)
-        //     console.log('9',item)
-        //     const verifyName = $(item).attr('name'),
-        //         verifyType = $(item).attr('type'),
-        //         formElem = $(item).parent('.layui-form'),
-        //         verifyElem = formElem.find('input[name='+verifyName+']'),
-        //         isTrue = verifyElem.is(':checked'),
-        //         focusElem = verifyElem.next().find('i.layui-icon');
-        //     if(!isTrue || !value){
-        //         focusElem.css(verifyType==='radio'?{"color":"#FF5722"}:{"border-color":"#FF5722"});
-        //         focusElem.first().attr("tabIndex","1").css("outline","0").blur(function (){
-        //             focusElem.css(verifyType==='radio'?{"color":""}:{"border-color":""});
-        //         }).focus();
-        //         return '必填项不能为空';
-        //     }
-        // }
-        // });
-        // form.on('radio(is_owner_business)', function(data){
-        //     console.log(data.elem); //得到radio原始DOM对象
-        //     console.log(data.value); //被点击的radio的value值
-        // });
+        element.on('tab(tabFilter)', function (data){
+            // 解决form和tab一起使用的bug
+            $(".layui-tab-item").each(function (item){
+                $(this).removeClass('layui-show');
+                if(item === data.index){
+                    $(this).addClass('layui-show')
+                }
+            })
+            // 获取点击的tab
+            const cur_title = data.elem.context.innerText;
+            if(cur_title === "评级"){
+                $('.submitButton').addClass('noneButton')
+            }else{
+                $('.submitButton').removeClass('noneButton')
+            }
+        })
         // 提交
         form.on('submit(add)', function (data) {
             $.post("{:url('/house/update')}", data.field, function (res) {
@@ -548,6 +653,58 @@
                     });
                 } else {
                     parent.layer.msg(res.msg, option);
+                }
+            });
+
+            return false;
+        });
+        form.on('submit(grade)', function (data) {
+            let params = data.field;
+
+            if (!params['structure']) {
+                layer.msg('请选择"结构形式"', option);
+                return false;
+            }
+
+            if (parseInt(params['structure']) === 9 && params['structure_other'] === '') {
+                layer.msg('请输入"结构形式 -> 其他内容"', option);
+                return false;
+            }
+
+            if (!params['basis_type']) {
+                layer.msg('请选择"基础类型"', option);
+                return false;
+            }
+
+            if (parseInt(params['basis_type']) === 9 && params['basis_type_other'] === '') {
+                layer.msg('请输入"基础类型 -> 其他内容"', option);
+                return false;
+            }
+
+            if (!params['foundation_safety_rate']) {
+                layer.msg('请选择"地基基础安全排查"', option);
+                return false;
+            }
+
+            if (!params['house_safety_rate']) {
+                layer.msg('请选择"上部结构安全排查"', option)
+                return false
+            }
+
+            if (!params['final_rate']) {
+                layer.msg('请选择"排查结论"', option)
+                return false
+            }
+
+            $.post("{:url('/HouseRate/update')}", params, function (res) {
+                if (res.code === 1) {
+                    option.icon = 1
+                    layer.msg(res.msg, option, function () {
+                        parent.layer.close(frameIndex);
+                        parent.layui.table.reload('currentTable');
+                    });
+                } else {
+                    layer.msg(res.msg, option);
                 }
             });
 
