@@ -540,6 +540,7 @@ class House extends AdminController
         $house = $this->model::with(['area', 'houseRate'])
             ->field('id, title, code, district, address, is_owner_business, is_balcony, house_extension, house_change')
             ->where('status', 1)
+            ->order('id desc')
             ->select();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
