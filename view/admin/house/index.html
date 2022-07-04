@@ -127,6 +127,7 @@
 {/block}
 
 {block name='js'}
+<!--<script src="https://unpkg.com/axios/dist/axios.min.js"></script>-->
 <script>
     layui.use(['jquery', 'layer', 'table', 'form', 'upload'], function () {
         let $ = layui.jquery,
@@ -134,6 +135,7 @@
             table = layui.table,
             upload = layui.upload,
             form = layui.form;
+        // console.log(axios);
 
         let option = { icon: 0 }, area_id = 0;
 
@@ -272,7 +274,9 @@
 
                     ids = temp.join(',')
                     $('form[lay-filter="exportForm"] > input[name=ids]').val(ids);
-                    $('form[lay-filter="exportForm"]').submit();
+                    let f = $('form[lay-filter="exportForm"]');
+                    console.log(f)
+                    // f.submit();
                     break;
             }
         });

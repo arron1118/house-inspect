@@ -5,7 +5,8 @@ namespace app\admin\controller;
 
 use app\common\library\Report;
 use think\db\exception\DbException;
-use think\facade\Log;
+use PhpOffice\PhpSpreadsheet\Spreadsheet;
+use PhpOffice\PhpSpreadsheet\IOFactory;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
@@ -530,8 +531,143 @@ class House extends AdminController
 
     public function exportReport($id)
     {
-        $report = new Report();
-        $report->createReport($id);
+        $report = new Report($id);
+        $report->createReport();
+    }
+
+    public function exportExcel()
+    {
+        $house = $this->model::with(['area', 'houseRate'])
+            ->field('id, title, code, district, address, is_owner_business, is_balcony, house_extension, house_change')
+            ->where('status', 1)
+            ->select();
+        $spreadsheet = new Spreadsheet();
+        $sheet = $spreadsheet->getActiveSheet();
+        $title = [
+            'district' => '社区',
+            'id' => '序号',
+            'code' => '房屋编码',
+            'title' => '房屋名称',
+            'address' => '地址',
+            'final_rate' => '排查结论',
+            'is_owner_business' => '是否经营性自建房',
+            'house_extension' => '是不改建、加建、扩建',
+            'is_incline_or_deposition' => '是否存在明显沉降房屋',
+            'is_crack' => '是否存在结构件开裂等',
+            'is_rust_eaten' => '是否存在钢筋锈蚀房屋的（疑似海砂房）',
+            'is_balcony' => '是否板式悬挑阳台房屋',
+        ];
+        $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
+        $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
+        $titCol = 'A';
+        foreach ($title as $key => $value) {
+            // 单元格内容写入
+            $sheet->setCellValue($titCol . '1', $value);
+            $titCol++;
+        }
+        $row = 2; // 从第二行开始
+        foreach ($house as $item) {
+            $dataCol = 'A';
+            foreach ($title as $key => $value) {
+                $cellValue = '';
+                // 单元格内容写入
+                if (in_array($key, ['id','title', 'address'])) {
+                    $cellValue = $item[$key];
+                }
+
+                if ($key === 'code') {
+                    $cellValue = $item[$key] . "\t";
+                }
+
+                if (in_array($key, ['is_balcony', 'is_owner_business'])) {
+                    $cellValue = $yesOrNo[$item[$key]];
+                }
+
+                if ($key === 'district') {
+                    $cellValue = $this->DistrictList[$item[$key]];
+                }
+
+                if ($key === 'house_extension') {
+                    $k = 0;
+                    if (in_array($item->house_change, [1, 2], true) || array_intersect([1, 2, 3], $item['house_extension'])) {
+                        $k = 1;
+                    } else if ($item->house_change === 9 || array_intersect([9], $item['house_extension'])) {
+                        $k = 2;
+                    }
+
+                    $cellValue = $yesOrNo[$k];
+                }
+
+                if ($item->house_rate) {
+                    if ($key === 'final_rate') {
+                        $cellValue = $final_rate[$item->house_rate->final_rate];
+                    }
+
+                    // 有无沉降
+                    if ($key === 'is_incline_or_deposition' && $item->house_rate->foundation_rate) {
+                        $k = 0;
+                        if (in_array(5, $item->house_rate->foundation_rate, true)) {
+                            $k = 1;
+                        } else if (!empty($item->house_rate->foundation_rate)) {
+                            $k = 2;
+                        }
+
+                        $cellValue = $yesOrNo[$k];
+                    }
+
+                    // 锈蚀
+                    if ($key === 'is_rust_eaten') {
+                        $k = 0;
+                        if(($item->house_rate->house_danger_frame_rate && array_intersect($item->house_rate->house_danger_frame_rate, [1]))
+                            || ($item->house_rate->house_danger_roof_rate && array_intersect($item->house_rate->house_danger_roof_rate, [4]))
+                            || ($item->house_rate->house_latent_danger_frame_rate && array_intersect($item->house_rate->house_latent_danger_frame_rate,  [2]))){
+                            $k = 1;
+                        } else {
+                            $k = 2;
+                        }
+                        $cellValue = $yesOrNo[$k];
+                    }
+
+                    // 裂缝
+                    if ($key === 'is_crack') {
+                        $k = 0;
+                        if (($item->house_rate->foundation_rate && array_intersect($item->house_rate->foundation_rate, [2, 3, 4]))
+                            || ($item->house_rate->house_danger_frame_rate && array_diff($item->house_rate->house_danger_frame_rate, [1]))
+                            || ($item->house_rate->house_danger_roof_rate && array_diff($item->house_rate->house_danger_roof_rate, [4]))
+                            || ($item->house_rate->house_latent_danger_frame_rate && array_intersect($item->house_rate->house_latent_danger_frame_rate, [1]))) {
+                            $k = 1;
+                        } else {
+                            $k = 2;
+                        }
+
+                        $cellValue = $yesOrNo[$k];
+                    }
+                }
+
+                $sheet->setCellValue($dataCol . $row, $cellValue);
+                $dataCol++;
+            }
+            $row++;
+        }
+        // Save
+//        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
+//        $writer->save('./report/house.xlsx');
+        // Redirect output to a client’s web browser (Xlsx)
+        header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
+        header('Content-Disposition: attachment;filename="房屋排查.xlsx"');
+        header('Cache-Control: max-age=0');
+        // If you're serving to IE 9, then the following may be needed
+        header('Cache-Control: max-age=1');
+
+        // If you're serving to IE over SSL, then the following may be needed
+        header('Expires: Mon, 26 Jul 1997 05:00:00 GMT'); // Date in the past
+        header('Last-Modified: ' . gmdate('D, d M Y H:i:s') . ' GMT'); // always modified
+        header('Cache-Control: cache, must-revalidate'); // HTTP/1.1
+        header('Pragma: public'); // HTTP/1.0
+
+        $writer = IoFactory::createWriter($spreadsheet, 'Xlsx');
+        $writer->save('php://output');
+        exit;
     }
 
 }
