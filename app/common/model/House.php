@@ -60,6 +60,11 @@ class House extends Model
 //        return $this->getDistrictList()[$value];
 //    }
 
+    public function getRateStatusList()
+    {
+        return [0 => '未评级', 1 => '已评级', 2 => '已拆除'];
+    }
+
     public function getDistrictList()
     {
         return [1 => '东方', 2 => '楼岗', 3 => '花果山', 4 => '松涛'];

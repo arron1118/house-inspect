@@ -10,6 +10,8 @@ use PhpOffice\PhpWord\SimpleType\VerticalJc;
 use PhpOffice\PhpWord\SimpleType\Jc;
 use PhpOffice\PhpWord\Style\Font;
 use PhpOffice\PhpWord\Style\ListItem;
+use PhpOffice\PhpWord\SimpleType\JcTable;
+use PhpOffice\PhpWord\Style\Cell;
 
 class Report
 {
@@ -110,7 +112,7 @@ class Report
         $this->addListItem($section, '报告发生涂改、换页或剪贴无效。');
         $this->addListItem($section, '未经检测鉴定单位同意，报告不得复制。');
         $this->addListItem($section, '如对检测鉴定报告有异议，应于收到报告之日起十五日内向检测鉴定单位提出，逾期视为认可检测鉴定结果。');
-        $section->addLine(['width' => 450, 'weight' => 1, 'color' => '#ccc']);
+        $section->addLine(['width' => 450, 'weight' => 1]);
 
         $textRun = $section->addTextRun(['lineHeight' => 1.5]);
         $textRun->addText('<w:br />检测鉴定单位地址：深圳市福田区燕南路98号<w:br />');
@@ -132,6 +134,30 @@ class Report
         $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.5]);
         $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
         $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查标准》SJG 41-2017');
+
+        $fancyTableStyleName = 'Fancy Table';
+        $fancyTableStyle = array('borderSize' => 2, 'borderColor' => '006699', 'cellMargin' => 80, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0);
+        $fancyTableFirstRowStyle = array('borderBottomSize' => 18, 'borderBottomColor' => '0000FF', 'bgColor' => '66BBFF');
+        $fancyTableCellStyle = array('valign' => 'center');
+        $fancyTableCellBtlrStyle = array('valign' => 'center', 'textDirection' => Cell::TEXT_DIR_BTLR);
+        $fancyTableFontStyle = array('bold' => true);
+        $phpWord->addTableStyle($fancyTableStyleName, $fancyTableStyle, $fancyTableFirstRowStyle);
+        $table = $section->addTable($fancyTableStyleName);
+        $table->addRow(900);
+        $table->addCell(2000, $fancyTableCellStyle)->addText('Row 1', $fancyTableFontStyle);
+        $table->addCell(2000, $fancyTableCellStyle)->addText('Row 2', $fancyTableFontStyle);
+        $table->addCell(2000, $fancyTableCellStyle)->addText('Row 3', $fancyTableFontStyle);
+        $table->addCell(2000, $fancyTableCellStyle)->addText('Row 4', $fancyTableFontStyle);
+        $table->addCell(500, $fancyTableCellBtlrStyle)->addText('Row 5', $fancyTableFontStyle);
+        for ($i = 1; $i <= 8; $i++) {
+            $table->addRow();
+            $table->addCell(2000)->addText("Cell {$i}");
+            $table->addCell(2000)->addText("Cell {$i}");
+            $table->addCell(2000)->addText("Cell {$i}");
+            $table->addCell(2000)->addText("Cell {$i}");
+            $text = (0 === $i % 2) ? 'X' : '';
+            $table->addCell(500)->addText($text);
+        }
 
         foreach ($this->infos as $key => $val) {
             foreach ($this->house[$key] as $value) {

@@ -52,8 +52,10 @@ class House extends AdminController
 
         $this->model = HouseModel::class;
         $this->DistrictList = (new $this->model)->getDistrictList();
-        $this->view->assign('DistrictList', $this->DistrictList);
-        $this->view->assign('userList', UserModel::field('id, username')->order('id desc, login_time desc')->select());
+        $this->view->assign([
+            'DistrictList' => $this->DistrictList,
+            'userList' => UserModel::field('id, username')->order('id desc, login_time desc')->select(),
+        ]);
     }
 
     /**
@@ -63,8 +65,11 @@ class House extends AdminController
      */
     public function index()
     {
-        $this->view->assign('areaList', Area::field('id, title')->order('id desc')->select());
-        $this->view->assign('adminList', AdminModel::field('id, username')->order('id desc, login_time desc')->select());
+        $this->view->assign([
+            'adminList' => AdminModel::field('id, username')->order('id desc, login_time desc')->select(),
+            'areaList' => Area::field('id, title')->order('id desc')->select(),
+            'rateStatusList' => (new $this->model)->getRateStatusList()
+        ]);
         return $this->view->fetch();
     }
 
@@ -245,7 +250,16 @@ class House extends AdminController
                     return $value === 1 ? '已完成' : '';
                 })
                 ->withAttr('rate_status', function ($value) {
-                    return $value === 1 ? '已评级' : '';
+                    $text = '';
+                    if ($value === 1) {
+                        $text = '已评级';
+                    }
+
+                    if ($value === 2) {
+                        $text = '<span class="text-decoration-line-through">已拆除</span>';
+                    }
+
+                    return $text;
                 })
                 ->with(['area', 'admin', 'user'])
                 ->hidden(['area', 'admin', 'user'])
@@ -392,6 +406,9 @@ class House extends AdminController
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
             $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
+            if ((int) $params['rate_status_set'] === 1) {
+                $params['rate_status'] = 2;
+            }
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
