@@ -268,9 +268,11 @@
                     }
 
                     let ids = Array.from(checkStatus, ({id}) => id);
+                    window.location.href = '{:url("/house/exportImages")}?ids=' + ids;
                     $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
                     let f = $('form[lay-filter="exportForm"]');
-                    f.submit();
+                    console.log(f)
+                    // f.submit();
                     break;
             }
         });
