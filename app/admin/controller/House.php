@@ -249,7 +249,7 @@ class House extends AdminController
                 })
                 ->with(['area', 'admin', 'user'])
                 ->hidden(['area', 'admin', 'user'])
-                ->order('id desc')
+                ->order('id asc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();
 
@@ -447,13 +447,17 @@ class House extends AdminController
         if ($this->request->isPost()) {
             $file = request()->file('file');
             $columns = [
-                'user_id' => 0,
-                'area_id' => $this->request->param('area_id')
+//                'user_id' => 0,
+//                'area_id' => $this->request->param('area_id')
             ];
 
             $data = readExcel($file, $columns);
             try {
-                $res = (new $this->model)->saveAll($data);
+//                $res = (new $this->model)->saveAll($data);
+
+                foreach ($data as $key => $val) {
+                    $this->model::where('code', $val['code'])->save(['district' => $val['district']]);
+                }
 
                 $this->returnData['code'] = 1;
                 $this->returnData['data'] = $data;
