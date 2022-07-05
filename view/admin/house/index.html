@@ -262,16 +262,16 @@
                         return false
                     }
 
-                    if(checkStatus.length > 5){
+                    if(checkStatus.length > 10){
                         layer.msg('最多选择5条数据', option)
                         return false
                     }
 
                     let ids = Array.from(checkStatus, ({id}) => id);
                     window.location.href = '{:url("/house/exportImages")}?ids=' + ids;
-                    $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
-                    let f = $('form[lay-filter="exportForm"]');
-                    console.log(f)
+                    // $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
+                    // let f = $('form[lay-filter="exportForm"]');
+                    // console.log(f)
                     // f.submit();
                     break;
             }
