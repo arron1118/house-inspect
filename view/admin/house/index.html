@@ -255,15 +255,15 @@
 
 
                 case 'exportImages':
-                    let checkStatus = table.checkStatus('currentTable').data;
+                    let checkStatus = table.checkStatus('currentTable').data, i = 10;
 
                     if(!checkStatus.length){
                         layer.msg('请选择要下载的文件', option)
                         return false
                     }
 
-                    if(checkStatus.length > 10){
-                        layer.msg('最多选择5条数据', option)
+                    if(checkStatus.length > i){
+                        layer.msg('最多选择' + i + '条数据', option)
                         return false
                     }
 
