@@ -229,7 +229,7 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             let area = $('select[lay-filter="areaFilter"]')
 
-            if (parseInt(area.val()) <= 0 && obj.event !== 'exportImages') {
+            if (['add', 'importExcel'].includes(obj.event) && parseInt(area.val()) <= 0) {
                 option.icon = 2
                 layer.msg('请选择区域', option)
                 return false
@@ -256,27 +256,21 @@
 
                 case 'exportImages':
                     let checkStatus = table.checkStatus('currentTable').data;
-                    let ids = '';
-                    let temp = [];
-                    $.each(checkStatus, (index, item) => {
-                        temp.push(item.id)
-                    })
 
-                    if(!temp.length){
+                    if(!checkStatus.length){
                         layer.msg('请选择要下载的文件', option)
                         return false
                     }
 
-                    if(temp.length > 5){
+                    if(checkStatus.length > 5){
                         layer.msg('最多选择5条数据', option)
                         return false
                     }
 
-                    ids = temp.join(',')
+                    let ids = Array.from(checkStatus, ({id}) => id);
                     $('form[lay-filter="exportForm"] > input[name=ids]').val(ids);
                     let f = $('form[lay-filter="exportForm"]');
-                    console.log(f)
-                    // f.submit();
+                    f.submit();
                     break;
             }
         });
