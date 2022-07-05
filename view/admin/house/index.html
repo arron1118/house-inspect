@@ -268,7 +268,7 @@
                     }
 
                     let ids = Array.from(checkStatus, ({id}) => id);
-                    $('form[lay-filter="exportForm"] > input[name=ids]').val(ids);
+                    $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
                     let f = $('form[lay-filter="exportForm"]');
                     f.submit();
                     break;
