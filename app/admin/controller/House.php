@@ -263,7 +263,7 @@ class House extends AdminController
                 })
                 ->with(['area', 'admin', 'user'])
                 ->hidden(['area', 'admin', 'user'])
-                ->order('id asc')
+                ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();
 
