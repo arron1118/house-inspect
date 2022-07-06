@@ -136,7 +136,7 @@ class Report
             . '开展建筑安全隐患排查整治的紧急通知》要求，加强全市既有房屋及在建工程安全管理工作，切实保障人民群众生命财产安全，根据《广东省住房和城乡'
             . '建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即开展建筑安全隐患排查整治的紧急通知》要求，结合《深圳市住房 和建设局转发广东省'
             . '住房和城乡建设厅关于深刻汲取河南郑州 “4.18”游泳馆坍塌事故教训切实加强公共场所建筑安全隐患排查整改的紧急通知》，按照《深圳市房屋建'
-            . '筑隐患排查整治专项工作方案》对罗湖区清水河街道所有社区涉及房屋建筑及构筑物等进行安全隐患排查。'
+            . '筑隐患排查整治专项工作方案》对' . $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区涉及房屋建筑及构筑物等进行安全隐患排查。'
         );
         $section->addTextBreak(2);
         $textRun = $section->addTextRun(['alignment' => Jc::CENTER]);
@@ -146,8 +146,8 @@ class Report
         $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查标准》SJG 41-2017');
 
         $fancyTableStyleName = 'Fancy Table';
-        $fancyTableStyle = array('borderSize' => 2, 'borderColor' => 'cccccc', 'cellMargin' => 80, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0, 'width' => '100%');
-        $fancyTableFirstRowStyle = array('borderBottomSize' => 18, 'borderBottomColor' => '0000FF', 'bgColor' => '66BBFF');
+        $fancyTableStyle = array('borderSize' => 2, 'borderColor' => '000000', 'cellMargin' => 20, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0, 'width' => '100%');
+        $fancyTableFirstRowStyle = array('borderBottomSize' => 2, 'borderBottomColor' => '000000');
         $fancyTableCellStyle = array('valign' => 'center');
         $fancyTableCellBtlrStyle = array('valign' => 'center', 'textDirection' => Cell::TEXT_DIR_BTLR);
         $fancyTableFontStyle = array('bold' => true, 'size' => 12);
@@ -469,19 +469,31 @@ class Report
             $textRun->addText($val . '<w:br />', $fancyTableCellFontStyle);
         }
 
+        $section = $phpWord->addSection(['pageBreakBefore' => true]);
         // 现场照片
+        $table = $section->addTable($fancyTableStyleName);
+        $table->addRow(550);
+        $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])
+            ->addTextRun(['alignment' => 'center', 'size' => 13])
+            ->addText('房屋外观、安全隐患及操作照片', $fancyTableFontStyle);
+        $i = 0;
         foreach ($this->infos as $key => $val) {
             foreach ($this->house[$key] as $value) {
+                if ($i % 2 === 0) {
+                    $row = $table->addRow();
+                }
                 $file = public_path() . $value['image'];
                 if (file_exists($file)) {
-                    $section = $phpWord->addSection();
-                    $textRun = $section->addTextRun($this->textRunStyle);
+                    $cell = $row->addCell();
+                    $textRun = $cell->addTextRun($this->textRunStyle);
                     $textRun->addImage($file, [
-                        'width' => 450,
-                        'height' => 550,
+                        'width' => 230,
+                        'height' => 290,
                     ]);
                     $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.5]);
                 }
+
+                $i++;
             }
         }
 
