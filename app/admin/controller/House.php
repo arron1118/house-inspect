@@ -449,6 +449,10 @@ class House extends AdminController
     public function delete($id)
     {
         if ($this->request->isPost()) {
+            if ($this->userInfo->id !== 1) {
+                $this->error('您没有权限操作');
+            }
+
             $house = $this->model::find($id);
             $house->delete();
             $this->returnData['code'] = 1;
