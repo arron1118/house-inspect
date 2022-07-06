@@ -112,9 +112,6 @@
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
         <script type="text/html" id="currentTableBar">
-<!--            <a href="javascript:;" class=" text-decoration-none " lay-event="rate" title="评级">-->
-<!--                评级-->
-<!--            </a>-->
             <a href="javascript:;" class="text-decoration-none  data-count-edit" lay-event="edit" title="编辑">
                 编辑
             </a>
@@ -301,6 +298,9 @@
 
         table.on('tool(currentTableFilter)', function (obj) {
             switch (obj.event) {
+                case 'createReport':
+                    window.location.href = '{:url("/house/exportReport")}?id=' + obj.data.id;
+                    break;
                 case 'delete':
                     layer.confirm('确认删除数据？', function (index) {
                         $.post("{:url('/house/delete')}", { id: obj.data.id }, function (res) {

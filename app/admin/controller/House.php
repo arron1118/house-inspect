@@ -252,7 +252,7 @@ class House extends AdminController
                 ->withAttr('rate_status', function ($value) {
                     $text = '';
                     if ($value === 1) {
-                        $text = '已评级';
+                        $text = '<a href="javascript:;" class=" text-decoration-none " lay-event="createReport" title="生成报告">生成报告</a>';
                     }
 
                     if ($value === 2) {
