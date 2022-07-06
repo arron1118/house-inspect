@@ -50,7 +50,6 @@ class Report
         $this->fontStyle = new Font();
         $this->fontStyle->setSize(14);
         $this->house = House::with(['houseRate', 'user', 'area'])->find($id);
-        dump($this->house);
         $this->HouseModel = new House;
         $this->HouseRateModel = new HouseRate;
         $this->selects = [
