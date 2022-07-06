@@ -504,7 +504,7 @@ class Report
 //        $section->addText('Hello World!');
 //        $file = $save_path . 'HelloWorld.docx';
         header("Content-Description: File Transfer");
-        header('Content-Disposition: attachment; filename="' . '房屋排查_' . $this->house->code . '.docx' . '"');
+        header('Content-Disposition: attachment; filename="' . $this->house->title . '_' . $this->house->code . '.docx' . '"');
         header('Content-Type: application/vnd.openxmlformats-officedocument.wordprocessingml.document');
         header('Content-Transfer-Encoding: binary');
         header('Cache-Control: must-revalidate, post-check=0, pre-check=0');

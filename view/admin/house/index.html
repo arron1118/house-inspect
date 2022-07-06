@@ -115,9 +115,11 @@
             <a href="javascript:;" class="text-decoration-none  data-count-edit" lay-event="edit" title="编辑">
                 编辑
             </a>
+            {if ($userInfo->id === 1)}
             <a href="javascript:;" class="text-decoration-none  data-count-delete" lay-event="delete" title="删除">
                 删除
             </a>
+            {/if}
         </script>
 
     </div>

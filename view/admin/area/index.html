@@ -49,9 +49,11 @@
             </thead>
         </table>
         <script type="text/html" id="currentTableBar">
+            {if ($userInfo->id === 1)}
             <a class="layui-btn layui-btn-xs layui-btn-danger data-count-delete" lay-event="delete" title="删除">
                 <i class="fa fa-trash-can"></i>
             </a>
+            {/if}
         </script>
 
     </div>
