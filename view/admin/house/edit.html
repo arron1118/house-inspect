@@ -52,8 +52,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label fw-bold">已拆除</label>
                                                 <div class="layui-input-block" id="rate_status_set">
-                                                    <input type="radio" name="rate_status_set" value="1" title="是" {if ($house.rate_status === 2)}checked{/if}>
-                                                    <input type="radio" name="rate_status_set" value="0" title="否" {if ($house.rate_status !== 2)}checked{/if}>
+                                                    <input type="radio" name="rate_status_set" value="1" title="是" {if ($house.rate_status_set === 1)}checked{/if}>
+                                                    <input type="radio" name="rate_status_set" value="2" title="否" {if ($house.rate_status_set === 2)}checked{/if}>
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">

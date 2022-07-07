@@ -1,5 +1,5 @@
 <?php
-declare (strict_types = 1);
+declare (strict_types=1);
 
 namespace app\admin\controller;
 
@@ -92,26 +92,27 @@ class House extends AdminController
     {
         if ($request->isAjax()) {
             $districtList = $this->DistrictList;
-            $page = (int) $request->param('page', 1);
-            $limit = (int) $request->param('limit', 10);
+            $page = (int)$request->param('page', 1);
+            $limit = (int)$request->param('limit', 10);
             $title = $request->param('title', '');
             $district = $request->param('district', 0);
             $code = $request->param('code', '');
-            $areaId = (int) $request->param('area_id', 0);
-            $user_id = (int) $request->param('user_id', 0);
-            $admin_id = (int) $request->param('admin_id', 0);
-            $status = (int) $request->param('status', -1);
-            $rate_status = (int) $request->param('rate_status', -1);
-            $house_extension = (int) $request->param('house_extension', 0);
-            $is_owner_business = (int) $request->param('is_owner_business', 0);
-            $is_balcony = (int) $request->param('is_balcony', 0);
-            $house_change = (int) $request->param('house_change', 0);
-            $is_crack = (int) $request->param('is_crack', 0);
-            $is_incline_or_deposition = (int) $request->param('is_incline_or_deposition', 0);
-            $is_rust_eaten = (int) $request->param('is_rust_eaten', 0);
-            $final_rate = (int) $request->param('final_rate', 0);
+            $areaId = (int)$request->param('area_id', 0);
+            $user_id = (int)$request->param('user_id', 0);
+            $admin_id = (int)$request->param('admin_id', 0);
+            $status = (int)$request->param('status', -1);
+            $rate_status = (int)$request->param('rate_status', -1);
+            $house_extension = (int)$request->param('house_extension', 0);
+            $is_owner_business = (int)$request->param('is_owner_business', 0);
+            $is_balcony = (int)$request->param('is_balcony', 0);
+            $house_change = (int)$request->param('house_change', 0);
+            $is_crack = (int)$request->param('is_crack', 0);
+            $is_incline_or_deposition = (int)$request->param('is_incline_or_deposition', 0);
+            $is_rust_eaten = (int)$request->param('is_rust_eaten', 0);
+            $final_rate = (int)$request->param('final_rate', 0);
             $map = [];
             $mapOr = [];
+            $whereAnd = [];
 
             if ($title) {
                 $map[] = ['title', 'like', '%' . $title . '%'];
@@ -139,10 +140,6 @@ class House extends AdminController
 
             if ($status >= 0) {
                 $map[] = ['status', '=', $status];
-            }
-
-            if ($rate_status >= 0) {
-                $map[] = ['rate_status', '=', $rate_status];
             }
 
             // 有无阳台
@@ -215,7 +212,7 @@ class House extends AdminController
                                 $where .= ' or (' . $val . ' like "%1%") ';
                                 break;
                         }
-                    }  else {
+                    } else {
                         switch ($val) {
                             case 'foundation_rate':
                                 $where .= '(' . $val . ' not like "%2%" and ' . $val . ' not like "%3%" and ' . $val . ' not like "%4%")';
@@ -239,8 +236,24 @@ class House extends AdminController
                 $map[] = ['id', 'in', $rate];
             }
 
-            $this->returnData['total'] = $this->model::where($map)->where($mapOr)->count();
-            $this->returnData['data'] = $this->model::where($map)->where($mapOr)
+            if ($rate_status >= 0) {
+                switch ($rate_status) {
+                    case 0:
+                        $whereAnd = 'rate_status != 1 and rate_status_set != 1';
+                        break;
+
+                    case 1:
+                        $whereAnd = 'rate_status = 1';
+                        break;
+
+                    case 2:
+                        $whereAnd = 'rate_status_set = 1';
+                        break;
+                }
+            }
+
+            $this->returnData['total'] = $this->model::where($map)->where($mapOr)->where($whereAnd)->count();
+            $this->returnData['data'] = $this->model::where($map)->where($mapOr)->where($whereAnd)
                 ->withAttr('district', function ($value) use ($districtList) {
                     if ($value > 0) {
                         return $districtList[$value];
@@ -249,13 +262,13 @@ class House extends AdminController
                 ->withAttr('status', function ($value) {
                     return $value === 1 ? '已完成' : '';
                 })
-                ->withAttr('rate_status', function ($value) {
+                ->withAttr('rate_status', function ($value, $data) {
                     $text = '';
                     if ($value === 1) {
                         $text = '<a href="javascript:;" class=" text-decoration-none " lay-event="createReport" title="生成报告">生成报告</a>';
                     }
 
-                    if ($value === 2) {
+                    if ($data['rate_status_set'] === 1) {
                         $text = '<span class="text-decoration-line-through">已拆除</span>';
                     }
 
@@ -265,7 +278,7 @@ class House extends AdminController
                 ->hidden(['area', 'admin', 'user'])
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
-                ->select();
+                ->select();;
 
             $this->success();
         }
@@ -299,7 +312,7 @@ class House extends AdminController
     /**
      * 保存新建的资源
      *
-     * @param  \think\Request  $request
+     * @param \think\Request $request
      * @return \think\Response
      */
     public function save(Request $request)
@@ -319,7 +332,7 @@ class House extends AdminController
             foreach ($this->infos as $key => $val) {
                 if (isset($params[$key]['image'])) {
                     $temp = [];
-                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                    for ($i = 0; $i < count($params[$key]['image']); $i++) {
                         $temp[$key][] = [
                             'image' => $params[$key]['image'][$i],
                             'description' => $params[$key]['description'][$i]
@@ -342,7 +355,7 @@ class House extends AdminController
     /**
      * 显示指定的资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function read($id)
@@ -353,7 +366,7 @@ class House extends AdminController
     /**
      * 显示编辑资源表单页.
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function edit($id)
@@ -381,7 +394,7 @@ class House extends AdminController
             'StructureList' => $houseRateModel->getStructureList(),
             'BasisTypeList' => $houseRateModel->getBasisTypeList(),
             'FoundationSafetyRateList' => $houseRateModel->getFoundationSafetyRateList(),
-            'FoundationRateList'=> $houseRateModel->getFoundationRateList(),
+            'FoundationRateList' => $houseRateModel->getFoundationRateList(),
             'HouseSafetyRateList' => $houseRateModel->getHouseSafetyRateList(),
             'HouseDangerFrameRateList' => $houseRateModel->getHouseDangerFrameRateList(),
             'HouseDangerRoofRateList' => $houseRateModel->getHouseDangerRoofRateList(),
@@ -394,8 +407,8 @@ class House extends AdminController
     /**
      * 保存更新的资源
      *
-     * @param  \think\Request  $request
-     * @param  int  $id
+     * @param \think\Request $request
+     * @param int $id
      * @return \think\Response
      */
     public function update(Request $request, $id)
@@ -406,9 +419,9 @@ class House extends AdminController
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
             $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
-            if ((int) $params['rate_status_set'] === 1) {
-                $params['rate_status'] = 2;
-            }
+//            if ((int) $params['rate_status_set'] === 1) {
+//                $params['rate_status'] = 2;
+//            }
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
@@ -420,7 +433,7 @@ class House extends AdminController
             foreach ($this->infos as $key => $val) {
                 if (isset($params[$key]['image'])) {
                     $temp = [];
-                    for ($i = 0; $i < count($params[$key]['image']); $i ++) {
+                    for ($i = 0; $i < count($params[$key]['image']); $i++) {
                         $temp[$key][] = [
                             'image' => $params[$key]['image'][$i],
                             'description' => $params[$key]['description'][$i]
@@ -445,7 +458,7 @@ class House extends AdminController
     /**
      * 删除指定资源
      *
-     * @param  int  $id
+     * @param int $id
      * @return \think\Response
      */
     public function delete($id)
@@ -560,13 +573,13 @@ class House extends AdminController
 
         // ob_clean();
         // 下载压缩包
-            header("Cache-Control: public");
-            header("Content-Description: File Transfer");
+        header("Cache-Control: public");
+        header("Content-Description: File Transfer");
         header('Content-disposition: attachment; filename=' . basename($zipName)); //文件名
         header("Content-Type: application/zip"); //zip格式的
         header("Content-Transfer-Encoding: binary"); //告诉浏览器，这是二进制文件
         header('Content-Length: ' . filesize($zipName)); //告诉浏览器，文件大小
-            header('Accept-Length: ' . filesize($zipName));
+        header('Accept-Length: ' . filesize($zipName));
 //            ob_end_clean();
         @readfile($zipName);//ob_end_clean();
         @unlink($zipName);//删除压缩包
@@ -617,7 +630,7 @@ class House extends AdminController
             foreach ($title as $key => $value) {
                 $cellValue = '';
                 // 单元格内容写入
-                if (in_array($key, ['id','title', 'address'])) {
+                if (in_array($key, ['id', 'title', 'address'])) {
                     $cellValue = $item[$key];
                 }
 
@@ -664,9 +677,9 @@ class House extends AdminController
                     // 锈蚀
                     if ($key === 'is_rust_eaten') {
                         $k = 0;
-                        if(($item->house_rate->house_danger_frame_rate && array_intersect($item->house_rate->house_danger_frame_rate, [1]))
+                        if (($item->house_rate->house_danger_frame_rate && array_intersect($item->house_rate->house_danger_frame_rate, [1]))
                             || ($item->house_rate->house_danger_roof_rate && array_intersect($item->house_rate->house_danger_roof_rate, [4]))
-                            || ($item->house_rate->house_latent_danger_frame_rate && array_intersect($item->house_rate->house_latent_danger_frame_rate,  [2]))){
+                            || ($item->house_rate->house_latent_danger_frame_rate && array_intersect($item->house_rate->house_latent_danger_frame_rate, [2]))) {
                             $k = 1;
                         } else {
                             $k = 2;
