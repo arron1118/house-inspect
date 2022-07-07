@@ -427,6 +427,8 @@ class House extends AdminController
                         ];
                     }
                     $params[$key] = $temp[$key];
+                } else {
+                    $params[$key] = [];
                 }
             }
             $params['status'] = 1;
