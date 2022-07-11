@@ -114,11 +114,11 @@ class Report
         $this->addText($textRun, '龙行伟', ['size' => 15]);
         $this->addText($textRun, '<w:br />报告编写人：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '张思明', ['size' => 15]);
-        $this->addText($textRun, '<w:br />检测人员：', ['bold' => true, 'size' => 15]);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 2) . '检测人员：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '龙行伟', ['size' => 15]);
-        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '张思明', ['size' => 15], []);
-        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '程振华', ['size' => 15]);
-        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '吴  磊', ['size' => 15]);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '张思明', ['size' => 15], []);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '程振华', ['size' => 15]);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '吴  磊', ['size' => 15]);
         $section->addTextBreak(2);
 
         $section = $phpWord->addSection();
