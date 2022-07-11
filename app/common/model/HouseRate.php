@@ -84,6 +84,15 @@ class HouseRate extends Model
         ];
     }
 
+    public function getGradeList()
+    {
+        return [
+            1 => 'A类',
+            2 => 'B类',
+            3 => 'C类',
+        ];
+    }
+
     public function getFinalRateList()
     {
         return [

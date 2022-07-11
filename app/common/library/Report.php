@@ -37,12 +37,13 @@ class Report
     protected $textRunStyle = [
         'alignment' => VerticalJc::CENTER,
         'textAlignment' => TextAlignment::CENTER,
-        'lineHeight' => 1.5,
+        'lineHeight' => 1.2,
     ];
 
     protected $reportTitleStyle = [
         'bold' => true,
         'size' => 22,
+        'name' => '黑体',
     ];
 
     public function __construct($id)
@@ -70,6 +71,7 @@ class Report
             'HouseDangerRoofRateList' => $this->HouseRateModel->getHouseDangerRoofRateList(),
             'HouseLatentDangerFrameRateList' => $this->HouseRateModel->getHouseLatentDangerFrameRateList(),
             'FinalRateList' => $this->HouseRateModel->getFinalRateList(),
+            'GradeList' => $this->HouseRateModel->getGradeList(),
         ];
         $this->reportTitle = $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区' . $this->house->title;
     }
@@ -81,17 +83,21 @@ class Report
         $phpWord->setDefaultFontName('SimSun');
         $phpWord->setDefaultFontSize(14);
         $section = $phpWord->addSection();
+        $textRun = $section->addTextRun();
+        $this->addText($textRun, '【' . $this->selects['DistrictList'][$this->house->district] . '社区】', ['name' => '黑体', 'size' => 12, 'bold' => true]);
 
-        $section->addTextBreak(10);
+        $section->addTextBreak(5);
 
         $textRun = $section->addTextRun(array_merge($this->textRunStyle, []));
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
         $this->addText($textRun, '<w:br />房屋结构安全隐患排查报告', $this->reportTitleStyle);
+        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:JD / 2022）', ['size' => 12]);
 
-        $section->addTextBreak(15);
+        $section->addTextBreak(13);
 
         $textRun = $section->addTextRun($this->textRunStyle);
-        $this->addText($textRun, '深圳地质建设工程公司<w:br />', ['size' => 14]);
+        $textRun->addImage(public_path() . '/static/images/dizhi-logo.png');
+        $this->addText($textRun, '<w:br />深圳地质建设工程公司<w:br />', ['size' => 14]);
         $this->addText($textRun, date('Y年m月d日'), ['size' => 14]);
 
         $textRun = $this->addTextRun($section, ['pageBreakBefore' => true]);
@@ -110,7 +116,7 @@ class Report
         $this->addText($textRun, '张思明', ['size' => 15]);
         $this->addText($textRun, '<w:br />检测人员：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '龙行伟', ['size' => 15]);
-        $this->addText($textRun, '<w:br />张思明', ['size' => 15]);
+        $this->addText($textRun, '<w:br />张思明', ['size' => 15], ['spaceBefore' => 8000]);
         $this->addText($textRun, '<w:br />程振华', ['size' => 15]);
         $this->addText($textRun, '<w:br />吴  磊', ['size' => 15]);
         $section->addTextBreak(2);
@@ -125,7 +131,7 @@ class Report
         $section->addLine(['width' => 450, 'weight' => 1, 'color' => '#cccccc']);
 
         $textRun = $section->addTextRun(['lineHeight' => 1.2]);
-        $textRun->addText('<w:br />检测鉴定单位地址：深圳市福田区燕南路98号<w:br />');
+        $textRun->addText('<w:br />检测鉴定单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
         $textRun->addText('联系人及电话：张思明(电话：19520791510)');
 
         $section = $phpWord->addSection();
@@ -457,6 +463,36 @@ class Report
         $table->addRow(500);
         $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他需要说明的危险性问题', $fancyTableCellFontStyle);
         $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addText($this->house->house_rate->house_safety_remark, $fancyTableCellFontStyle);
+
+        $row = $table->addRow(500);
+        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('场地排查', $fancyTableCellFontStyle);
+        $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['GradeList'] as $key => $val) {
+            $select = $key === $this->house->house_rate->site_rate ? $checkBoxYes : $checkBoxNo;
+            $textRun->addText($select, $fancyTableCellFontStyle);
+            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
+        }
+
+        $row = $table->addRow(500);
+        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('地基基础排查', $fancyTableCellFontStyle);
+        $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['GradeList'] as $key => $val) {
+            $select = $key === $this->house->house_rate->foundation_basis_rate ? $checkBoxYes : $checkBoxNo;
+            $textRun->addText($select, $fancyTableCellFontStyle);
+            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
+        }
+
+        $row = $table->addRow(500);
+        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('主体结构排查', $fancyTableCellFontStyle);
+        $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['GradeList'] as $key => $val) {
+            $select = $key === $this->house->house_rate->main_foundation_rate ? $checkBoxYes : $checkBoxNo;
+            $textRun->addText($select, $fancyTableCellFontStyle);
+            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
+        }
 
         $row = $table->addRow(500);
         $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('排查结论', $fancyTableCellFontStyle);

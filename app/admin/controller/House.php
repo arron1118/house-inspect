@@ -243,7 +243,7 @@ class House extends AdminController
                         break;
 
                     case 1:
-                        $whereAnd = 'rate_status = 1';
+                        $whereAnd = 'rate_status = 1 and rate_status_set != 1';
                         break;
 
                     case 2:
@@ -400,6 +400,7 @@ class House extends AdminController
             'HouseDangerRoofRateList' => $houseRateModel->getHouseDangerRoofRateList(),
             'HouseLatentDangerFrameRateList' => $houseRateModel->getHouseLatentDangerFrameRateList(),
             'FinalRateList' => $houseRateModel->getFinalRateList(),
+            'GradeList' => $houseRateModel->getGradeList(),
         ]);
         return $this->view->fetch();
     }

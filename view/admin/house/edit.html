@@ -443,10 +443,34 @@
                                 {/foreach}
                             </div>
                         </div>
-                        <div class="layui-form-item mb-4 pb-4 border-bottom">
+                        <div class="layui-form-item">
                             <label class="layui-form-label" for="house_safety_remark">其他需要说明的危险性问题:</label>
                             <div class="layui-input-block" id="house_safety_remark">
                                 <textarea name="house_safety_remark" class="layui-textarea" lay-verify="required" placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="site_rate">场地排查:</label>
+                            <div class="layui-input-block" id="site_rate">
+                                {foreach $GradeList as $key => $val}
+                                <input class="layui-input" type="radio" lay-skin="primary" name="site_rate" value="{$key}" title="{$val}" {if $key === $rate.site_rate}checked{/if}>
+                                {/foreach}
+                            </div>
+                        </div>
+                        <div class="layui-form-item">
+                            <label class="layui-form-label" for="foundation_basis_rate">地基基础排查:</label>
+                            <div class="layui-input-block" id="foundation_basis_rate">
+                                {foreach $GradeList as $key => $val}
+                                <input class="layui-input" type="radio" lay-skin="primary" name="foundation_basis_rate" value="{$key}" title="{$val}" {if $key === $rate.foundation_basis_rate}checked{/if}>
+                                {/foreach}
+                            </div>
+                        </div>
+                        <div class="layui-form-item mb-4 pb-4 border-bottom">
+                            <label class="layui-form-label" for="main_foundation_rate">主体结构排查:</label>
+                            <div class="layui-input-block" id="main_foundation_rate">
+                                {foreach $GradeList as $key => $val}
+                                <input class="layui-input" type="radio" lay-skin="primary" name="main_foundation_rate" value="{$key}" title="{$val}" {if $key === $rate.main_foundation_rate}checked{/if}>
+                                {/foreach}
                             </div>
                         </div>
                         <div class="layui-form-item">
@@ -647,7 +671,7 @@
                     option.icon = 6
 
                     parent.layer.msg(res.msg, option, function () {
-                        parent.layer.close(frameIndex);
+                        // parent.layer.close(frameIndex);
                         parent.layui.table.reload('currentTable', {
                             page: {
                                 curr: 1
@@ -703,7 +727,7 @@
                 if (res.code === 1) {
                     option.icon = 1
                     layer.msg(res.msg, option, function () {
-                        parent.layer.close(frameIndex);
+                        // parent.layer.close(frameIndex);
                         parent.layui.table.reload('currentTable');
                     });
                 } else {
