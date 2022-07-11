@@ -91,7 +91,7 @@ class Report
         $textRun = $section->addTextRun(array_merge($this->textRunStyle, []));
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
         $this->addText($textRun, '<w:br />房屋结构安全隐患排查报告', $this->reportTitleStyle);
-        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:JD / 2022）', ['size' => 12]);
+//        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:JD / 2022）', ['size' => 12]);
 
         $section->addTextBreak(13);
 
@@ -149,7 +149,7 @@ class Report
         $textRun->addText('排查依据<w:br />', ['bold' => true]);
         $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.2]);
         $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
-        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查标准》SJG 41-2017');
+        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查技术标准》SJG 41-2017');
 
         $fancyTableStyleName = 'Fancy Table';
         $fancyTableStyle = array('borderSize' => 0, 'borderColor' => '000000', 'cellMargin' => 80, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0, 'width' => 6000, 'unit' => 'pct');
