@@ -167,37 +167,37 @@ class Report
         $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])->addText('一、房屋基本信息调查', $fancyTableFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋名称', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->title, $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋编码', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->code, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋名称', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->title, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋编码', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->code, $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('面积/层数', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->space, $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋地址', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->address, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('面积/层数', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->space, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋地址', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->address, $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('建筑物高度', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->height, $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('所用人数', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->galleryful, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('建筑物高度', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->height, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('所用人数', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->galleryful, $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计时间', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_time, $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计单位', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_company, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计时间', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_time, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计单位', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_company, $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('竣工日期', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->completion_time, $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('施工单位', $fancyTableCellFontStyle);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->build_company, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('竣工日期', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->completion_time, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('施工单位', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->build_company, $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋安全责任人及联系方式', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋安全责任人及联系方式', $fancyTableCellFontStyle);
         $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->contact, $fancyTableCellFontStyle);
 
         // 选中：
@@ -205,7 +205,7 @@ class Report
         // 未选中：
         $checkBoxNo = '<w:r><w:sym w:font="Wingdings" w:char="00A8"/></w:r>';
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('现有使用功能', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('现有使用功能', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         foreach ($this->selects['HouseUsageList'] as $key => $val) {
@@ -218,7 +218,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('结构形式', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('结构形式', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['StructureList'] as $key => $val) {
@@ -231,7 +231,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('基础类型', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('基础类型', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['BasisTypeList'] as $key => $val) {
@@ -244,7 +244,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('相关资料', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('相关资料', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         foreach ($this->selects['RelatedDataList'] as $key => $val) {
@@ -264,7 +264,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用功能', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用功能', $fancyTableCellFontStyle);
         $cell = $table->addCell(3000, ['valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_usage_change === 2 ? $checkBoxYes : $checkBoxNo;
@@ -274,7 +274,7 @@ class Report
         $textRun->addText($select, $fancyTableCellFontStyle);
         $textRun->addText('由（' . $this->house->is_usage_change_from . '）改变为（' . $this->house->is_usage_change_to . '）', $fancyTableCellFontStyle);
 
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用荷载', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用荷载', $fancyTableCellFontStyle);
         $cell = $table->addCell(3000, ['valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_usage_onus === 2 ? $checkBoxYes : $checkBoxNo;
@@ -285,7 +285,7 @@ class Report
         $textRun->addText('明显增加 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('有悬挑阳台', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('有悬挑阳台', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_balcony === 1 ? $checkBoxYes : $checkBoxNo;
@@ -296,7 +296,7 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('加建', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('加建', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         foreach ($this->selects['HouseExtensionList'] as $key => $val) {
@@ -306,7 +306,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('改建', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('改建', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         foreach ($this->selects['HouseChangeList'] as $key => $val) {
@@ -326,7 +326,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('灾害影响', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('灾害影响', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $textRun->addText('房屋是否受过火灾等外力损害 ', $fancyTableCellFontStyle);
@@ -348,7 +348,7 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有开挖土方', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有开挖土方', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_periphery_excavation === 1 ? $checkBoxYes : $checkBoxNo;
@@ -359,7 +359,7 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有地铁、管廊、隧道等工程施工', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有地铁、管廊、隧道等工程施工', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_periphery_construction === 1 ? $checkBoxYes : $checkBoxNo;
@@ -370,7 +370,7 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有山体或边坡', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边是否有山体或边坡', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_periphery_hillside === 1 ? $checkBoxYes : $checkBoxNo;
@@ -381,7 +381,7 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边地面是否有塌陷', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋周边地面是否有塌陷', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_periphery_sink === 1 ? $checkBoxYes : $checkBoxNo;
@@ -392,7 +392,7 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他说明', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他说明', $fancyTableCellFontStyle);
         $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addText($this->house->remark, $fancyTableCellFontStyle);
 
         $table->addRow(500);
@@ -424,7 +424,7 @@ class Report
         }
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('危险', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('危险', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('混凝土构件<w:br />', array_merge($fancyTableCellFontStyle, ['bold' => true]));
@@ -441,7 +441,7 @@ class Report
         }
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('潜在危险', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('潜在危险', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('混凝土构件', array_merge($fancyTableCellFontStyle, ['bold' => true]));
@@ -452,11 +452,11 @@ class Report
         }
 
         $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他需要说明的危险性问题', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他需要说明的危险性问题', $fancyTableCellFontStyle);
         $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addText($this->house->house_rate->house_safety_remark, $fancyTableCellFontStyle);
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('场地排查', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('场地排查', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['GradeList'] as $key => $val) {
@@ -466,7 +466,7 @@ class Report
         }
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('地基基础排查', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('地基基础排查', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['GradeList'] as $key => $val) {
@@ -476,7 +476,7 @@ class Report
         }
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('主体结构排查', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('主体结构排查', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['GradeList'] as $key => $val) {
@@ -486,7 +486,7 @@ class Report
         }
 
         $row = $table->addRow(500);
-        $row->addCell(2000, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('排查结论', $fancyTableCellFontStyle);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('排查结论', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['FinalRateList'] as $key => $val) {
