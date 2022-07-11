@@ -119,9 +119,9 @@ class Report
         $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '张思明', ['size' => 15], []);
         $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '程振华', ['size' => 15]);
         $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '吴  磊', ['size' => 15]);
-        $section->addTextBreak(2);
+        $section->addTextBreak(5);
 
-        $section = $phpWord->addSection();
+//        $section = $phpWord->addSection();
         $textRun = $section->addTextRun();
         $textRun->addText('重要提示：<w:br />', $this->fontStyle);
         $this->addListItem($section, '报告未盖检测鉴定单位公章无效。');
