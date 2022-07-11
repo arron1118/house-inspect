@@ -116,11 +116,12 @@ class Report
         $this->addText($textRun, '张思明', ['size' => 15]);
         $this->addText($textRun, '<w:br />检测人员：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '龙行伟', ['size' => 15]);
-        $this->addText($textRun, '<w:br />张思明', ['size' => 15], ['spaceBefore' => 8000]);
-        $this->addText($textRun, '<w:br />程振华', ['size' => 15]);
-        $this->addText($textRun, '<w:br />吴  磊', ['size' => 15]);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '张思明', ['size' => 15], []);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '程振华', ['size' => 15]);
+        $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . '吴  磊', ['size' => 15]);
         $section->addTextBreak(2);
 
+        $section = $phpWord->addSection();
         $textRun = $section->addTextRun();
         $textRun->addText('重要提示：<w:br />', $this->fontStyle);
         $this->addListItem($section, '报告未盖检测鉴定单位公章无效。');
