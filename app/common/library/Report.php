@@ -73,7 +73,7 @@ class Report
             'FinalRateList' => $this->HouseRateModel->getFinalRateList(),
             'GradeList' => $this->HouseRateModel->getGradeList(),
         ];
-        $this->reportTitle = $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区' . $this->house->title;
+        $this->reportTitle = $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区' . $this->house->title . '房屋结构安全隐患排查报告';
     }
 
     public function createReport()
@@ -90,7 +90,6 @@ class Report
 
         $textRun = $section->addTextRun(array_merge($this->textRunStyle, []));
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
-        $this->addText($textRun, '<w:br />房屋结构安全隐患排查报告', $this->reportTitleStyle);
 //        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:JD / 2022）', ['size' => 12]);
 
         $section->addTextBreak(13);
@@ -102,7 +101,6 @@ class Report
 
         $textRun = $this->addTextRun($section, ['pageBreakBefore' => true]);
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
-        $this->addText($textRun, '<w:br />房屋结构安全隐患排查报告', $this->reportTitleStyle);
 
         $section->addTextBreak();
 
@@ -121,7 +119,6 @@ class Report
         $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '吴  磊', ['size' => 15]);
         $section->addTextBreak(5);
 
-//        $section = $phpWord->addSection();
         $textRun = $section->addTextRun();
         $textRun->addText('重要提示：<w:br />', $this->fontStyle);
         $this->addListItem($section, '报告未盖检测鉴定单位公章无效。');
@@ -129,7 +126,11 @@ class Report
         $this->addListItem($section, '报告发生涂改、换页或剪贴无效。');
         $this->addListItem($section, '未经检测鉴定单位同意，报告不得复制。');
         $this->addListItem($section, '如对检测鉴定报告有异议，应于收到报告之日起十五日内向检测鉴定单位提出，逾期视为认可检测鉴定结果。');
-        $section->addLine(['width' => 450, 'weight' => 1, 'color' => '#cccccc']);
+
+        $section->addLine([
+            'width'       => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(11.5),
+            'height'      => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(0),
+        ]);
 
         $textRun = $section->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('<w:br />检测鉴定单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
