@@ -168,37 +168,37 @@ class Report
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋名称', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->title, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->title !== '' ? $this->house->title : '/', $fancyTableCellFontStyle);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋编码', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->code, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->code !== '' ? $this->house->code : '/', $fancyTableCellFontStyle);
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('面积/层数', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->space, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->space !== '' ? $this->house->space : '/', $fancyTableCellFontStyle);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋地址', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->address, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->address !== '' ? $this->house->address : '/', $fancyTableCellFontStyle);
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('建筑物高度', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->height, $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('所用人数', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->galleryful, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->height !== '' ? $this->house->height : '/', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用人数', $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->galleryful !== 0 ? $this->house->galleryful : '/', $fancyTableCellFontStyle);
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计时间', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_time, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_time !== '' ? $this->house->design_time : '/', $fancyTableCellFontStyle);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('设计单位', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_company, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->design_company !== '' ? $this->house->design_company : '/', $fancyTableCellFontStyle);
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('竣工日期', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->completion_time, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->completion_time !== '' ? $this->house->completion_time : '/', $fancyTableCellFontStyle);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('施工单位', $fancyTableCellFontStyle);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->build_company, $fancyTableCellFontStyle);
+        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->build_company !== '' ? $this->house->build_company : '/', $fancyTableCellFontStyle);
 
         $table->addRow(500);
         $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('房屋安全责任人及联系方式', $fancyTableCellFontStyle);
-        $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->contact, $fancyTableCellFontStyle);
+        $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText($this->house->contact !== '' ? $this->house->contact : '/', $fancyTableCellFontStyle);
 
         // 选中：
         $checkBoxYes = '<w:r><w:sym w:font="Wingdings" w:char="00FE"/></w:r>';

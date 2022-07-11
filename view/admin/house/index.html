@@ -318,16 +318,6 @@
                     break;
 
                 case 'edit':
-                    parent.layer.tab({
-                        area: ['100%', '100%'],
-                        tab: [{
-                            title: '房屋信息',
-                            content: '{:url("/House/edit")}?id=' + obj.data.id
-                        }, {
-                            title: '评级',
-                            content: '{:url("/House/edit")}?house_id=' + obj.data.id,
-                        }]
-                    })
                     parent.layer.open({
                         title: '编辑',
                         type: 2,
