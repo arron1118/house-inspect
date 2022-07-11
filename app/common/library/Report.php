@@ -218,6 +218,32 @@ class Report
         }
 
         $table->addRow(500);
+        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('结构形式', $fancyTableCellFontStyle);
+        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['StructureList'] as $key => $val) {
+            $select = isset($this->house->house_rate->structure) && $key === $this->house->house_rate->structure ? $checkBoxYes : $checkBoxNo;
+            $textRun->addText($select, $fancyTableCellFontStyle);
+            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
+            if ($key === 9) {
+                $textRun->addText('(' . $this->house->house_rate->structure_other . ')', $fancyTableCellFontStyle);
+            }
+        }
+
+        $table->addRow(500);
+        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('基础类型', $fancyTableCellFontStyle);
+        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['BasisTypeList'] as $key => $val) {
+            $select = $key === $this->house->house_rate->basis_type ? $checkBoxYes : $checkBoxNo;
+            $textRun->addText($select, $fancyTableCellFontStyle);
+            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
+            if ($key === 9) {
+                $textRun->addText('(' . $this->house->house_rate->basis_type_other . ')', $fancyTableCellFontStyle);
+            }
+        }
+
+        $table->addRow(500);
         $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('相关资料', $fancyTableCellFontStyle);
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun();
@@ -239,7 +265,7 @@ class Report
 
         $table->addRow(500);
         $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用功能', $fancyTableCellFontStyle);
-        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $cell = $table->addCell(3000, ['valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_usage_change === 2 ? $checkBoxYes : $checkBoxNo;
         $textRun->addText($select, $fancyTableCellFontStyle);
@@ -248,9 +274,8 @@ class Report
         $textRun->addText($select, $fancyTableCellFontStyle);
         $textRun->addText('由（' . $this->house->is_usage_change_from . '）改变为（' . $this->house->is_usage_change_to . '）', $fancyTableCellFontStyle);
 
-        $table->addRow(500);
         $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('使用荷载', $fancyTableCellFontStyle);
-        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $cell = $table->addCell(3000, ['valign' => 'center']);
         $textRun = $cell->addTextRun();
         $select = $this->house->is_usage_onus === 2 ? $checkBoxYes : $checkBoxNo;
         $textRun->addText($select, $fancyTableCellFontStyle);
@@ -370,44 +395,10 @@ class Report
         $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他说明', $fancyTableCellFontStyle);
         $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addText($this->house->remark, $fancyTableCellFontStyle);
 
-        $section->addTextBreak(2);
-
-        // 评级
-        $table = $section->addTable($fancyTableStyleName);
-        $table->addRow(500);
-        $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'size' => 13])
-            ->addText('评级', $fancyTableFontStyle);
-
-        $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('结构形式', $fancyTableCellFontStyle);
-        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
-        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
-        foreach ($this->selects['StructureList'] as $key => $val) {
-            $select = isset($this->house->house_rate->structure) && $key === $this->house->house_rate->structure ? $checkBoxYes : $checkBoxNo;
-            $textRun->addText($select, $fancyTableCellFontStyle);
-            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
-            if ($key === 9) {
-                $textRun->addText('(' . $this->house->house_rate->structure_other . ')', $fancyTableCellFontStyle);
-            }
-        }
-
-        $table->addRow(500);
-        $table->addCell(2000, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('基础类型', $fancyTableCellFontStyle);
-        $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
-        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
-        foreach ($this->selects['BasisTypeList'] as $key => $val) {
-            $select = $key === $this->house->house_rate->basis_type ? $checkBoxYes : $checkBoxNo;
-            $textRun->addText($select, $fancyTableCellFontStyle);
-            $textRun->addText($val . ' ', $fancyTableCellFontStyle);
-            if ($key === 9) {
-                $textRun->addText('(' . $this->house->house_rate->basis_type_other . ')', $fancyTableCellFontStyle);
-            }
-        }
-
         $table->addRow(500);
         $cell = $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
-        $textRun->addText('地基基础安全排查  ', $fancyTableFontStyle);
+        $textRun->addText('四、地基基础安全排查  ', $fancyTableFontStyle);
         foreach ($this->selects['FoundationSafetyRateList'] as $key => $val) {
             $select = $key === $this->house->house_rate->foundation_safety_rate ? $checkBoxYes : $checkBoxNo;
             $textRun->addText($select, $fancyTableCellFontStyle);
@@ -425,7 +416,7 @@ class Report
         $table->addRow(500);
         $cell = $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2, 'spaceBefore' => 20]);
-        $textRun->addText('上部结构安全排查  ', $fancyTableFontStyle);
+        $textRun->addText('五、上部结构安全排查  ', $fancyTableFontStyle);
         foreach ($this->selects['HouseSafetyRateList'] as $key => $val) {
             $select = $key === $this->house->house_rate->house_safety_rate ? $checkBoxYes : $checkBoxNo;
             $textRun->addText($select, $fancyTableCellFontStyle);
