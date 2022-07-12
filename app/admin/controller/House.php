@@ -374,7 +374,7 @@ class House extends AdminController
         $rate = HouseRateModel::getByHouseId($id);
         if (!$rate) {
             $rate = HouseRateModel::create(['house_id' => $id]);
-            HouseModel::update(['admin_id' => $this->userInfo->id, 'id' => $id]);
+//            HouseModel::update(['admin_id' => $this->userInfo->id, 'id' => $id]);
         }
         //
         $model = new $this->model;

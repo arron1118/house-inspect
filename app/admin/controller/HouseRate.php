@@ -112,7 +112,7 @@ class HouseRate extends AdminController
 
             $rate = $this->model::find($id);
             $rate->save($params);
-            HouseModel::update(['rate_status' => 1, 'id' => $rate->house_id]);
+            HouseModel::update(['rate_status' => 1, 'id' => $rate->house_id, 'admin_id' => $this->userInfo->id]);
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));
         }
