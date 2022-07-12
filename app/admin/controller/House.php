@@ -374,7 +374,6 @@ class House extends AdminController
         $rate = HouseRateModel::getByHouseId($id);
         if (!$rate) {
             $rate = HouseRateModel::create(['house_id' => $id]);
-//            HouseModel::update(['admin_id' => $this->userInfo->id, 'id' => $id]);
         }
         //
         $model = new $this->model;
@@ -597,17 +596,21 @@ class House extends AdminController
     public function exportExcel()
     {
         $house = $this->model::with(['area', 'houseRate'])
-            ->field('id, title, code, district, address, is_owner_business, is_balcony, house_extension, house_change')
+            ->field('id, title, code, district, space, address, is_owner_business, is_balcony, house_extension, house_change')
             ->where('status', 1)
             ->order('id desc')
             ->select();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
+        $StructureList = (new HouseRateModel)->getStructureList();
         $title = [
             'district' => '社区',
             'id' => '序号',
             'code' => '房屋编码',
             'title' => '房屋名称',
+            'structure' => '结构形式',
+            'floor' => '层数',
+            'space' => '建筑面积（平米）',
             'address' => '地址',
             'final_rate' => '排查结论',
             'is_owner_business' => '是否经营性自建房',
@@ -658,7 +661,20 @@ class House extends AdminController
                     $cellValue = $yesOrNo[$k];
                 }
 
+                $space = explode('/', $item->space);
+                if ($key === 'space') {
+                    $cellValue = count($space) > 0 ? $space[0] : '';
+                }
+
+                if ($key === 'floor') {
+                    $cellValue = count($space) > 1 ? $space[1] : '';
+                }
+
                 if ($item->house_rate) {
+                    if ($key === 'structure' && $item->house_rate->structure > 0) {
+                        $cellValue = $item->house_rate->structure === 9 ? $item->house_rate->structure_other : $StructureList[$item->house_rate->structure];
+                    }
+
                     if ($key === 'final_rate') {
                         $cellValue = $final_rate[$item->house_rate->final_rate];
                     }

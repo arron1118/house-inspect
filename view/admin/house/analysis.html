@@ -66,7 +66,7 @@
 <!--                    class="fa fa-plus"></i> 添加-->
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
-<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 导出</button>-->
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 全部导出</button>
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
     </div>
@@ -143,6 +143,21 @@
             reloadTable(data.field)
 
             return false
+        });
+
+        /**
+         * toolbar监听事件
+         */
+        table.on('toolbar(currentTableFilter)', function (obj) {
+            switch (obj.event) {  // 监听添加操作
+                case 'exportExcel':
+                    window.location.href = '{:url("/house/exportExcel")}';
+                    // $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
+                    // let f = $('form[lay-filter="exportForm"]');
+                    // console.log(f)
+                    // f.submit();
+                    break;
+            }
         });
 
         // const selectList = ['house_extension', 'is_owner_business', 'is_balcony', 'house_change', 'is_crack', 'is_incline_or_deposition', 'is_rust_eaten']
