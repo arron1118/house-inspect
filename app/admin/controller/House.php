@@ -606,7 +606,8 @@ class House extends AdminController
                 if ($v[$key]) {
                     $path = public_path() . '/images/' . $v['code'] . '/' . $val . '/';
                     if (!is_dir($path) && !mkdir($concurrentDirectory = iconv('UTF-8', 'GBK', $path), 0777, true) && !is_dir($concurrentDirectory)) {
-                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+//                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+                        $this->error('无法创建目录：' . $path);
                     }
                     foreach ($v[$key] as $value) {
                         $file = public_path() . $value['image'];
