@@ -109,9 +109,6 @@
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportImages"><i class="fa fa-file-import"></i> 下载图片 </button>
-            {if ($userInfo->username === 'admin110')}
-            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" lay-event="baleImages"><i class="fa fa-file-import"></i> 图片归类 </button>
-            {/if}
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
         <script type="text/html" id="currentTableBar">
@@ -178,7 +175,7 @@
                 {title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'},
             ]],
             page: {
-                limits: [15, 30, 45, 60, 90, 150, 180],
+                limits: [15, 30, 45, 60, 90],
                 limit: 15,
             },
             skin: 'line',
@@ -232,9 +229,6 @@
          */
         table.on('toolbar(currentTableFilter)', function (obj) {
             let area = $('select[lay-filter="areaFilter"]')
-            let checkStatus = table.checkStatus('currentTable').data, i = 5;
-
-            let ids = Array.from(checkStatus, ({id}) => id);
 
             if (['add', 'importExcel'].includes(obj.event) && parseInt(area.val()) <= 0) {
                 option.icon = 2
@@ -262,6 +256,7 @@
 
 
                 case 'exportImages':
+                    let checkStatus = table.checkStatus('currentTable').data, i = 5;
                     if(!checkStatus.length){
                         layer.msg('请选择要下载的文件', option)
                         return false
@@ -272,28 +267,13 @@
                         // layer.msg('最多选择' + i + '条数据', option)
                         // return false
                     }
+
+                    let ids = Array.from(checkStatus, ({id}) => id);
                     window.location.href = '{:url("/house/exportImages")}?ids=' + ids;
                     // $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
                     // let f = $('form[lay-filter="exportForm"]');
                     // console.log(f)
                     // f.submit();
-                    break;
-
-                case 'baleImages':
-                    if(!checkStatus.length){
-                        layer.msg('请选择要归类的数据', option)
-                        return false
-                    }
-
-                    loading = layer.load()
-                    $.post('{:url("/house/baleImages")}', { ids: ids }, function (res) {
-                        if (res.code === 1) {
-                            option.icon = 1
-                        }
-
-                        layer.close(loading)
-                        layer.msg(res.msg, option)
-                    })
                     break;
             }
         });

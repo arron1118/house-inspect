@@ -67,6 +67,9 @@
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 全部导出</button>
+            {if ($userInfo->id === 17)}
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" lay-event="baleImages"><i class="fa fa-file-import"></i> 图片归类 </button>
+            {/if}
         </script>
         <table class="layui-table" id="currentTableId" lay-filter="currentTableFilter" lay-even></table>
     </div>
@@ -82,9 +85,10 @@
             upload = layui.upload,
             form = layui.form;
 
-        let option = { icon: 0 }, area_id = 0;
+        let option = { icon: 0 }, area_id = 0, loading = null;
 
         window.houseTable = table.render({
+            height: 600,
             elem: '#currentTableId',
             url: '{:url("/house/getHouseList")}',
             id: 'currentTable',
@@ -121,7 +125,7 @@
                 {field: 'create_time', title: '创建时间'},
             ]],
             page: {
-                limits: [15, 30, 45, 60],
+                limits: [15, 30, 45, 60, 90, 150],
                 limit: 15,
             },
             skin: 'line',
@@ -156,6 +160,26 @@
                     // let f = $('form[lay-filter="exportForm"]');
                     // console.log(f)
                     // f.submit();
+                    break;
+
+                case 'baleImages':
+                    let checkStatus = table.checkStatus('currentTable').data, i = 5;
+                    if(!checkStatus.length){
+                        layer.msg('请选择要归类的数据', option)
+                        return false
+                    }
+
+                    let ids = Array.from(checkStatus, ({id}) => id);
+
+                    loading = layer.load()
+                    $.post('{:url("/house/baleImages")}', { ids: ids }, function (res) {
+                        if (res.code === 1) {
+                            option.icon = 1
+                        }
+
+                        layer.close(loading)
+                        layer.msg(res.msg, option)
+                    })
                     break;
             }
         });
