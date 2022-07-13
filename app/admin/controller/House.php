@@ -594,11 +594,6 @@ class House extends AdminController
             $this->error();
         }
 
-        $path = public_path() . '/images';
-        if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
-            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
-        }
-
         $fields = 'code, ' . implode(',', array_keys($this->infos));
         $house = $this->model::where('id', 'in', $ids)->column($fields);
         $this->returnData['data'] = $house;
@@ -609,10 +604,14 @@ class House extends AdminController
         foreach ($house as $k => $v) {
             foreach ($this->infos as $key => $val) {
                 if ($v[$key]) {
+                    $path = public_path() . '/images/' . $v['code'] . '/' . $val . '/';
+                    if (!is_dir($path) && !mkdir($concurrentDirectory = iconv('UTF-8', 'GBK', $path), 0777, true) && !is_dir($concurrentDirectory)) {
+                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+                    }
                     foreach ($v[$key] as $value) {
                         $file = public_path() . $value['image'];
                         if (file_exists($file)) {
-                            copy($file, $path . '/' . $v['code'] . '/' . $val . '/' . basename($file));
+                            copy($file, $path . basename($file));
                         }
                     }
                 }

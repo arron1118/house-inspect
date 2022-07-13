@@ -29,7 +29,8 @@
         "phpoffice/phpspreadsheet": "1.22",
         "phpoffice/phpword": "^0.18.3",
         "topthink/think-image": "^1.0",
-      "ext-zip": "*"
+      "ext-zip": "*",
+      "ext-iconv": "*"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",
