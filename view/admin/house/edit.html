@@ -487,7 +487,7 @@
                             <label class="layui-form-label" for="suggestion">处理建议:</label>
                             <div class="layui-input-block" id="suggestion">
                                 {foreach $SuggestionList as $key => $val}
-                                <input class="layui-input" type="checkbox" lay-skin="primary" name="suggestion[]" value="{$key}" title="{$val}" {if in_array($key, $rate.suggestion)}checked{/if}>
+                                <input class="layui-input" type="checkbox" lay-skin="primary" name="suggestion[]" value="{$key}" title="{$val}" {if !is_null($rate.suggestion) && in_array($key, $rate.suggestion)}checked{/if}>
                                 <br />
                                 {if ($key === 9)}
                                 <input class="border-0 border-bottom layui-input" type="text" lay-skin="primary" name="suggestion_other" value="{$rate.suggestion_other}" placeholder="其他在此输入">
