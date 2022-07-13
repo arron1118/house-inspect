@@ -611,7 +611,7 @@ class House extends AdminController
                     foreach ($v[$key] as $value) {
                         $file = public_path() . $value['image'];
                         if (file_exists($file)) {
-                            copy($file, $path . basename($file));
+                            copy($file, $path . $value['description'] . explode('.', basename($file))[1]);
                         }
                     }
                 }
