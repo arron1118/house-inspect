@@ -140,6 +140,8 @@
 
         let option = { icon: 0 }, area_id = 0;
 
+        let loading = null;
+
         window.houseTable = table.render({
             elem: '#currentTableId',
             url: '{:url("/house/getHouseList")}',
@@ -175,7 +177,7 @@
                 {title: '操作', width: 150, toolbar: '#currentTableBar', align: 'center', fixed: 'right'},
             ]],
             page: {
-                limits: [15, 30, 45, 60, 90],
+                limits: [15, 30, 45, 60, 90, 150, 300],
                 limit: 15,
             },
             skin: 'line',
@@ -282,11 +284,13 @@
                         return false
                     }
 
+                    loading = layer.load()
                     $.post('{:url("/house/baleImages")}', { ids: ids }, function (res) {
                         if (res.code === 1) {
                             option.icon = 1
                         }
 
+                        layer.close(loading)
                         layer.msg(res.msg, option)
                     })
                     break;
@@ -369,7 +373,6 @@
         });
 
         // 导入
-        let loading = null;
         upload.render({
             elem: '#importExcel',
             url: '{:url("/House/importExcel")}',
