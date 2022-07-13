@@ -587,6 +587,41 @@ class House extends AdminController
 //        return download($zipName, $zipName);
     }
 
+    public function baleImages(Request $request)
+    {
+        $ids = $request->param('ids', '');
+        if (!$ids) {
+            $this->error();
+        }
+
+        $path = public_path() . '/images';
+        if (!is_dir($path) && !mkdir($path, 0777, true) && !is_dir($path)) {
+            throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
+        }
+
+        $fields = 'code, ' . implode(',', array_keys($this->infos));
+        $house = $this->model::where('id', 'in', $ids)->column($fields);
+        $this->returnData['data'] = $house;
+        set_time_limit(0);
+        ini_set('memory_limit', '1024M');
+
+        // 文件打包
+        foreach ($house as $k => $v) {
+            foreach ($this->infos as $key => $val) {
+                if ($v[$key]) {
+                    foreach ($v[$key] as $value) {
+                        $file = public_path() . $value['image'];
+                        if (file_exists($file)) {
+                            copy($file, $path . '/' . $v['code'] . '/' . $val . '/' . basename($file));
+                        }
+                    }
+                }
+            }
+        }
+
+        $this->success(lang('Done'));
+    }
+
     public function exportReport($id)
     {
         $report = new Report($id);
