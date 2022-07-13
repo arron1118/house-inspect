@@ -15,6 +15,7 @@ class HouseRate extends Model
         'house_danger_frame_rate',
         'house_danger_roof_rate',
         'house_latent_danger_frame_rate',
+        'suggestion',
     ];
 
     protected $jsonAssoc = true;
@@ -101,6 +102,18 @@ class HouseRate extends Model
             3 => 'C1类建筑物，需采取修繕，加固或拆除加建部分等措施后可消除安全隐患的房屋',
             4 => 'C2类建筑物，需进行检测鉴定的房屋',
             5 => 'C3类建筑物，需立即停止使用的房屋',
+        ];
+    }
+
+    public function getSuggestionList()
+    {
+        return [
+            1 => '建议拆除加建部分',
+            2 => '建议聘请专业机构进行检测鉴定',
+            3 => '建议对存在损伤的构件或部位进行加固或修缮处理',
+            4 => '加强日常观测及维护，发现异常立即采取有效措施并及时汇报有关部门',
+            5 => '加强周边边坡及挡墙进行观测，发现异常立即采取有效措施并及时汇报有关部门',
+            9 => '其他'
         ];
     }
 

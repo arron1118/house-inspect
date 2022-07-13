@@ -486,7 +486,13 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="suggestion">处理建议:</label>
                             <div class="layui-input-block" id="suggestion">
-                                <textarea name="suggestion" class="layui-textarea" placeholder="处理建议">{$rate.suggestion}</textarea>
+                                {foreach $SuggestionList as $key => $val}
+                                <input class="layui-input" type="checkbox" lay-skin="primary" name="suggestion[]" value="{$key}" title="{$val}" {if in_array($key, $rate.suggestion)}checked{/if}>
+                                <br />
+                                {if ($key === 9)}
+                                <input class="border-0 border-bottom layui-input" type="text" lay-skin="primary" name="suggestion_other" value="{$rate.suggestion_other}" placeholder="其他在此输入">
+                                {/if}
+                                {/foreach}
                             </div>
                         </div>
 
@@ -700,6 +706,7 @@
             }
 
             if (parseInt(params['structure']) === 9 && params['structure_other'] === '') {
+                $('input[name=structure_other]').focus()
                 layer.msg('请输入"结构形式 -> 其他内容"', option);
                 return false;
             }
@@ -729,6 +736,12 @@
                 return false
             }
 
+            if (params['suggestion[5]'] && params['suggestion_other'] === '') {
+                $('input[name=suggestion_other]').focus()
+                layer.msg('请输入其他处理建议', option)
+                return false
+            }
+
             $.post("{:url('/HouseRate/update')}", params, function (res) {
                 if (res.code === 1) {
                     option.icon = 1
@@ -745,8 +758,4 @@
         });
     })
 </script>
-<script>
-
-</script>
 {/block}
->

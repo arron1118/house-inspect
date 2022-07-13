@@ -109,6 +109,7 @@ class HouseRate extends AdminController
             $params['house_danger_frame_rate'] = isset($params['house_danger_frame_rate']) ? array_values($params['house_danger_frame_rate']) : [];
             $params['house_danger_roof_rate'] = isset($params['house_danger_roof_rate']) ? array_values($params['house_danger_roof_rate']) : [];
             $params['house_latent_danger_frame_rate'] = isset($params['house_latent_danger_frame_rate']) ? array_values($params['house_latent_danger_frame_rate']) : [];
+            $params['suggestion'] = isset($params['suggestion']) ? array_values($params['suggestion']) : [];
 
             $rate = $this->model::find($id);
             $rate->save($params);

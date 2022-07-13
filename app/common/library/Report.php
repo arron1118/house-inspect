@@ -72,6 +72,7 @@ class Report
             'HouseLatentDangerFrameRateList' => $this->HouseRateModel->getHouseLatentDangerFrameRateList(),
             'FinalRateList' => $this->HouseRateModel->getFinalRateList(),
             'GradeList' => $this->HouseRateModel->getGradeList(),
+            'SuggestionList' => $this->HouseRateModel->getSuggestionList(),
         ];
         $this->reportTitle = $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区' . $this->house->title . '房屋结构安全隐患排查报告';
     }
@@ -222,7 +223,7 @@ class Report
         $cell = $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         foreach ($this->selects['StructureList'] as $key => $val) {
-            $select = isset($this->house->house_rate->structure) && $key === $this->house->house_rate->structure ? $checkBoxYes : $checkBoxNo;
+            $select = !is_null($this->house->house_rate->structure) && $key === $this->house->house_rate->structure ? $checkBoxYes : $checkBoxNo;
             $textRun->addText($select, $fancyTableCellFontStyle);
             $textRun->addText($val . ' ', $fancyTableCellFontStyle);
             if ($key === 9) {
@@ -408,7 +409,7 @@ class Report
         $cell = $table->addCell(6500, ['gridSpan' => 4, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2, 'spaceBefore' => 20]);
         foreach ($this->selects['FoundationRateList'] as $key => $val) {
-            $select = isset($this->house->house_rate->foundation_rate) && in_array($key, $this->house->house_rate->foundation_rate, false) ? $checkBoxYes : $checkBoxNo;
+            $select = !is_null($this->house->house_rate->foundation_rate) && in_array($key, $this->house->house_rate->foundation_rate, false) ? $checkBoxYes : $checkBoxNo;
             $key > 1 ? $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle) : $textRun->addText($select, $fancyTableCellFontStyle);
             $textRun->addText($val, $fancyTableCellFontStyle);
         }
@@ -429,13 +430,13 @@ class Report
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('混凝土构件<w:br />', array_merge($fancyTableCellFontStyle, ['bold' => true]));
         foreach ($this->selects['HouseDangerFrameRateList'] as $key => $val) {
-            $select = isset($this->house->house_rate->house_danger_frame_rate) && in_array($key, $this->house->house_rate->house_danger_frame_rate, false) ? $checkBoxYes : $checkBoxNo;
+            $select = !is_null($this->house->house_rate->house_danger_frame_rate) && in_array($key, $this->house->house_rate->house_danger_frame_rate, false) ? $checkBoxYes : $checkBoxNo;
             $textRun->addText($select, $fancyTableCellFontStyle);
             $textRun->addText($val . '<w:br />', $fancyTableCellFontStyle);
         }
         $textRun->addText('<w:br />悬挑梁、板（雨篷）', array_merge($fancyTableCellFontStyle, ['bold' => true]));
         foreach ($this->selects['HouseDangerRoofRateList'] as $key => $val) {
-            $select = isset($this->house->house_rate->house_danger_roof_rate) && in_array($key, $this->house->house_rate->house_danger_roof_rate, false) ? $checkBoxYes : $checkBoxNo;
+            $select = !is_null($this->house->house_rate->house_danger_roof_rate) && in_array($key, $this->house->house_rate->house_danger_roof_rate, false) ? $checkBoxYes : $checkBoxNo;
             $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle);
             $textRun->addText($val, $fancyTableCellFontStyle);
         }
@@ -446,7 +447,7 @@ class Report
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('混凝土构件', array_merge($fancyTableCellFontStyle, ['bold' => true]));
         foreach ($this->selects['HouseLatentDangerFrameRateList'] as $key => $val) {
-            $select = isset($this->house->house_rate->house_latent_danger_frame_rate) && in_array($key, $this->house->house_rate->house_latent_danger_frame_rate, false) ? $checkBoxYes : $checkBoxNo;
+            $select = !is_null($this->house->house_rate->house_latent_danger_frame_rate) && in_array($key, $this->house->house_rate->house_latent_danger_frame_rate, false) ? $checkBoxYes : $checkBoxNo;
             $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle);
             $textRun->addText($val, $fancyTableCellFontStyle);
         }
@@ -493,6 +494,26 @@ class Report
             $select = $key === $this->house->house_rate->final_rate ? $checkBoxYes : $checkBoxNo;
             $key > 1 ? $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle) : $textRun->addText($select, $fancyTableCellFontStyle);
             $textRun->addText($val, $fancyTableCellFontStyle);
+        }
+
+        $row = $table->addRow(500);
+        $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('处理建议', $fancyTableCellFontStyle);
+        $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
+        $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        foreach ($this->selects['SuggestionList'] as $key => $val) {
+            $select = !is_null($this->house->house_rate->suggestion) && in_array($key, $this->house->house_rate->suggestion, false) ? $checkBoxYes : $checkBoxNo;
+
+            if ($key > 1) {
+                $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle);
+                $key === 9 ?
+                    (!is_null($this->house->house_rate->suggestion) && in_array(9, $this->house->house_rate->suggestion, false)
+                        ? $textRun->addText($this->house->house_rate->suggestion_other, $fancyTableCellFontStyle)
+                        : $textRun->addText($val, $fancyTableCellFontStyle))
+                    : $textRun->addText($val, $fancyTableCellFontStyle);
+            } else {
+                $textRun->addText($select, $fancyTableCellFontStyle);
+                $textRun->addText($val, $fancyTableCellFontStyle);
+            }
         }
 
         $section = $phpWord->addSection(['pageBreakBefore' => true]);

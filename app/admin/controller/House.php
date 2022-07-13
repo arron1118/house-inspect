@@ -400,6 +400,7 @@ class House extends AdminController
             'HouseLatentDangerFrameRateList' => $houseRateModel->getHouseLatentDangerFrameRateList(),
             'FinalRateList' => $houseRateModel->getFinalRateList(),
             'GradeList' => $houseRateModel->getGradeList(),
+            'SuggestionList' => $houseRateModel->getSuggestionList(),
         ]);
         return $this->view->fetch();
     }
@@ -596,7 +597,6 @@ class House extends AdminController
 
         $fields = 'code, ' . implode(',', array_keys($this->infos));
         $house = $this->model::where('id', 'in', $ids)->column($fields);
-        $this->returnData['data'] = $house;
         set_time_limit(0);
         ini_set('memory_limit', '1024M');
 
