@@ -500,21 +500,13 @@ class Report
         $row->addCell(1300, ['vMerge' => 'restart', 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('处理建议', $fancyTableCellFontStyle);
         $cell = $row->addCell(6500, ['gridSpan' => 3, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
+        $suggestion = '';
         foreach ($this->selects['SuggestionList'] as $key => $val) {
-            $select = !is_null($this->house->house_rate->suggestion) && in_array($key, $this->house->house_rate->suggestion, false) ? $checkBoxYes : $checkBoxNo;
-
-            if ($key > 1) {
-                $textRun->addText('<w:br />' . $select, $fancyTableCellFontStyle);
-                $key === 9 ?
-                    (!is_null($this->house->house_rate->suggestion) && in_array(9, $this->house->house_rate->suggestion, false)
-                        ? $textRun->addText($this->house->house_rate->suggestion_other, $fancyTableCellFontStyle)
-                        : $textRun->addText($val, $fancyTableCellFontStyle))
-                    : $textRun->addText($val, $fancyTableCellFontStyle);
-            } else {
-                $textRun->addText($select, $fancyTableCellFontStyle);
-                $textRun->addText($val, $fancyTableCellFontStyle);
+            if (!is_null($this->house->house_rate->suggestion) && in_array($key, $this->house->house_rate->suggestion, false)) {
+                $suggestion .= $key === 9 ? $this->house->house_rate->suggestion_other : $val;
             }
         }
+        $textRun->addText($suggestion, $fancyTableCellFontStyle);
 
         $section = $phpWord->addSection(['pageBreakBefore' => true]);
         // 现场照片
