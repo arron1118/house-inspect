@@ -67,7 +67,7 @@
 <!--            </button>-->
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
             <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="exportExcel"><i class="fa fa-file-import"></i> 全部导出</button>
-            {if ($userInfo->id === 17)}
+            {if ($userInfo->id === 1)}
             <button type="button" class="layui-btn layui-btn-sm layui-btn-primary" lay-event="baleImages"><i class="fa fa-file-import"></i> 图片归类 </button>
             {/if}
         </script>
@@ -125,7 +125,7 @@
                 {field: 'create_time', title: '创建时间'},
             ]],
             page: {
-                limits: [15, 30, 45, 60, 90, 150],
+                limits: [15, 30, 45, 60, 90],
                 limit: 15,
             },
             skin: 'line',
