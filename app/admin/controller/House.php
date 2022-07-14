@@ -656,7 +656,7 @@ class House extends AdminController
     public function exportExcel()
     {
         $house = $this->model::with(['area', 'houseRate'])
-            ->field('id, title, code, district, space, address, is_owner_business, is_balcony, house_extension, house_change')
+            ->field('id, title, code, district, contact, space, address, is_owner_business, is_balcony, house_extension, house_change')
             ->where('status', 1)
             ->order('id desc')
             ->select();
@@ -668,6 +668,7 @@ class House extends AdminController
             'id' => '序号',
             'code' => '房屋编码',
             'title' => '房屋名称',
+            'contact' => '责任人及联系方式',
             'structure' => '结构形式',
             'floor' => '层数',
             'space' => '建筑面积（平米）',
@@ -694,7 +695,7 @@ class House extends AdminController
             foreach ($title as $key => $value) {
                 $cellValue = '';
                 // 单元格内容写入
-                if (in_array($key, ['id', 'title', 'address'])) {
+                if (in_array($key, ['id', 'title', 'address', 'contact'])) {
                     $cellValue = $item[$key];
                 }
 
