@@ -19,27 +19,29 @@ if (!function_exists('readExcel')) {
         $districtList = array_flip((new \app\common\model\House())->getDistrictList());
 
         for ($i = 2; $i < $highestRow; $i++) {
-            $title = $sheet->getCellByColumnAndRow(2, $i)->getValue();
-            $code = $sheet->getCellByColumnAndRow(3, $i)->getValue();
-            $district = trim($sheet->getCellByColumnAndRow(6, $i)->getValue());
+//            $title = $sheet->getCellByColumnAndRow(2, $i)->getValue();
+            $code = $sheet->getCellByColumnAndRow(2, $i)->getValue();
+//            $district = trim($sheet->getCellByColumnAndRow(6, $i)->getValue());
 
-            if ($district !== '') {
-                $district = $districtList[$district];
-            }
+//            if ($district !== '') {
+//                $district = $districtList[$district];
+//            }
 
-            $height = $sheet->getCellByColumnAndRow(7, $i)->getValue();
-            $space = $sheet->getCellByColumnAndRow(11, $i)->getValue() . '/' . $sheet->getCellByColumnAndRow(9, $i)->getValue();
-            $address = $sheet->getCellByColumnAndRow(4, $i)->getValue() . $sheet->getCellByColumnAndRow(13, $i)->getValue();
-            $completion_time = $sheet->getCellByColumnAndRow(7, $i)->getValue();
+//            $height = $sheet->getCellByColumnAndRow(7, $i)->getValue();
+            $space = $sheet->getCellByColumnAndRow(5, $i)->getValue() . '/' . $sheet->getCellByColumnAndRow(7, $i)->getValue();
+            $contact = $sheet->getCellByColumnAndRow(9, $i)->getValue() . ' ' . $sheet->getCellByColumnAndRow(10, $i)->getValue();
+//            $address = $sheet->getCellByColumnAndRow(4, $i)->getValue() . $sheet->getCellByColumnAndRow(13, $i)->getValue();
+//            $completion_time = $sheet->getCellByColumnAndRow(7, $i)->getValue();
 
             $log[] = array_merge($appendColumns, [
-                'title' => trim($title),
+//                'title' => trim($title),
                 'code' => trim($code),
-                'district' => trim($district ?? ''),
-                'height' => trim($height ?? ''),
+//                'district' => trim($district ?? ''),
+//                'height' => trim($height ?? ''),
                 'space' => trim($space),
-                'address' => trim($address),
-                'completion_time' => trim($completion_time),
+                'contact' => trim($contact),
+//                'address' => trim($address),
+//                'completion_time' => trim($completion_time),
             ]);
         }
 

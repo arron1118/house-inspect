@@ -183,14 +183,26 @@ class House extends AdminController
 
             // 锈蚀
             if ($is_rust_eaten > 0) {
-                $where = $is_rust_eaten === 1 ? 'house_danger_frame_rate like "%1%" or house_danger_roof_rate like "%4%" or house_latent_danger_frame_rate like "%2%"'
-                    : 'house_danger_frame_rate not like "%1%" or house_danger_roof_rate not like "%4%" or house_latent_danger_frame_rate not like "%2%"';
+                if ($is_rust_eaten === 1) {
+                    $where = 'house_danger_frame_rate like "%1%" or house_danger_roof_rate like "%4%" or house_latent_danger_frame_rate like "%2%"';
+                    $mapOr = function ($query) {
+                        $query->where('rust_eaten_info != "[]"');
+                    };
+                } else {
+                    $where = '(house_danger_frame_rate != "[]" and house_danger_frame_rate not like "%1%") or (house_danger_roof_rate != "[]" and house_danger_roof_rate not like "%4%") or (house_latent_danger_frame_rate != "[]" and house_latent_danger_frame_rate not like "%2%")';
+                }
+
                 $rate = HouseRateModel::where($where)->column('house_id');
                 $map[] = ['id', 'in', $rate];
             }
 
             // 裂缝
             if ($is_crack > 0) {
+                if ($is_crack === 1) {
+                    $mapOr = function ($query) {
+                        $query->where('crack_info != "[]"');
+                    };
+                }
                 $fields = ['foundation_rate', 'house_danger_frame_rate', 'house_latent_danger_frame_rate', 'house_latent_danger_frame_rate'];
                 $where = '';
                 foreach ($fields as $val) {
@@ -482,19 +494,32 @@ class House extends AdminController
     public function importExcel()
     {
         if ($this->request->isPost()) {
+            set_time_limit(0);
             $file = request()->file('file');
             $columns = [
-                'user_id' => 0,
-                'area_id' => $this->request->param('area_id')
+//                'user_id' => 0,
+//                'area_id' => $this->request->param('area_id')
             ];
 
             $data = readExcel($file, $columns);
             try {
-                $res = (new $this->model)->saveAll($data);
+//                $res = (new $this->model)->saveAll($data);
 
-//                foreach ($data as $key => $val) {
-//                    $this->model::where('code', $val['code'])->save(['district' => $val['district']]);
-//                }
+                foreach ($data as $key => $val) {
+                    $house = $this->model::where('code', $val['code'])->findOrEmpty();
+                    if (!$house->isEmpty()) {
+                        $house->contact = $val['contact'];
+                        if ($house->space === '') {
+                            $house->space = $val['space'];
+                        }
+
+                        $house->save();
+                    }
+
+                    if ($key % 1000 === 0) {
+                        sleep(3);
+                    }
+                }
 
                 $this->returnData['code'] = 1;
                 $this->returnData['data'] = $data;
