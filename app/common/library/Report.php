@@ -393,10 +393,6 @@ class Report
         $textRun->addText('否 ', $fancyTableCellFontStyle);
 
         $table->addRow(500);
-        $table->addCell(1300, $fancyTableCellStyle)->addTextRun(['alignment' => 'center', 'lineHeight' => 1.2])->addText('其他说明', $fancyTableCellFontStyle);
-        $table->addCell(6500, ['gridSpan' => 3, 'valign' => 'center'])->addText($this->house->remark, $fancyTableCellFontStyle);
-
-        $table->addRow(500);
         $cell = $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center']);
         $textRun = $cell->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('四、地基基础安全排查  ', $fancyTableFontStyle);
