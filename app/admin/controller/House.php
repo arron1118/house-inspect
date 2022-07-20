@@ -432,9 +432,6 @@ class House extends AdminController
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
             $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
-//            if ((int) $params['rate_status_set'] === 1) {
-//                $params['rate_status'] = 2;
-//            }
 
             $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
             if ($house) {
@@ -613,6 +610,10 @@ class House extends AdminController
 //        return download($zipName, $zipName);
     }
 
+    /**
+     * 图片归类
+     * @param Request $request
+     */
     public function baleImages(Request $request)
     {
         $ids = $request->param('ids', '');
@@ -627,17 +628,19 @@ class House extends AdminController
 
         // 文件打包
         foreach ($house as $k => $v) {
-            foreach ($this->infos as $key => $val) {
-                if ($v[$key]) {
-                    $path = public_path() . '/images/' . $v['code'] . '/' . $val . '/';
-                    if (!is_dir($path) && !mkdir($concurrentDirectory = iconv('UTF-8', 'GBK', $path), 0777, true) && !is_dir($concurrentDirectory)) {
+            if (!empty($v)) {
+                foreach ($this->infos as $key => $val) {
+                    if ($v[$key]) {
+                        $path = public_path() . '/images/' . $v['code'] . '/' . $val . '/';
+                        if (!is_dir($path) && !mkdir($concurrentDirectory = iconv('UTF-8', 'GBK', $path), 0777, true) && !is_dir($concurrentDirectory)) {
 //                        throw new \RuntimeException(sprintf('Directory "%s" was not created', $path));
-                        $this->error('无法创建目录：' . $path);
-                    }
-                    foreach ($v[$key] as $value) {
-                        $file = public_path() . $value['image'];
-                        if (file_exists($file)) {
-                            copy($file, $path . $value['description'] . '.' . explode('.', basename($file))[1]);
+                            $this->error('无法创建目录：' . $path);
+                        }
+                        foreach ($v[$key] as $value) {
+                            $file = public_path() . $value['image'];
+                            if (file_exists($file)) {
+                                copy($file, $path . $value['description'] . '.' . explode('.', basename($file))[1]);
+                            }
                         }
                     }
                 }

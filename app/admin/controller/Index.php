@@ -27,9 +27,9 @@ class Index extends AdminController
         }
     }
 
-    public function createAdmin($number = 5)
+    public function createAdmin($from, $to)
     {
-        for ($i = 1; $i <= $number; $i ++) {
+        for ($i = $from; $i <= $to; $i ++) {
             $params = [
                 'username' => 'admin' . $i,
                 'password' => password_hash('123456', PASSWORD_BCRYPT),
