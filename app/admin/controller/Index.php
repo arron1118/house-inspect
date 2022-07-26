@@ -69,6 +69,10 @@ class Index extends AdminController
                 $this->error(lang('Password is incorrect'));
             }
 
+            if (!captcha_check($params['captcha'])) {
+                $this->error(lang('Captcha is incorrect'));
+            }
+
             $user->last_login_time = $user->getData('login_time');
             $user->login_time = $now;
             $user->last_login_ip = $user->getData('login_ip');

@@ -30,7 +30,8 @@
         "phpoffice/phpword": "^0.18.3",
         "topthink/think-image": "^1.0",
       "ext-zip": "*",
-      "ext-iconv": "*"
+      "ext-iconv": "*",
+        "topthink/think-captcha": "^3.0"
     },
     "require-dev": {
         "symfony/var-dumper": "^4.2",

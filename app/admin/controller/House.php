@@ -309,7 +309,6 @@ class House extends AdminController
         $this->view->assign([
             'area_id' => $this->request->param('area_id'),
             'HouseUsageList' => $model->getHouseUsageList(),
-            'DistrictList' => $model->getDistrictList(),
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
             'PeripherySafetyInvestigationList' => $model->getPeripherySafetyInvestigationList(),
@@ -330,30 +329,18 @@ class House extends AdminController
     public function save(Request $request)
     {
         if ($request->isPost()) {
-            $params = $request->param();
+            $params = $request->param('param');
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
             $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
-            $house = $this->model::getByCode($params['code']);
-            if ($house) {
+            $house = $this->model::where('code = "' . $params['code'] . '"')->findOrEmpty();
+            if (!$house->isEmpty()) {
                 $this->error('房屋编码已存在');
             }
 
-            foreach ($this->infos as $key => $val) {
-                if (isset($params[$key]['image'])) {
-                    $temp = [];
-                    for ($i = 0; $i < count($params[$key]['image']); $i++) {
-                        $temp[$key][] = [
-                            'image' => $params[$key]['image'][$i],
-                            'description' => $params[$key]['description'][$i]
-                        ];
-                    }
-                    $params[$key] = $temp[$key];
-                }
-            }
-
+            $params = $this->getParams($params);
             (new $this->model)->save($params);
 
             $this->returnData['code'] = 1;
@@ -421,40 +408,25 @@ class House extends AdminController
      * 保存更新的资源
      *
      * @param \think\Request $request
-     * @param int $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if ($request->isPost()) {
-            $params = $request->except(['id']);
+            $params = $request->param('param.house');
 
             $params['house_usage'] = isset($params['house_usage']) ? array_values($params['house_usage']) : [];
             $params['house_extension'] = isset($params['house_extension']) ? array_values($params['house_extension']) : [];
             $params['house_change_floor_data'] = isset($params['house_change_floor_data']) ? array_values($params['house_change_floor_data']) : [];
 
-            $house = $this->model::where('id != ' . $id . ' and code = "' . $params['code'] . '"')->find();
-            if ($house) {
+            $house = $this->model::where('id != ' . $params['id'] . ' and code = "' . $params['code'] . '"')->findOrEmpty();
+            if (!$house->isEmpty()) {
                 $this->error('房屋编码已存在');
             }
 
-            $house = $this->model::find($id);
+            $house = $this->model::find($params['id']);
 
-            foreach ($this->infos as $key => $val) {
-                if (isset($params[$key]['image'])) {
-                    $temp = [];
-                    for ($i = 0; $i < count($params[$key]['image']); $i++) {
-                        $temp[$key][] = [
-                            'image' => $params[$key]['image'][$i],
-                            'description' => $params[$key]['description'][$i]
-                        ];
-                    }
-                    $params[$key] = $temp[$key];
-                } else {
-                    $params[$key] = [];
-                }
-            }
-            $params['status'] = 1;
+            $params = $this->getParams($params);
 
             $house->save($params);
             $this->returnData['data'] = $params;
@@ -487,7 +459,32 @@ class House extends AdminController
         $this->error();
     }
 
+    /**
+     * @param $params
+     * @return mixed
+     */
+    public function getParams($params)
+    {
+        foreach ($this->infos as $key => $val) {
+            if (isset($params[$key]['image'])) {
+                $temp = [];
+                for ($i = 0, $iMax = count($params[$key]['image']); $i < $iMax; $i++) {
+                    $temp[$key][] = [
+                        'image' => $params[$key]['image'][$i],
+                        'description' => $params[$key]['description'][$i]
+                    ];
+                }
+                $params[$key] = $temp[$key];
+            } else {
+                $params[$key] = [];
+            }
+        }
+        return $params;
+    }
 
+    /**
+     * 导入房屋列表
+     */
     public function importExcel()
     {
         if ($this->request->isPost()) {
@@ -538,6 +535,10 @@ class House extends AdminController
         return readExcel($file, $appendColumns);
     }
 
+    /**
+     * 检查房屋状态
+     * @param $id
+     */
     public function checkStatus($id)
     {
         $house = $this->model::find($id);
@@ -548,6 +549,10 @@ class House extends AdminController
         $this->error('排查未完成，不能评级');
     }
 
+    /**
+     * 导出图片
+     * @param Request $request
+     */
     public function exportImages(Request $request)
     {
         $ids = $request->param('ids', '');
@@ -650,12 +655,20 @@ class House extends AdminController
         $this->success(lang('Done'));
     }
 
+    /**
+     * 导出报表
+     * @param $id
+     */
     public function exportReport($id)
     {
         $report = new Report($id);
         $report->createReport();
     }
 
+    /**
+     * 导出已完成房屋EXCEL
+     * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
+     */
     public function exportExcel()
     {
         $house = $this->model::with(['area', 'houseRate'])

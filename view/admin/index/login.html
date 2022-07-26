@@ -125,6 +125,13 @@
                            autocomplete="off" class="layui-input" value="">
                 </div>
                 <div class="layui-form-item">
+                    <label class="layui-icon layui-icon-vercode" for="captcha"></label>
+                    <input type="text" name="captcha" lay-verify="required|captcha" placeholder="验证码" autocomplete="off" class="layui-input verification captcha" value="">
+                    <div class="captcha-img">
+                        {:captcha_img()}
+                    </div>
+                </div>
+                <div class="layui-form-item">
                     <input type="checkbox" name="rememberMe" value="true" lay-skin="primary" title="记住我" checked>
                 </div>
                 <div class="layui-form-item">
@@ -162,12 +169,19 @@
         // 进行登录操作
         form.on('submit(login)', function (data) {
             let params = data.field;
+
             if (params.username === '') {
                 layer.msg('用户名不能为空');
                 return false;
             }
+
             if (params.password === '') {
                 layer.msg('密码不能为空');
+                return false;
+            }
+
+            if (params.captcha === '') {
+                layer.msg('验证码不能为空');
                 return false;
             }
 
@@ -179,7 +193,6 @@
                         window.location = res.data.url;
                     });
                 } else {
-                    $('input[name="__token__"]').val(res.data.token);
                     layer.msg(res.msg, options);
                 }
             });

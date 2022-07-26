@@ -104,9 +104,9 @@
     <div class="layuimini-main">
         <button type="button" class="layui-btn layui-btn-sm data-count-edit layui-btn-normal d-none" id="importExcel">导入客户</button>
         <script type="text/html" id="toolbarDemo">
-<!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i-->
-<!--                    class="fa fa-plus"></i> 添加-->
-<!--            </button>-->
+            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="add"><i
+                    class="fa fa-plus"></i> 添加
+            </button>
             {if ($userInfo->id === 17)}
 <!--            <button type="button" class="layui-btn layui-btn-sm layui-btn-normal" lay-event="importExcel"><i class="fa fa-file-import"></i> 导入客户</button>-->
             {/if}
@@ -141,7 +141,7 @@
 
         let loading = null;
 
-        window.houseTable = table.render({
+        parent.window.houseTable = table.render({
             height: 600,
             elem: '#currentTableId',
             url: '{:url("/house/getHouseList")}',
@@ -239,7 +239,7 @@
             }
             switch (obj.event) {  // 监听添加操作
                 case 'add':
-                    let index = layer.open({
+                    parent.layer.open({
                         title: '添加',
                         type: 2,
                         shade: 0.2,
@@ -248,6 +248,13 @@
                         anim: 2,
                         area: ['100%', '100%'],
                         content: '{:url("/House/create")}?area_id=' + area.val(),
+                        cancel: function (index, layero) {
+                            // parent.window.houseTable.reload({
+                            //     page: {
+                            //         curr: 1
+                            //     }
+                            // }, true)
+                        }
                     });
                     break;
 
@@ -330,6 +337,13 @@
                         anim: 2,
                         area: ['100%', '100%'],
                         content: '{:url("/House/edit")}?id=' + obj.data.id,
+                        cancel: function (index, layero) {
+                            // parent.window.houseTable.reload({
+                            //     page: {
+                            //         curr: 1
+                            //     }
+                            // }, true)
+                        }
                     });
                     break;
 

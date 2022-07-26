@@ -100,10 +100,10 @@ class HouseRate extends AdminController
      * @param  int  $id
      * @return \think\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
         if ($request->isAjax()) {
-            $params = $request->except(['id']);
+            $params = $request->param('param.rate');
 
             $params['foundation_rate'] = isset($params['foundation_rate']) ? array_values($params['foundation_rate']) : [];
             $params['house_danger_frame_rate'] = isset($params['house_danger_frame_rate']) ? array_values($params['house_danger_frame_rate']) : [];
@@ -111,7 +111,7 @@ class HouseRate extends AdminController
             $params['house_latent_danger_frame_rate'] = isset($params['house_latent_danger_frame_rate']) ? array_values($params['house_latent_danger_frame_rate']) : [];
             $params['suggestion'] = isset($params['suggestion']) ? array_values($params['suggestion']) : [];
 
-            $rate = $this->model::find($id);
+            $rate = $this->model::find($params['id']);
             $rate->save($params);
             HouseModel::update(['rate_status' => 1, 'id' => $rate->house_id, 'admin_id' => $this->userInfo->id]);
             $this->returnData['code'] = 1;

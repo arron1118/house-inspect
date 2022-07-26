@@ -32,8 +32,8 @@
             </ul>
             <div class="layui-tab-content">
                 <form class="layui-form layuimini-form" lay-filter="customer-add-form" action="">
-                    <input type="hidden" name="area_id" value="{$house.area_id}"/>
-                    <input type="hidden" name="id" value="{$house.id}"/>
+                    <input type="hidden" name="param[house][area_id]" value="{$house.area_id}"/>
+                    <input type="hidden" name="param[house][id]" value="{$house.id}"/>
                     <div class="layui-tab-item layui-show">
                         <div class="row justify-content-center">
                             <div class="col-md-8">
@@ -52,44 +52,44 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label fw-bold">已拆除</label>
                                                 <div class="layui-input-block" id="rate_status_set">
-                                                    <input type="radio" name="rate_status_set" value="1" title="是" {if ($house.rate_status_set === 1)}checked{/if}>
-                                                    <input type="radio" name="rate_status_set" value="2" title="否" {if ($house.rate_status_set === 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][rate_status_set]" value="1" title="是" {if ($house.rate_status_set === 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][rate_status_set]" value="2" title="否" {if ($house.rate_status_set === 2)}checked{/if}>
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="title">房屋名称:</label>
                                                 <div class="layui-input-block" id="title">
-                                                    <input type="text" name="title" placeholder="" autocomplete="off" class="layui-input" value="{$house.title}">
+                                                    <input type="text" name="param[house][title]" placeholder="" autocomplete="off" class="layui-input" value="{$house.title}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="space">面积/层数:</label>
                                                 <div class="layui-input-block" id="space">
-                                                    <input type="text" name="space" placeholder="" autocomplete="off" class="layui-input" value="{$house.space}">
+                                                    <input type="text" name="param[house][space]" placeholder="" autocomplete="off" class="layui-input" value="{$house.space}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="height">建筑物高度:</label>
                                                 <div class="layui-input-block" id="height">
-                                                    <input type="text" name="height" placeholder="" autocomplete="off" class="layui-input" value="{$house.height}">
+                                                    <input type="text" name="param[house][height]" placeholder="" autocomplete="off" class="layui-input" value="{$house.height}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="design_time">设计时间:</label>
                                                 <div class="layui-input-block" id="design_time">
-                                                    <input type="text" name="design_time" id="design_date" value="{$house.design_time}" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="param[house][design_time]" id="design_date" value="{$house.design_time}" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="completion_time">竣工日期:</label>
                                                 <div class="layui-input-block" id="completion_time">
-                                                    <input type="text" name="completion_time" id="completion_date" value="{$house.completion_time}" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
+                                                    <input type="text" name="param[house][completion_time]" id="completion_date" value="{$house.completion_time}" placeholder="yyyy-MM-dd" autocomplete="off" class="layui-input">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="contact">责任人及联系方式:</label>
                                                 <div class="layui-input-block" id="contact">
-                                                    <input type="text" name="contact" placeholder="" autocomplete="off" class="layui-input" value="{$house.contact}">
+                                                    <input type="text" name="param[house][contact]" placeholder="" autocomplete="off" class="layui-input" value="{$house.contact}">
                                                 </div>
                                             </div>
                                         </div>
@@ -97,7 +97,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label fw-bold">排查人员</label>
                                                 <div class="layui-input-block">
-                                                    <select name="user_id" lay-filter="districtFilter" lay-verify="required">
+                                                    <select name="param[house][user_id]" lay-filter="districtFilter" lay-verify="required">
                                                         <option value="0">请选择排查人员</option>
                                                         {foreach $userList as $key => $val}
                                                         <option value="{$val.id}" {if $val.id=== $house.user_id}selected{/if}>{$val.username}</option>
@@ -108,37 +108,37 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="code">房屋编码:</label>
                                                 <div class="layui-input-block" id="code">
-                                                    <input type="text" name="code" placeholder="" autocomplete="off" class="layui-input" value="{$house.code}">
+                                                    <input type="text" name="param[house][code]" placeholder="" autocomplete="off" class="layui-input" value="{$house.code}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="address">房屋地址:</label>
                                                 <div class="layui-input-block" id="address">
-                                                    <input type="text" name="address" placeholder="" autocomplete="off" class="layui-input" value="{$house.address}">
+                                                    <input type="text" name="param[house][address]" placeholder="" autocomplete="off" class="layui-input" value="{$house.address}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="galleryful">使用人数:</label>
                                                 <div class="layui-input-block" id="galleryful">
-                                                    <input type="text" name="galleryful" placeholder="0" autocomplete="off" class="layui-input" value="0{$house.galleryful}">
+                                                    <input type="text" name="param[house][galleryful]" placeholder="0" autocomplete="off" class="layui-input" value="{$house.galleryful}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="design_company">设计单位:</label>
                                                 <div class="layui-input-block" id="design_company">
-                                                    <input type="text" name="design_company" placeholder="" autocomplete="off" class="layui-input" value="{$house.design_company}">
+                                                    <input type="text" name="param[house][design_company]" placeholder="" autocomplete="off" class="layui-input" value="{$house.design_company}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="build_company">施工单位:</label>
                                                 <div class="layui-input-block" id="build_company">
-                                                    <input type="text" name="build_company" placeholder="" autocomplete="off" class="layui-input" value="{$house.build_company}">
+                                                    <input type="text" name="param[house][build_company]" placeholder="" autocomplete="off" class="layui-input" value="{$house.build_company}">
                                                 </div>
                                             </div>
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">社区</label>
                                                 <div class="layui-input-block">
-                                                    <select name="district" lay-filter="districtFilter" lay-verify="required">
+                                                    <select name="param[house][district]" lay-filter="districtFilter" lay-verify="required">
                                                         {foreach $DistrictList as $key => $val}
                                                         <option value="{$key}" {if $key=== $house.district}selected{/if}>{$val}</option>
                                                         {/foreach}
@@ -153,10 +153,10 @@
                                                 <label class="layui-form-label" for="house_usage">现有使用功能:</label>
                                                 <div class="layui-input-block" id="house_usage">
                                                     {foreach ($HouseUsageList as $key => $val)}
-                                                    <input type="checkbox" lay-skin="primary" name="house_usage[]" value="{$key}" title="{$val}" {if !empty($house.house_usage) && in_array($key, $house.house_usage)}checked{/if}>
+                                                    <input type="checkbox" lay-skin="primary" name="param[house][house_usage][]" value="{$key}" title="{$val}" {if !empty($house.house_usage) && in_array($key, $house.house_usage)}checked{/if}>
                                                     {/foreach}
                                                     <span class="kuohao">
-                                                            <input type="text" name="house_usage_other" value="{$house.house_usage_other}" placeholder="" class="border-0 ">
+                                                            <input type="text" name="param[house][house_usage_other]" value="{$house.house_usage_other}" placeholder="" class="border-0 ">
                                                         </span>
                                                 </div>
                                             </div>
@@ -167,8 +167,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_owner_business">经营性自建房:</label>
                                                 <div class="layui-input-block" id="is_owner_business">
-                                                    <input type="radio" name="is_owner_business" value="1" lay-filter="is_owner_business" lay-verify="isOwnerBusiness" title="是" {if ($house.is_owner_business=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_owner_business" value="2" lay-filter="is_owner_business" lay-verify="isOwnerBusiness " title="否" {if ($house.is_owner_business=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_owner_business]" value="1" lay-filter="is_owner_business" lay-verify="isOwnerBusiness" title="是" {if ($house.is_owner_business=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_owner_business]" value="2" lay-filter="is_owner_business" lay-verify="isOwnerBusiness " title="否" {if ($house.is_owner_business=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -179,7 +179,7 @@
                                                 <label class="layui-form-label" for="related_data">相关资料:</label>
                                                 <div class="layui-input-block" id="related_data">
                                                     {foreach ($RelatedDataList as $key => $val)}
-                                                    <input type="radio" lay-skin="primary" name="related_data" value="{$key}" title="{$val}" {if $key=== $house.related_data}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][related_data]" value="{$key}" title="{$val}" {if $key=== $house.related_data}checked{/if}>
                                                     {/foreach}
                                                 </div>
                                             </div>
@@ -193,7 +193,7 @@
                                                 <span class="fs-4 text-info d-inline-block" style="height: 36px; line-height: 36px;">二，房屋使用安全排查</span>
                                                 <div class="ms-4" id="periphery_safety_investigation">
                                                     {foreach ($HouseSafetyInvestigationList as $key => $val)}
-                                                    <input type="radio" name="house_safety_investigation" value="{$key}" title="{$val}" {if $key=== $house.house_safety_investigation}checked{/if}>
+                                                    <input type="radio" name="param[house][house_safety_investigation]" value="{$key}" title="{$val}" {if $key=== $house.house_safety_investigation}checked{/if}>
                                                     {/foreach}
                                                 </div>
                                             </div>
@@ -204,10 +204,10 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_usage_change">使用功能:</label>
                                                 <div class="layui-input-block" id="is_usage_change">
-                                                    <input type="radio" lay-skin="primary" name="is_usage_change" value="2" title="无改变" {if ($house.is_usage_change=== 2)}checked{/if}>
-                                                    <input type="radio" lay-skin="primary" name="is_usage_change" value="1" title="" {if ($house.is_usage_change=== 1)}checked{/if}>
-                                                    由：<span class="kuohao"><input type="text" name="is_usage_change_from" value="{$house.is_usage_change_from}" placeholder="" class="border-0"></span>
-                                                    改变为：<span class="kuohao"><input type="text" name="is_usage_change_to" value="{$house.is_usage_change_to}" placeholder="" class="border-0"></span>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_usage_change]" value="2" title="无改变" {if ($house.is_usage_change=== 2)}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_usage_change]" value="1" title="" {if ($house.is_usage_change=== 1)}checked{/if}>
+                                                    由：<span class="kuohao"><input type="text" name="param[house][is_usage_change_from]" value="{$house.is_usage_change_from}" placeholder="" class="border-0"></span>
+                                                    改变为：<span class="kuohao"><input type="text" name="param[house][is_usage_change_to]" value="{$house.is_usage_change_to}" placeholder="" class="border-0"></span>
                                                 </div>
                                             </div>
                                         </div>
@@ -217,8 +217,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_usage_onus">使用荷载:</label>
                                                 <div class="layui-input-block" id="is_usage_onus">
-                                                    <input type="radio" lay-skin="primary" name="is_usage_onus" value="2" title="无明显增加" {if ($house.is_usage_onus=== 2)}checked{/if}>
-                                                    <input type="radio" lay-skin="primary" name="is_usage_onus" value="1" title="明显增加" {if ($house.is_usage_onus=== 1)}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_usage_onus]" value="2" title="无明显增加" {if ($house.is_usage_onus=== 2)}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_usage_onus]" value="1" title="明显增加" {if ($house.is_usage_onus=== 1)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -228,8 +228,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_balcony">有悬挑阳台:</label>
                                                 <div class="layui-input-block" id="is_balcony">
-                                                    <input type="radio" lay-skin="primary" name="is_balcony" value="1" title="是" {if ($house.is_balcony=== 1)}checked{/if}>
-                                                    <input type="radio" lay-skin="primary" name="is_balcony" value="2" title="否" {if ($house.is_balcony=== 2)}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_balcony]" value="1" title="是" {if ($house.is_balcony=== 1)}checked{/if}>
+                                                    <input type="radio" lay-skin="primary" name="param[house][is_balcony]" value="2" title="否" {if ($house.is_balcony=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -240,7 +240,7 @@
                                                 <label class="layui-form-label" for="house_extension">加建:</label>
                                                 <div class="layui-input-block" id="house_extension">
                                                     {foreach ($HouseExtensionList as $key => $val)}
-                                                    <input type="checkbox" lay-skin="primary" name="house_extension[]" value="{$key}" title="{$val}" {if !empty($house.house_extension) && in_array($key, $house.house_extension)}checked{/if}>
+                                                    <input type="checkbox" lay-skin="primary" name="param[house][house_extension][]" value="{$key}" title="{$val}" {if !empty($house.house_extension) && in_array($key, $house.house_extension)}checked{/if}>
                                                     {/foreach}
                                                 </div>
                                             </div>
@@ -251,15 +251,15 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="house_change">改建:</label>
                                                 <div class="layui-input-block" id="house_change">
-                                                    <input type="radio" name="house_change" value="1" title="" {if ($house.house_change=== 1)}checked{/if}>
-                                                    <span>拆除 <span class="kuohao"><input type="text" class="border-0" name="house_change_floor" value="{$house.house_change_floor}" placeholder=""> </span>层的</span>
+                                                    <input type="radio" name="param[house][house_change]" value="1" title="" {if ($house.house_change=== 1)}checked{/if}>
+                                                    <span>拆除 <span class="kuohao"><input type="text" class="border-0" name="param[house][house_change_floor]" value="{$house.house_change_floor}" placeholder=""> </span>层的</span>
                                                     <span class="kuohao me-5">
                                                 {foreach ($HouseChangeFloorDataList as $key => $val)}
-                                                <input type="checkbox" lay-skin="primary" name="house_change_floor_data[]" value="{$key}" title="{$val}" {if !empty($house.house_change_floor_data) && in_array($key, $house.house_change_floor_data)}checked{/if}>
+                                                <input type="checkbox" lay-skin="primary" name="param[house][house_change_floor_data][]" value="{$key}" title="{$val}" {if !empty($house.house_change_floor_data) && in_array($key, $house.house_change_floor_data)}checked{/if}>
                                                 {/foreach}
                                                 </span>
-                                                    <input type="radio" name="house_change" value="2" title="存在新增洞口" {if ($house.house_change=== 2)}checked{/if}>
-                                                    <input type="radio" name="house_change" value="9" title="无" {if ($house.house_change=== 9)}checked{/if}>
+                                                    <input type="radio" name="param[house][house_change]" value="2" title="存在新增洞口" {if ($house.house_change=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][house_change]" value="9" title="无" {if ($house.house_change=== 9)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -270,8 +270,8 @@
                                                 <label class="layui-form-label" for="is_house_has_scourge">灾害影响:</label>
                                                 <div class="layui-input-block" id="is_house_has_scourge">
                                                     <span class="">房屋是否受过火灾等外力损害：</span>
-                                                    <input type="radio" name="is_house_has_scourge" value="1" title="是" {if ($house.is_house_has_scourge=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_house_has_scourge" value="2" title="否" {if ($house.is_house_has_scourge=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_house_has_scourge]" value="1" title="是" {if ($house.is_house_has_scourge=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_house_has_scourge]" value="2" title="否" {if ($house.is_house_has_scourge=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -284,7 +284,7 @@
                                                 <span class="fs-4 text-info d-inline-block" style="height: 36px; line-height: 36px;">三，房屋周边环境安全排查</span>
                                                 <div class="ms-4" id="periphery_safety_investigation">
                                                     {foreach $PeripherySafetyInvestigationList as $key => $val}
-                                                    <input type="radio" name="periphery_safety_investigation" value="{$key}" title="{$val}" {if $key=== $house.periphery_safety_investigation}checked{/if}>
+                                                    <input type="radio" name="param[house][periphery_safety_investigation]" value="{$key}" title="{$val}" {if $key=== $house.periphery_safety_investigation}checked{/if}>
                                                     {/foreach}
                                                 </div>
                                             </div>
@@ -295,8 +295,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_periphery_excavation">房屋周边是否有开挖土方:</label>
                                                 <div class="layui-input-block" id="is_periphery_excavation">
-                                                    <input type="radio" name="is_periphery_excavation" value="1" title="是" {if ($house.is_periphery_excavation=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_periphery_excavation" value="2" title="否" {if ($house.is_periphery_excavation=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_excavation]" value="1" title="是" {if ($house.is_periphery_excavation=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_excavation]" value="2" title="否" {if ($house.is_periphery_excavation=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -304,8 +304,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_periphery_construction">房屋周边是否有地铁、管廊、隧道等工程施工:</label>
                                                 <div class="layui-input-block" id="is_periphery_construction">
-                                                    <input type="radio" name="is_periphery_construction" value="1" title="是" {if ($house.is_periphery_construction=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_periphery_construction" value="2" title="否" {if ($house.is_periphery_construction=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_construction]" value="1" title="是" {if ($house.is_periphery_construction=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_construction]" value="2" title="否" {if ($house.is_periphery_construction=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -315,8 +315,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_periphery_hillside">房屋周边是否有山体或边坡:</label>
                                                 <div class="layui-input-block" id="is_periphery_hillside">
-                                                    <input type="radio" name="is_periphery_hillside" value="1" title="是" {if ($house.is_periphery_hillside=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_periphery_hillside" value="2" title="否" {if ($house.is_periphery_hillside=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_hillside]" value="1" title="是" {if ($house.is_periphery_hillside=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_hillside]" value="2" title="否" {if ($house.is_periphery_hillside=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -324,8 +324,8 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_periphery_sink">房屋周边地面是否有塌陷:</label>
                                                 <div class="layui-input-block" id="is_periphery_sink">
-                                                    <input type="radio" name="is_periphery_sink" value="1" title="是" {if ($house.is_periphery_sink=== 1)}checked{/if}>
-                                                    <input type="radio" name="is_periphery_sink" value="2" title="否" {if ($house.is_periphery_sink=== 2)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_sink]" value="1" title="是" {if ($house.is_periphery_sink=== 1)}checked{/if}>
+                                                    <input type="radio" name="param[house][is_periphery_sink]" value="2" title="否" {if ($house.is_periphery_sink=== 2)}checked{/if}>
                                                 </div>
                                             </div>
                                         </div>
@@ -335,7 +335,7 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label" for="is_periphery_sink">其他说明:</label>
                                                 <div class="layui-input-block" id="is_periphery_sink">
-                                                    <textarea class="layui-textarea" name="remark">{$house.remark}</textarea>
+                                                    <textarea class="layui-textarea" name="param[house][remark]">{$house.remark}</textarea>
                                                 </div>
                                             </div>
                                         </div>
@@ -354,9 +354,18 @@
                     <div class="row justify-content-center">
                         <div class="col-md-8">
                             <div class="layui-form-item submitButton">
-                                <button class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
-                                        lay-filter="add">完 成
-                                </button>
+                                <div class="row">
+                                    <div class="col">
+                                        <button name="param[house][status]" value="0" class="layui-btn layui-btn layui-btn-info layui-btn-fluid" lay-submit=""
+                                                lay-filter="add">保 存
+                                        </button>
+                                    </div>
+                                    <div class="col">
+                                        <button name="param[house][status]" value="1" class="layui-btn layui-btn layui-btn-normal layui-btn-fluid" lay-submit=""
+                                                lay-filter="add">完 成
+                                        </button>
+                                    </div>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -364,7 +373,7 @@
 
                 <div class="layui-tab-item container">
                     <form class="layui-form layuimini-form" action="">
-                        <input type="hidden" name="id" value="{$rate.id}">
+                        <input type="hidden" name="param[rate][id]" value="{$rate.id}">
                         <div class="layui-form-item logo-title text-center layui-font-blue">
                             <h1>评 级</h1>
                         </div>
@@ -373,18 +382,18 @@
                                 <label class="layui-form-label" for="structure">结构形式:</label>
                                 <div class="layui-input-block" id="structure">
                                     {foreach ($StructureList as $key => $val)}
-                                    <input type="radio" lay-skin="primary" name="structure" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.structure}checked{/if}>
+                                    <input type="radio" lay-skin="primary" name="param[rate][structure]" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.structure}checked{/if}>
                                     {/foreach}
-                                    <input type="text" name="structure_other" class="border-0 border-bottom" value="{$rate.structure_other}" {if $rate.structure_other === 9}lay-verify="required"{/if}>
+                                    <input type="text" name="param[rate][structure_other]" class="border-0 border-bottom" value="{$rate.structure_other}" {if $rate.structure_other === 9}lay-verify="required"{/if}>
                                 </div>
                             </div>
                             <div class="layui-form-item">
                                 <label class="layui-form-label" for="basis_type">基础类型:</label>
                                 <div class="layui-input-block" id="basis_type">
                                     {foreach ($BasisTypeList as $key => $val)}
-                                    <input type="radio" lay-skin="primary" name="basis_type" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.basis_type}checked{/if}>
+                                    <input type="radio" lay-skin="primary" name="param[rate][basis_type]" value="{$key}" title="{$val}" lay-verify="required" {if $key === $rate.basis_type}checked{/if}>
                                     {/foreach}
-                                    <input type="text" name="basis_type_other" class="border-0 border-bottom" value="{$rate.basis_type_other}" {if $rate.basis_type === 9}lay-verify="required"{/if}>
+                                    <input type="text" name="param[rate][basis_type_other]" class="border-0 border-bottom" value="{$rate.basis_type_other}" {if $rate.basis_type === 9}lay-verify="required"{/if}>
                                 </div>
                             </div>
                         </div>
@@ -392,14 +401,14 @@
                             <label class="layui-form-label" for="foundation_safety_rate">地基基础安全排查:</label>
                             <div class="layui-input-block" id="foundation_safety_rate">
                                 {foreach $FoundationSafetyRateList as $key => $val}
-                                <input type="radio" class="layui-input" name="foundation_safety_rate" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.foundation_safety_rate}checked{/if}>
+                                <input type="radio" class="layui-input" name="param[rate][foundation_safety_rate]" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.foundation_safety_rate}checked{/if}>
                                 {/foreach}
                             </div>
                             <div class="layui-input-block" id="foundation_rate">
                                 <div>
                                     {foreach $FoundationRateList as $key => $val}
                                     <div>
-                                        <input type="checkbox" lay-skin="primary" name="foundation_rate[]" value="{$key}" title="{$val}" {if isset($rate.foundation_rate) && in_array($key, $rate.foundation_rate)}checked{/if}>
+                                        <input type="checkbox" lay-skin="primary" name="param[rate][foundation_rate][]" value="{$key}" title="{$val}" {if isset($rate.foundation_rate) && in_array($key, $rate.foundation_rate)}checked{/if}>
                                     </div>
                                     {/foreach}
                                 </div>
@@ -409,7 +418,7 @@
                             <label class="layui-form-label" for="house_safety_rate">上部结构安全排查:</label>
                             <div class="layui-input-block" id="house_safety_rate">
                                 {foreach $HouseSafetyRateList as $key => $val}
-                                <input type="radio" class="layui-input" name="house_safety_rate" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.house_safety_rate}checked{/if}>
+                                <input type="radio" class="layui-input" name="param[rate][house_safety_rate]" value="{$key}"  lay-verify="required" title="{$val}" {if $key === $rate.house_safety_rate}checked{/if}>
                                 {/foreach}
                             </div>
                         </div>
@@ -419,7 +428,7 @@
                                 <div>混凝土构件：</div>
                                 {foreach $HouseDangerFrameRateList as $key => $val}
                                 <div>
-                                    <input type="checkbox" lay-skin="primary" name="house_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_frame_rate) && in_array($key,$rate.house_danger_frame_rate)}checked{/if}>
+                                    <input type="checkbox" lay-skin="primary" name="param[rate][house_danger_frame_rate][]" value="{$key}" title="{$val}" {if isset($rate.house_danger_frame_rate) && in_array($key,$rate.house_danger_frame_rate)}checked{/if}>
                                 </div>
                                 {/foreach}
                             </div>
@@ -427,7 +436,7 @@
                                 <div>悬挑梁、板（雨篷）：</div>
                                 {foreach $HouseDangerRoofRateList as $key => $val}
                                 <div>
-                                    <input type="checkbox" lay-skin="primary" name="house_danger_roof_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_danger_roof_rate) && in_array($key, $rate.house_danger_roof_rate)}checked{/if}>
+                                    <input type="checkbox" lay-skin="primary" name="param[rate][house_danger_roof_rate][]" value="{$key}" title="{$val}" {if isset($rate.house_danger_roof_rate) && in_array($key, $rate.house_danger_roof_rate)}checked{/if}>
                                 </div>
                                 {/foreach}
                             </div>
@@ -438,7 +447,7 @@
                                 <div>混凝土构件：</div>
                                 {foreach $HouseLatentDangerFrameRateList as $key => $val}
                                 <div>
-                                    <input type="checkbox" lay-skin="primary" name="house_latent_danger_frame_rate[]" value="{$key}" title="{$val}" {if isset($rate.house_latent_danger_frame_rate) && in_array($key, $rate.house_latent_danger_frame_rate)}checked{/if}>
+                                    <input type="checkbox" lay-skin="primary" name="param[rate][house_latent_danger_frame_rate][]" value="{$key}" title="{$val}" {if isset($rate.house_latent_danger_frame_rate) && in_array($key, $rate.house_latent_danger_frame_rate)}checked{/if}>
                                 </div>
                                 {/foreach}
                             </div>
@@ -446,14 +455,14 @@
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="house_safety_remark">其他需要说明的危险性问题:</label>
                             <div class="layui-input-block" id="house_safety_remark">
-                                <textarea name="house_safety_remark" class="layui-textarea" lay-verify="required" placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
+                                <textarea name="param[rate][house_safety_remark]" class="layui-textarea" lay-verify="required" placeholder="请输入其他问题">{$rate.house_safety_remark}</textarea>
                             </div>
                         </div>
                         <div class="layui-form-item">
                             <label class="layui-form-label" for="site_rate">场地排查:</label>
                             <div class="layui-input-block" id="site_rate">
                                 {foreach $GradeList as $key => $val}
-                                <input class="layui-input" type="radio" lay-skin="primary" name="site_rate" value="{$key}" title="{$val}" {if $key === $rate.site_rate}checked{/if}>
+                                <input class="layui-input" type="radio" lay-skin="primary" name="param[rate][site_rate]" value="{$key}" title="{$val}" {if $key === $rate.site_rate}checked{/if}>
                                 {/foreach}
                             </div>
                         </div>
@@ -461,7 +470,7 @@
                             <label class="layui-form-label" for="foundation_basis_rate">地基基础排查:</label>
                             <div class="layui-input-block" id="foundation_basis_rate">
                                 {foreach $GradeList as $key => $val}
-                                <input class="layui-input" type="radio" lay-skin="primary" name="foundation_basis_rate" value="{$key}" title="{$val}" {if $key === $rate.foundation_basis_rate}checked{/if}>
+                                <input class="layui-input" type="radio" lay-skin="primary" name="param[rate][foundation_basis_rate]" value="{$key}" title="{$val}" {if $key === $rate.foundation_basis_rate}checked{/if}>
                                 {/foreach}
                             </div>
                         </div>
@@ -469,7 +478,7 @@
                             <label class="layui-form-label" for="main_foundation_rate">主体结构排查:</label>
                             <div class="layui-input-block" id="main_foundation_rate">
                                 {foreach $GradeList as $key => $val}
-                                <input class="layui-input" type="radio" lay-skin="primary" name="main_foundation_rate" value="{$key}" title="{$val}" {if $key === $rate.main_foundation_rate}checked{/if}>
+                                <input class="layui-input" type="radio" lay-skin="primary" name="param[rate][main_foundation_rate]" value="{$key}" title="{$val}" {if $key === $rate.main_foundation_rate}checked{/if}>
                                 {/foreach}
                             </div>
                         </div>
@@ -478,7 +487,7 @@
                             <div class="layui-input-block" id="final_rate">
                                 {foreach $FinalRateList as $key => $val}
                                 <div>
-                                    <input class="layui-input" type="radio" lay-skin="primary" name="final_rate" value="{$key}" title="{$val}" {if $key === $rate.final_rate}checked{/if}>
+                                    <input class="layui-input" type="radio" lay-skin="primary" name="param[rate][final_rate]" value="{$key}" title="{$val}" {if $key === $rate.final_rate}checked{/if}>
                                 </div>
                                 {/foreach}
                             </div>
@@ -487,10 +496,10 @@
                             <label class="layui-form-label" for="suggestion">处理建议:</label>
                             <div class="layui-input-block" id="suggestion">
                                 {foreach $SuggestionList as $key => $val}
-                                <input class="layui-input" type="checkbox" lay-skin="primary" name="suggestion[]" value="{$key}" title="{$val}" {if !is_null($rate.suggestion) && in_array($key, $rate.suggestion)}checked{/if}>
+                                <input class="layui-input" type="checkbox" lay-skin="primary" name="param[rate][suggestion][]" value="{$key}" title="{$val}" {if !is_null($rate.suggestion) && in_array($key, $rate.suggestion)}checked{/if}>
                                 <br />
                                 {if ($key === 9)}
-                                <input class="border-0 border-bottom layui-input" type="text" lay-skin="primary" name="suggestion_other" value="{$rate.suggestion_other}" placeholder="其他在此输入">
+                                <input class="border-0 border-bottom layui-input" type="text" lay-skin="primary" name="param[rate][suggestion_other]" value="{$rate.suggestion_other}" placeholder="其他在此输入">
                                 {/if}
                                 {/foreach}
                             </div>
@@ -517,8 +526,8 @@
             element = layui.element,
             upload = layui.upload,
             form = layui.form;
-        let frameIndex = parent.layer.getFrameIndex(window.name);
-        let option = {icon: 0};
+        let frameIndex = parent.layer.getFrameIndex(window.name)
+        let option = { icon: 0 }
         let makeHtml = function (index, item, data = null) {
             let item_container = index + '_container', cont = $('.' + item_container), i = cont.children().length;
             cont.append($('<div />', {
@@ -530,7 +539,7 @@
             }).append($('<div />', {
                 class: 'layui-input-block m-0'
             }).append($('<textarea />', {
-                name: index + '[description][]',
+                name: 'param[house][' + index + '][description][]',
                 class: 'layui-textarea',
                 rows: 5,
                 placeholder: '描述',
@@ -548,7 +557,7 @@
                 alt: data?.description
             })).append($('<input />', {
                 type: 'hidden',
-                name: index + '[image][]',
+                name: 'param[house][' + index + '][image][]',
                 value: data?.image
             })).append($('<p />', {class: index + '_tip'}))).append($('<div />', {
                 style: 'display: flex; flex-direction: row; justify-content: start'
@@ -584,7 +593,7 @@
                     layer.close(loading)
                     if (res.code === 1) {
                         option.icon = 1;
-                        this.item.parentsUntil('.' + item_container).find('input[name="' + index + '[image][]"]').val(res.data.savePath);
+                        this.item.parentsUntil('.' + item_container).find('input[name="param[house][' + index + '][image][]"]').val(res.data.savePath);
                     }
 
                     return layer.msg(res.msg, option)
@@ -678,13 +687,18 @@
         })
         // 提交
         form.on('submit(add)', function (data) {
+            if (parseInt(data.field['param[house][district]']) === 0) {
+                parent.layer.msg('请选择“社区”', option)
+                return false
+            }
+            data.field[data.elem.name] = data.elem.value
             $.post("{:url('/house/update')}", data.field, function (res) {
                 if (res.code === 1) {
                     option.icon = 6
 
                     parent.layer.msg(res.msg, option, function () {
                         // parent.layer.close(frameIndex);
-                        parent.layui.table.reload('currentTable', {
+                        parent.window.houseTable.reload({
                             page: {
                                 curr: 1
                             }
@@ -700,54 +714,57 @@
         form.on('submit(grade)', function (data) {
             let params = data.field;
 
-            if (!params['structure']) {
+            if (!params['param[rate][structure]']) {
                 layer.msg('请选择"结构形式"', option);
                 return false;
             }
 
-            if (parseInt(params['structure']) === 9 && params['structure_other'] === '') {
-                $('input[name=structure_other]').focus()
+            if (parseInt(params['param[rate][structure]']) === 9 && params['param[rate][structure_other]'] === '') {
+                $('input[name="param[rate][structure_other]"]').focus()
                 layer.msg('请输入"结构形式 -> 其他内容"', option);
                 return false;
             }
 
-            if (!params['basis_type']) {
+            if (!params['param[rate][basis_type]']) {
                 layer.msg('请选择"基础类型"', option);
                 return false;
             }
 
-            if (parseInt(params['basis_type']) === 9 && params['basis_type_other'] === '') {
+            if (parseInt(params['param[rate][basis_type]']) === 9 && params['param[rate][basis_type_other]'] === '') {
                 layer.msg('请输入"基础类型 -> 其他内容"', option);
                 return false;
             }
 
-            if (!params['foundation_safety_rate']) {
+            if (!params['param[rate][foundation_safety_rate]']) {
                 layer.msg('请选择"地基基础安全排查"', option);
                 return false;
             }
 
-            if (!params['house_safety_rate']) {
+            if (!params['param[rate][house_safety_rate]']) {
                 layer.msg('请选择"上部结构安全排查"', option)
                 return false
             }
 
-            if (!params['final_rate']) {
+            if (!params['param[rate][final_rate]']) {
                 layer.msg('请选择"排查结论"', option)
                 return false
             }
 
-            if (params['suggestion[5]'] && params['suggestion_other'] === '') {
-                $('input[name=suggestion_other]').focus()
+            if (params['param[rate][suggestion][5]'] && params['param[rate][suggestion_other]'] === '') {
+                $('input[name="param[rate][suggestion_other]"]').focus()
                 layer.msg('请输入其他处理建议', option)
                 return false
             }
-
             $.post("{:url('/HouseRate/update')}", params, function (res) {
                 if (res.code === 1) {
-                    option.icon = 1
+                    option.icon = 6
                     layer.msg(res.msg, option, function () {
                         // parent.layer.close(frameIndex);
-                        parent.layui.table.reload('currentTable');
+                        parent.window.houseTable.reload({
+                            page: {
+                                curr: 1
+                            }
+                        }, true);
                     });
                 } else {
                     layer.msg(res.msg, option);
