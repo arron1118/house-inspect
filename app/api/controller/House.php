@@ -136,7 +136,7 @@ class House extends ApiController
      */
     public function read($id)
     {
-        $this->returnData['data'] = $this->model::findOrEmpty($id);
+        $this->returnData['data'] = $this->model::with(['district'])->hidden(['district'])->findOrEmpty($id);
         if ($this->returnData['data']->isEmpty()) {
             $this->returnData['code'] = 0;
             $this->returnApiData(lang('No data was found'));

@@ -135,22 +135,22 @@ class Report
         $textRun->addText('<w:br />排查单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
         $textRun->addText('联系人及电话：张思明(电话：19520791510)');
 
-        $section = $phpWord->addSection();
-        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
-        $textRun->addText('项目概况<w:br />', ['bold' => true]);
-        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.5, 'indentation' => ['firstLine' => 2 * 14 * 20]]);
-        $textRun->addText('为落实上级有关指示批示精神及《广东省住房和城乡建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即'
-            . '开展建筑安全隐患排查整治的紧急通知》要求，加强全市既有房屋及在建工程安全管理工作，切实保障人民群众生命财产安全，根据《广东省住房和城乡'
-            . '建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即开展建筑安全隐患排查整治的紧急通知》要求，结合《深圳市住房 和建设局转发广东省'
-            . '住房和城乡建设厅关于深刻汲取河南郑州 “4.18”游泳馆坍塌事故教训切实加强公共场所建筑安全隐患排查整改的紧急通知》，按照《深圳市房屋建'
-            . '筑隐患排查整治专项工作方案》对' . $this->house->area_title . $this->house->district_title . '社区涉及房屋建筑及构筑物等进行安全隐患排查。'
-        );
-        $section->addTextBreak(2);
-        $textRun = $section->addTextRun(['alignment' => Jc::CENTER]);
-        $textRun->addText('排查依据<w:br />', ['bold' => true]);
-        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.2]);
-        $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
-        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查技术标准》SJG 41-2017');
+//        $section = $phpWord->addSection();
+//        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
+//        $textRun->addText('项目概况<w:br />', ['bold' => true]);
+//        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.5, 'indentation' => ['firstLine' => 2 * 14 * 20]]);
+//        $textRun->addText('为落实上级有关指示批示精神及《广东省住房和城乡建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即'
+//            . '开展建筑安全隐患排查整治的紧急通知》要求，加强全市既有房屋及在建工程安全管理工作，切实保障人民群众生命财产安全，根据《广东省住房和城乡'
+//            . '建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即开展建筑安全隐患排查整治的紧急通知》要求，结合《深圳市住房 和建设局转发广东省'
+//            . '住房和城乡建设厅关于深刻汲取河南郑州 “4.18”游泳馆坍塌事故教训切实加强公共场所建筑安全隐患排查整改的紧急通知》，按照《深圳市房屋建'
+//            . '筑隐患排查整治专项工作方案》对' . $this->house->area_title . $this->house->district_title . '社区涉及房屋建筑及构筑物等进行安全隐患排查。'
+//        );
+//        $section->addTextBreak(2);
+//        $textRun = $section->addTextRun(['alignment' => Jc::CENTER]);
+//        $textRun->addText('排查依据<w:br />', ['bold' => true]);
+//        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.2]);
+//        $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
+//        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查技术标准》SJG 41-2017');
 
         $fancyTableStyleName = 'Fancy Table';
         $fancyTableStyle = array('borderSize' => 0, 'borderColor' => '000000', 'cellMargin' => 80, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0, 'width' => 6000, 'unit' => 'pct');
