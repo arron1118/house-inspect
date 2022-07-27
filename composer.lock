@@ -1296,7 +1296,13 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/top-think/think-captcha/zipball/a450602932a5d9ba183e288b79921ba3b9a92331",
                 "reference": "a450602932a5d9ba183e288b79921ba3b9a92331",
-                "shasum": ""
+                "shasum": "",
+                "mirrors": [
+                    {
+                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
+                        "preferred": true
+                    }
+                ]
             },
             "require": {
                 "topthink/framework": "^6.0.0"
@@ -1925,5 +1931,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.2.0"
+    "plugin-api-version": "2.3.0"
 }
