@@ -100,6 +100,7 @@ class Report
         $this->addText($textRun, '<w:br />深圳地质建设工程公司<w:br />', ['size' => 14]);
         $this->addText($textRun, date('Y年m月d日'), ['size' => 14]);
 
+        $section = $phpWord->addSection();
         $textRun = $this->addTextRun($section, ['pageBreakBefore' => true]);
         $section->addTextBreak(2);
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
@@ -136,7 +137,11 @@ class Report
         $textRun->addText('<w:br />排查单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
         $textRun->addText('联系人及电话：张思明(电话：19520791510)');
         $footer = $section->addFooter();
-//        $footer->addPreserveText('-2-');
+        $footer->addPreserveText('{PAGE}', ['name' => '宋体', 'size' => 12], ['align' => 'center']);
+        //偶数页码码，先设置，后应用
+//        $phpWord->getSettings()->setEvenAndOddHeaders(true);
+//        $eventFooter = $section->addFooter(Footer::EVEN);
+//        $eventFooter->addPreserveText('{PAGE}', array('name' => '宋体', 'size' => 12), array('align' => 'center'));
 
 //        $section = $phpWord->addSection();
 //        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
