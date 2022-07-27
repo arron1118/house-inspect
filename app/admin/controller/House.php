@@ -684,8 +684,8 @@ class House extends AdminController
      */
     public function exportExcel()
     {
-        $house = $this->model::with(['area', 'houseRate'])
-            ->field('id, title, code, district, contact, space, address, is_owner_business, is_balcony, house_extension, house_change')
+        $house = $this->model::with(['area', 'district', 'houseRate'])
+            ->field('id, title, code, district_id, contact, space, address, is_owner_business, is_balcony, house_extension, house_change')
             ->where('status', 1)
             ->order('id desc')
             ->select();
@@ -693,7 +693,7 @@ class House extends AdminController
         $sheet = $spreadsheet->getActiveSheet();
         $StructureList = (new HouseRateModel)->getStructureList();
         $title = [
-            'district' => '社区',
+            'district_title' => '社区',
             'id' => '序号',
             'code' => '房屋编码',
             'title' => '房屋名称',
@@ -724,7 +724,7 @@ class House extends AdminController
             foreach ($title as $key => $value) {
                 $cellValue = '';
                 // 单元格内容写入
-                if (in_array($key, ['id', 'title', 'address', 'contact'])) {
+                if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title'])) {
                     $cellValue = $item[$key];
                 }
 
@@ -734,10 +734,6 @@ class House extends AdminController
 
                 if (in_array($key, ['is_balcony', 'is_owner_business'])) {
                     $cellValue = $yesOrNo[$item[$key]];
-                }
-
-                if ($key === 'district') {
-                    $cellValue = $this->DistrictList[$item[$key]];
                 }
 
                 if ($key === 'house_extension') {
@@ -820,7 +816,7 @@ class House extends AdminController
 //        $writer->save('./report/house.xlsx');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="房屋排查.xlsx"');
+        header('Content-Disposition: attachment;filename="房屋排查(已完成).xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
