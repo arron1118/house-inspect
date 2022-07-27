@@ -50,6 +50,11 @@ class House extends Model
         return $this->belongsTo(Area::class)->bind(['area_title' => 'title']);
     }
 
+    public function district()
+    {
+        return $this->belongsTo(District::class)->bind(['district_title' => 'title']);
+    }
+
     public function admin()
     {
         return $this->belongsTo(Admin::class)->bind(['admin_username' => 'username']);

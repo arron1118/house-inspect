@@ -8,12 +8,11 @@ use think\Model;
 /**
  * @mixin \think\Model
  */
-class Area extends Model
+class District extends Model
 {
-
-    public function district()
+    public function area()
     {
-        return $this->hasMany(District::class);
+        return $this->belongsTo(Area::class)->bind(['area_title' => 'title']);
     }
 
     public function house()

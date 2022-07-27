@@ -7,6 +7,7 @@ use think\facade\Log;
 use think\Request;
 use app\common\controller\ApiController;
 use app\common\model\House as HouseModel;
+use app\common\model\District;
 
 class House extends ApiController
 {
@@ -42,7 +43,7 @@ class House extends ApiController
         $title = $this->params['title'] ?? '';
         $areaId = $this->params['area_id'] ?? 0;
         $status = $this->params['status'] ?? -1;
-        $district = $this->params['district'] ?? 0;
+        $district = $this->params['district_id'] ?? 0;
 
         if ((int) $areaId <= 0) {
             $this->returnApiData('请提供项目ID: area_id');
@@ -140,6 +141,7 @@ class House extends ApiController
             $this->returnData['code'] = 0;
             $this->returnApiData(lang('No data was found'));
         }
+
         $this->returnData['code'] = 1;
         $this->returnApiData(lang('Done'));
     }
@@ -210,9 +212,12 @@ class House extends ApiController
         $this->returnApiData();
     }
 
-    public function getDistrictList()
+    public function getDistrictList($area_id)
     {
-        $this->returnData['data'] = (new $this->model)->getDistrictList();
+        $district = District::field('id, title')->where('area_id', $area_id)->select();
+        foreach ($district as $key => $val) {
+            $this->returnData['data'][] = ['id' => $val->id, 'title' => $val->title];
+        }
 
         $this->returnData['code'] = 1;
         $this->returnApiData(lang('Done'));

@@ -3,17 +3,19 @@ declare (strict_types = 1);
 
 namespace app\admin\controller;
 
+use app\common\model\Area;
 use think\Request;
 use app\common\controller\AdminController;
-use app\common\model\Area as AreaModel;
+use app\common\model\District as DistrictModel;
 
-class Area extends AdminController
+class District extends AdminController
 {
+
     protected function initialize()
     {
         parent::initialize();
 
-        $this->model = AreaModel::class;
+        $this->model = DistrictModel::class;
     }
 
     /**
@@ -23,14 +25,19 @@ class Area extends AdminController
      */
     public function index()
     {
+        $this->view->assign([
+            'areaList' => Area::field('id, title')->order('id desc')->select(),
+        ]);
+
         return $this->view->fetch();
     }
 
-    public function getAreaList(Request $request)
+    public function getDistrictList(Request $request)
     {
         if ($request->isAjax()) {
             $page = (int) $request->param('page', 1);
             $limit = (int) $request->param('limit', 10);
+            $area_id = (int) $request->param('area_id', 0);
             $title = $request->param('title', '');
             $map = [];
 
@@ -38,13 +45,17 @@ class Area extends AdminController
                 $map[] = ['title', 'like', '%' . $title . '%'];
             }
 
+            if ($area_id) {
+                $map[] = ['area_id', '=', $area_id];
+            }
+
             $this->returnData['total'] = $this->model::where($map)->count();
-            $this->returnData['data'] = $this->model::withCount(['district', 'house'])
+            $this->returnData['data'] = $this->model::with(['area'])->hidden(['area'])->withCount(['house'])
                 ->where($map)
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
                 ->select();
-
+            $this->returnData['code'] = 1;
             $this->success();
         }
 
@@ -58,7 +69,7 @@ class Area extends AdminController
      */
     public function create()
     {
-        return $this->view->fetch();
+        //
     }
 
     /**
@@ -70,8 +81,7 @@ class Area extends AdminController
     public function save(Request $request)
     {
         if ($request->isPost()) {
-            $params = $request->only(['title', 'code']);
-            $params['admin_id'] = $this->userInfo->id;
+            $params = $request->param();
             (new $this->model)->save($params);
             $this->returnData['code'] = 1;
             $this->success(lang('Done'));
@@ -99,6 +109,7 @@ class Area extends AdminController
      */
     public function edit($id)
     {
+        //
     }
 
     /**
@@ -110,16 +121,7 @@ class Area extends AdminController
      */
     public function update(Request $request, $id)
     {
-        if ($request->isPost()) {
-            $params = $request->only(['title', 'code']);
-            $area = $this->model::find($id);
-
-            $area->save($params);
-            $this->returnData['code'] = 1;
-            $this->success(lang('Done'));
-        }
-
-        $this->error();
+        //
     }
 
     /**
@@ -130,13 +132,6 @@ class Area extends AdminController
      */
     public function delete($id)
     {
-        if ($this->request->isPost()) {
-            $area = $this->model::find($id);
-            $area->delete();
-            $this->returnData['code'] = 1;
-            $this->success(lang('Done'));
-        }
-
-        $this->error();
+        //
     }
 }

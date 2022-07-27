@@ -138,9 +138,10 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">社区</label>
                                                 <div class="layui-input-block">
-                                                    <select name="param[house][district]" lay-filter="districtFilter" lay-verify="required">
+                                                    <select name="param[house][district_id]" lay-filter="districtFilter" lay-verify="required">
+                                                        <option value="0">请选择</option>
                                                         {foreach $DistrictList as $key => $val}
-                                                        <option value="{$key}" {if $key=== $house.district}selected{/if}>{$val}</option>
+                                                        <option value="{$val.id}" {if $val.id=== $house.district_id}selected{/if}>{$val.title}</option>
                                                         {/foreach}
                                                     </select>
                                                 </div>

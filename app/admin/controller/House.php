@@ -14,6 +14,7 @@ use app\common\model\HouseRate as HouseRateModel;
 use app\common\model\Area;
 use app\common\model\Admin as AdminModel;
 use app\common\model\User as UserModel;
+use app\common\model\District;
 
 class House extends AdminController
 {
@@ -51,9 +52,7 @@ class House extends AdminController
         parent::initialize();
 
         $this->model = HouseModel::class;
-        $this->DistrictList = (new $this->model)->getDistrictList();
         $this->view->assign([
-            'DistrictList' => $this->DistrictList,
             'userList' => UserModel::field('id, username')->order('id desc, login_time desc')->select(),
         ]);
     }
@@ -91,11 +90,10 @@ class House extends AdminController
     public function getHouseList(Request $request)
     {
         if ($request->isAjax()) {
-            $districtList = $this->DistrictList;
             $page = (int)$request->param('page', 1);
             $limit = (int)$request->param('limit', 10);
             $title = $request->param('title', '');
-            $district = $request->param('district', 0);
+            $district_id = $request->param('district_id', 0);
             $code = $request->param('code', '');
             $areaId = (int)$request->param('area_id', 0);
             $user_id = (int)$request->param('user_id', 0);
@@ -118,16 +116,16 @@ class House extends AdminController
                 $map[] = ['title', 'like', '%' . $title . '%'];
             }
 
-            if ($district) {
-                $map[] = ['district', '=', $district];
-            }
-
             if ($code) {
                 $map[] = ['code', 'like', '%' . $code . '%'];
             }
 
             if ($areaId) {
                 $map[] = ['area_id', '=', $areaId];
+
+                if ($district_id) {
+                    $map[] = ['district_id', '=', $district_id];
+                }
             }
 
             if ($user_id) {
@@ -266,11 +264,6 @@ class House extends AdminController
 
             $this->returnData['total'] = $this->model::where($map)->where($mapOr)->where($whereAnd)->count();
             $this->returnData['data'] = $this->model::where($map)->where($mapOr)->where($whereAnd)
-                ->withAttr('district', function ($value) use ($districtList) {
-                    if ($value > 0) {
-                        return $districtList[$value];
-                    }
-                })
                 ->withAttr('status', function ($value) {
                     return $value === 1 ? '已完成' : '';
                 })
@@ -286,12 +279,27 @@ class House extends AdminController
 
                     return $text;
                 })
-                ->with(['area', 'admin', 'user'])
-                ->hidden(['area', 'admin', 'user'])
+                ->with(['area', 'district', 'admin', 'user'])
+                ->hidden(['area', 'district', 'admin', 'user'])
                 ->order('id desc')
                 ->limit(($page - 1) * $limit, $limit)
-                ->select();;
+                ->select();
 
+            $this->success();
+        }
+
+        $this->error();
+    }
+
+    public function getDistrictList(Request $request, $area_id)
+    {
+        if ($request->isAjax()) {
+            $this->returnData['data'] = District::with(['area'])->hidden(['area'])->withCount(['house'])
+                ->field('id, title')
+                ->where('area_id', $area_id)
+                ->order('id desc')
+                ->select();
+            $this->returnData['code'] = 1;
             $this->success();
         }
 
@@ -303,11 +311,12 @@ class House extends AdminController
      *
      * @return \think\Response
      */
-    public function create()
+    public function create($area_id)
     {
         $model = new $this->model;
         $this->view->assign([
-            'area_id' => $this->request->param('area_id'),
+            'area_id' => $area_id,
+            'DistrictList' => District::field('id, title')->where('area_id', $area_id)->select(),
             'HouseUsageList' => $model->getHouseUsageList(),
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),
@@ -377,8 +386,12 @@ class House extends AdminController
         //
         $model = new $this->model;
         $houseRateModel = new HouseRateModel;
+        $house = $this->model::find($id);
+        $DistrictList = District::field('id, title')->where('area_id', $house->area_id)->select();
+
         $this->view->assign([
-            'house' => $this->model::find($id),
+            'house' => $house,
+            'DistrictList' => $DistrictList,
             'HouseUsageList' => $model->getHouseUsageList(),
             'RelatedDataList' => $model->getRelatedDataList(),
             'HouseSafetyInvestigationList' => $model->getHouseSafetyInvestigationList(),

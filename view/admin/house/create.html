@@ -26,6 +26,7 @@
     <div class="layuimini-main">
         <form class="layui-form layuimini-form" lay-filter="customer-add-form" action="">
             <input type="hidden" name="param[area_id]" value="{$area_id}"/>
+            <input type="hidden" name="param[create_admin_id]" value="{$userInfo.id}"/>
             <div class="layui-tab" lay-filter="tabFilter">
                 <ul class="layui-tab-title">
                     <li class="layui-this">房屋基础信息</li>
@@ -136,10 +137,10 @@
                                             <div class="layui-form-item">
                                                 <label class="layui-form-label">社区</label>
                                                 <div class="layui-input-block">
-                                                    <select name="param[district]" lay-filter="districtFilter" lay-verify="required">
+                                                    <select name="param[district_id]" lay-filter="districtFilter" lay-verify="required">
                                                         <option value="0">请选择</option>
                                                         {foreach $DistrictList as $key => $val}
-                                                        <option value="{$key}">{$val}</option>
+                                                        <option value="{$val.id}">{$val.title}</option>
                                                         {/foreach}
                                                     </select>
                                                 </div>
@@ -522,7 +523,7 @@
         })
         // 提交
         form.on('submit(add)', function (data) {
-            if (parseInt(data.field['param[district]']) === 0) {
+            if (parseInt(data.field['param[district_id]']) === 0) {
                 parent.layer.msg('请选择“社区”', option)
                 return false
             }

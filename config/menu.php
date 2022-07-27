@@ -25,6 +25,12 @@ return [
                         "target" => "_self"
                     ],
                     [
+                        "title" => "社区管理",
+                        "href" => (string) url('/district/index'),
+                        "icon" => "fa fa-building-circle-arrow-right",
+                        "target" => "_self"
+                    ],
+                    [
                         "title" => "数据统计",
                         "href" => (string) url('/house/analysis'),
                         "icon" => "fa fa-chart-area",

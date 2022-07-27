@@ -50,7 +50,7 @@ class Report
     {
         $this->fontStyle = new Font();
         $this->fontStyle->setSize(14);
-        $this->house = House::with(['houseRate', 'user', 'area'])->find($id);
+        $this->house = House::with(['houseRate', 'user', 'area', 'district'])->find($id);
         $this->HouseModel = new House;
         $this->HouseRateModel = new HouseRate;
         $this->selects = [
@@ -61,7 +61,6 @@ class Report
             'HouseExtensionList' => $this->HouseModel->getHouseExtensionList(),
             'HouseChangeList' => $this->HouseModel->getHouseChangeList(),
             'HouseChangeFloorDataList' => $this->HouseModel->getHouseChangeFloorDataList(),
-            'DistrictList' => $this->HouseModel->getDistrictList(),
             'StructureList' => $this->HouseRateModel->getStructureList(),
             'BasisTypeList' => $this->HouseRateModel->getBasisTypeList(),
             'FoundationSafetyRateList' => $this->HouseRateModel->getFoundationSafetyRateList(),
@@ -74,7 +73,7 @@ class Report
             'GradeList' => $this->HouseRateModel->getGradeList(),
             'SuggestionList' => $this->HouseRateModel->getSuggestionList(),
         ];
-        $this->reportTitle = $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区' . $this->house->title . '房屋结构安全隐患排查报告';
+        $this->reportTitle = $this->house->area_title . $this->house->district_title . '社区' . $this->house->title . '房屋结构安全隐患排查报告';
     }
 
     public function createReport()
@@ -85,7 +84,7 @@ class Report
         $phpWord->setDefaultFontSize(14);
         $section = $phpWord->addSection();
         $textRun = $section->addTextRun();
-        $this->addText($textRun, '【' . $this->selects['DistrictList'][$this->house->district] . '社区】', ['name' => '黑体', 'size' => 12, 'bold' => true]);
+        $this->addText($textRun, '【' . $this->house->district_title . '社区】', ['name' => '黑体', 'size' => 12, 'bold' => true]);
 
         $section->addTextBreak(5);
 
@@ -100,57 +99,58 @@ class Report
         $this->addText($textRun, '<w:br />深圳地质建设工程公司<w:br />', ['size' => 14]);
         $this->addText($textRun, date('Y年m月d日'), ['size' => 14]);
 
-//        $textRun = $this->addTextRun($section, ['pageBreakBefore' => true]);
-//        $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
-//
-//        $section->addTextBreak();
-//
-//        $textRun = $section->addTextRun($this->textRunStyle);
-//        $this->addText($textRun, '报告审定人：', ['bold' => true, 'size' => 15]);
-//        $this->addText($textRun, '孟薄萍', ['size' => 15]);
+        $textRun = $this->addTextRun($section, ['pageBreakBefore' => true]);
+        $section->addTextBreak(2);
+        $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
+
+        $section->addTextBreak(5);
+
+        $textRun = $section->addTextRun($this->textRunStyle);
+        $this->addText($textRun, '批 准 人：', ['bold' => true, 'size' => 15]);
+        $this->addText($textRun, '陈  虹', ['size' => 15]);
 //        $this->addText($textRun, '<w:br />（检测鉴定技术负责人）', ['size' => 10]);
-//        $this->addText($textRun, '<w:br />报告审核人：', ['bold' => true, 'size' => 15]);
-//        $this->addText($textRun, '龙行伟', ['size' => 15]);
-//        $this->addText($textRun, '<w:br />报告编写人：', ['bold' => true, 'size' => 15]);
-//        $this->addText($textRun, '张思明', ['size' => 15]);
-//        $this->addText($textRun, '<w:br />' . str_repeat(' ', 2) . '检测人员：', ['bold' => true, 'size' => 15]);
-//        $this->addText($textRun, '张思明', ['size' => 15]);
+        $this->addText($textRun, '<w:br />审 核 人：', ['bold' => true, 'size' => 15]);
+        $this->addText($textRun, '龙行伟', ['size' => 15]);
+        $this->addText($textRun, '<w:br />编 写 人：', ['bold' => true, 'size' => 15]);
+        $this->addText($textRun, '张思明', ['size' => 15]);
+        $this->addText($textRun, '<w:br />排 查 人：', ['bold' => true, 'size' => 15]);
+        $this->addText($textRun, '李泽鹏', ['size' => 15]);
 //        $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '李泽鹏', ['size' => 15], []);
-//        $section->addTextBreak(5);
-//
-//        $textRun = $section->addTextRun();
-//        $textRun->addText('重要提示：<w:br />', $this->fontStyle);
-//        $this->addListItem($section, '报告未盖检测鉴定单位公章无效。');
-//        $this->addListItem($section, '报告无检测、编写、审核、审定人签字无效。');
-//        $this->addListItem($section, '报告发生涂改、换页或剪贴无效。');
-//        $this->addListItem($section, '未经检测鉴定单位同意，报告不得复制。');
-//        $this->addListItem($section, '如对检测鉴定报告有异议，应于收到报告之日起十五日内向检测鉴定单位提出，逾期视为认可检测鉴定结果。');
-//
-//        $section->addLine([
-//            'width'       => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(11.5),
-//            'height'      => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(0),
-//        ]);
-//
-//        $textRun = $section->addTextRun(['lineHeight' => 1.2]);
-//        $textRun->addText('<w:br />检测鉴定单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
-//        $textRun->addText('联系人及电话：张思明(电话：19520791510)');
-//
-//        $section = $phpWord->addSection();
-//        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
-//        $textRun->addText('项目概况<w:br />', ['bold' => true]);
-//        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.5, 'indentation' => ['firstLine' => 2 * 14 * 20]]);
-//        $textRun->addText('为落实上级有关指示批示精神及《广东省住房和城乡建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即'
-//            . '开展建筑安全隐患排查整治的紧急通知》要求，加强全市既有房屋及在建工程安全管理工作，切实保障人民群众生命财产安全，根据《广东省住房和城乡'
-//            . '建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即开展建筑安全隐患排查整治的紧急通知》要求，结合《深圳市住房 和建设局转发广东省'
-//            . '住房和城乡建设厅关于深刻汲取河南郑州 “4.18”游泳馆坍塌事故教训切实加强公共场所建筑安全隐患排查整改的紧急通知》，按照《深圳市房屋建'
-//            . '筑隐患排查整治专项工作方案》对' . $this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区涉及房屋建筑及构筑物等进行安全隐患排查。'
-//        );
-//        $section->addTextBreak(2);
-//        $textRun = $section->addTextRun(['alignment' => Jc::CENTER]);
-//        $textRun->addText('排查依据<w:br />', ['bold' => true]);
-//        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.2]);
-//        $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
-//        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查技术标准》SJG 41-2017');
+        $section->addTextBreak(8);
+
+        $textRun = $section->addTextRun();
+        $textRun->addText('重要提示：<w:br />', $this->fontStyle);
+        $this->addListItem($section, '报告未盖排查单位公章无效。');
+        $this->addListItem($section, '报告无排查、编写、审核人签字无效。');
+        $this->addListItem($section, '报告发生涂改、换页或剪贴无效。');
+        $this->addListItem($section, '未经排查单位同意，报告不得复制。');
+        $this->addListItem($section, '如对排查报告有异议，应于收到报告之日起十五日内向排查单位提出，逾期视为认可排查结果。');
+
+        $section->addLine([
+            'width'       => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(11.5),
+            'height'      => \PhpOffice\PhpWord\Shared\Converter::cmToPixel(0),
+        ]);
+
+        $textRun = $section->addTextRun(['lineHeight' => 1.2]);
+        $textRun->addText('<w:br />排查单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
+        $textRun->addText('联系人及电话：张思明(电话：19520791510)');
+
+        $section = $phpWord->addSection();
+        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
+        $textRun->addText('项目概况<w:br />', ['bold' => true]);
+        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.5, 'indentation' => ['firstLine' => 2 * 14 * 20]]);
+        $textRun->addText('为落实上级有关指示批示精神及《广东省住房和城乡建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即'
+            . '开展建筑安全隐患排查整治的紧急通知》要求，加强全市既有房屋及在建工程安全管理工作，切实保障人民群众生命财产安全，根据《广东省住房和城乡'
+            . '建设厅关于深刻汲取湖南长沙“4·29”楼房坍塌事故教训立即开展建筑安全隐患排查整治的紧急通知》要求，结合《深圳市住房 和建设局转发广东省'
+            . '住房和城乡建设厅关于深刻汲取河南郑州 “4.18”游泳馆坍塌事故教训切实加强公共场所建筑安全隐患排查整改的紧急通知》，按照《深圳市房屋建'
+            . '筑隐患排查整治专项工作方案》对' . $this->house->area_title . $this->house->district_title . '社区涉及房屋建筑及构筑物等进行安全隐患排查。'
+        );
+        $section->addTextBreak(2);
+        $textRun = $section->addTextRun(['alignment' => Jc::CENTER]);
+        $textRun->addText('排查依据<w:br />', ['bold' => true]);
+        $textRun = $section->addTextRun(['alignment' => Jc::START, 'lineHeight' => 1.2]);
+        $textRun->addText('1. 《深圳市房屋建筑安全隐患排查整治专项工作方案》<w:br />');
+        $textRun->addText('2. 《深圳市既有房屋结构安全隐患排查技术标准》SJG 41-2017');
 
         $fancyTableStyleName = 'Fancy Table';
         $fancyTableStyle = array('borderSize' => 0, 'borderColor' => '000000', 'cellMargin' => 80, 'alignment' => JcTable::CENTER, 'cellSpacing' => 0, 'width' => 6000, 'unit' => 'pct');
@@ -163,7 +163,7 @@ class Report
         $section = $phpWord->addSection(['pageBreakBefore' => true]);
         $table = $section->addTable($fancyTableStyleName);
         $table->addRow(500);
-        $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'size' => 13])->addText($this->house->area_title . $this->selects['DistrictList'][$this->house->district] . '社区房屋建筑结构安全排查', $fancyTableFontStyle);
+        $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])->addTextRun(['alignment' => 'center', 'size' => 13])->addText($this->house->area_title . $this->house->district_title . '社区房屋建筑结构安全排查', $fancyTableFontStyle);
         $table->addRow(500);
         $table->addCell(8500, ['gridSpan' => 4, 'valign' => 'center'])->addText('一、房屋基本信息调查', $fancyTableFontStyle);
 
