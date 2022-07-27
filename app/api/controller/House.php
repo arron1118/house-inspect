@@ -54,25 +54,29 @@ class House extends ApiController
         ];
 
         if ($district) {
-            $map[] = ['district', '=', $district];
+            $map[] = ['district_id', '=', $district];
         }
 
         if ($status >= 0) {
             $map[] = ['status', '=', $status];
         }
 
-        switch ($searchType) {
-            case 'code':
-                $map[] = ['code', 'like', '%' . $title . '%'];
-                break;
+        if ($title !== '') {
+            switch ($searchType) {
+                case 'code':
+                    $map[] = ['code', 'like', '%' . $title . '%'];
+                    break;
 
-            default:
-                $map[] = ['title', 'like', '%' . $title . '%'];
-                break;
+                case 'title':
+                    $map[] = ['title', 'like', '%' . $title . '%'];
+                    break;
+            }
         }
 
         $this->returnData['code'] = 1;
-        $this->returnData['total'] = $this->model::where($map)->count();
+        $this->returnData['total'] = $this->model::where($map)
+            ->where('user_id = ' . $this->userInfo->id . ' or user_id = 0')
+            ->count();
         $this->returnData['data'] = $this->model::field('id, title, code, area_id, status, create_time')
             ->where('user_id = ' . $this->userInfo->id . ' or user_id = 0')
             ->where($map)

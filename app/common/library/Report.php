@@ -2,6 +2,7 @@
 
 namespace app\common\library;
 
+use PhpOffice\PhpWord\Element\Footer;
 use PhpOffice\PhpWord\PhpWord;
 use PhpOffice\PhpWord\IOFactory;
 use app\common\model\House;
@@ -134,6 +135,8 @@ class Report
         $textRun = $section->addTextRun(['lineHeight' => 1.2]);
         $textRun->addText('<w:br />排查单位地址：深圳市福田区燕南路98号<w:br />', [], ['spaceBefore' => 1000]);
         $textRun->addText('联系人及电话：张思明(电话：19520791510)');
+        $footer = $section->addFooter();
+//        $footer->addPreserveText('-2-');
 
 //        $section = $phpWord->addSection();
 //        $textRun = $section->addTextRun(['pageBreakBefore' => true, 'alignment' => Jc::CENTER]);
