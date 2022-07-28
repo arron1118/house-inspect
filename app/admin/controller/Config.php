@@ -83,10 +83,12 @@ class Config extends AdminController
         if ($request->isPost()) {
             $params = $request->param('param');
             foreach ($params as $key => $value) {
-                $data = ['value' => $value['value']];
                 if ($value['type'] === 'select') {
                     $data = ['content' => $value['value']];
+                } else {
+                    $data = ['value' => $value['value']];
                 }
+
                 $this->model::where('keyword', $key)->update($data);
             }
             $this->returnData['code'] = 1;
