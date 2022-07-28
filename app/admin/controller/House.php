@@ -69,6 +69,7 @@ class House extends AdminController
             'areaList' => Area::field('id, title')->order('id desc')->select(),
             'rateStatusList' => (new $this->model)->getRateStatusList()
         ]);
+        dump(file_exists('paicha.hbosw.net/storage/attachment/20220703/36bc26dc2b8671196d821d5657e38079.jpg'));
         return $this->view->fetch();
     }
 

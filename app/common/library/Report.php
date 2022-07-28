@@ -527,17 +527,23 @@ class Report
                 }
                 if ($value['image']) {
                     $file = 'http://paicha.hbosw.net' . $value['image'];
+                    $cell = $row->addCell();
+                    $textRun = $cell->addTextRun($this->textRunStyle);
+                    $textRun->addImage($file, [
+                        'width' => 230,
+                        'height' => 280,
+                    ]);
+                    $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
 //                    $file = public_path() . $value['image'];
-                    dump($file);
-                    if (file_exists($file)) {
-                        $cell = $row->addCell();
-                        $textRun = $cell->addTextRun($this->textRunStyle);
-                        $textRun->addImage($file, [
-                            'width' => 230,
-                            'height' => 280,
-                        ]);
-                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
-                    }
+//                    if (file_exists($file)) {
+//                        $cell = $row->addCell();
+//                        $textRun = $cell->addTextRun($this->textRunStyle);
+//                        $textRun->addImage($file, [
+//                            'width' => 230,
+//                            'height' => 280,
+//                        ]);
+//                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
+//                    }
 
                     $i++;
                 }
