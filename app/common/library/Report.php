@@ -525,18 +525,20 @@ class Report
                 if ($i % 2 === 0) {
                     $row = $table->addRow();
                 }
-                $file = public_path() . $value['image'];
-                if (file_exists($file)) {
-                    $cell = $row->addCell();
-                    $textRun = $cell->addTextRun($this->textRunStyle);
-                    $textRun->addImage($file, [
-                        'width' => 230,
-                        'height' => 280,
-                    ]);
-                    $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
-                }
+                if ($value['image']) {
+                    $file = public_path() . $value['image'];
+                    if (file_exists($file)) {
+                        $cell = $row->addCell();
+                        $textRun = $cell->addTextRun($this->textRunStyle);
+                        $textRun->addImage($file, [
+                            'width' => 230,
+                            'height' => 280,
+                        ]);
+                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
+                    }
 
-                $i++;
+                    $i++;
+                }
             }
         }
 
