@@ -79,6 +79,8 @@ class Report
 
     public function createReport()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '1024M');
         $save_path = public_path() . '/report/';
         $phpWord = new PhpWord();
         $phpWord->setDefaultFontName('SimSun');
@@ -526,24 +528,24 @@ class Report
                     $row = $table->addRow();
                 }
                 if ($value['image']) {
-                    $file = 'http://paicha.hbosw.net' . $value['image'];
-                    $cell = $row->addCell();
-                    $textRun = $cell->addTextRun($this->textRunStyle);
-                    $textRun->addImage($file, [
-                        'width' => 230,
-                        'height' => 280,
-                    ]);
-                    $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
-//                    $file = public_path() . $value['image'];
-//                    if (file_exists($file)) {
-//                        $cell = $row->addCell();
-//                        $textRun = $cell->addTextRun($this->textRunStyle);
-//                        $textRun->addImage($file, [
-//                            'width' => 230,
-//                            'height' => 280,
-//                        ]);
-//                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
-//                    }
+//                    $file = 'http://paicha.hbosw.net' . $value['image'];
+//                    $cell = $row->addCell();
+//                    $textRun = $cell->addTextRun($this->textRunStyle);
+//                    $textRun->addImage($file, [
+//                        'width' => 230,
+//                        'height' => 280,
+//                    ]);
+//                    $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
+                    $file = public_path() . $value['image'];
+                    if (file_exists($file)) {
+                        $cell = $row->addCell();
+                        $textRun = $cell->addTextRun($this->textRunStyle);
+                        $textRun->addImage($file, [
+                            'width' => 230,
+                            'height' => 280,
+                        ]);
+                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
+                    }
 
                     $i++;
                 }
