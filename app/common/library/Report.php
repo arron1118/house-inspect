@@ -520,27 +520,27 @@ class Report
             ->addTextRun(['alignment' => 'center', 'size' => 13])
             ->addText('房屋外观、安全隐患及操作照片', $fancyTableFontStyle);
         $i = 0;
-        foreach ($this->infos as $key => $val) {
-            foreach ($this->house[$key] as $value) {
-                if ($i % 2 === 0) {
-                    $row = $table->addRow();
-                }
-                if ($value['image']) {
-                    $file = public_path() . $value['image'];
-                    if (file_exists($file)) {
-                        $cell = $row->addCell();
-                        $textRun = $cell->addTextRun($this->textRunStyle);
-                        $textRun->addImage($file, [
-                            'width' => 230,
-                            'height' => 280,
-                        ]);
-                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
-                    }
-
-                    $i++;
-                }
-            }
-        }
+//        foreach ($this->infos as $key => $val) {
+//            foreach ($this->house[$key] as $value) {
+//                if ($i % 2 === 0) {
+//                    $row = $table->addRow();
+//                }
+//                if ($value['image']) {
+//                    $file = public_path() . $value['image'];
+//                    if (file_exists($file)) {
+//                        $cell = $row->addCell();
+//                        $textRun = $cell->addTextRun($this->textRunStyle);
+//                        $textRun->addImage($file, [
+//                            'width' => 230,
+//                            'height' => 280,
+//                        ]);
+//                        $textRun->addText('<w:br />' . $value['description'], ['size' => 13], ['lineHeight' => 1.2]);
+//                    }
+//
+//                    $i++;
+//                }
+//            }
+//        }
 
         $writer = IOFactory::createWriter($phpWord);
 //        $writer->save($save_path . $this->house->title . '_' . $this->house->code . '.docx');
