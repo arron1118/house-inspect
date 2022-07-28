@@ -526,9 +526,8 @@ class Report
                     $row = $table->addRow();
                 }
                 if ($value['image']) {
-//                    $file = 'D:\\www\\house-inspect\\public' . $value['image'];
-                    $file = public_path() . $value['image'];
-                    dump($file);
+                    $file = 'http://paicha.hbosw.net' . $value['image'];
+//                    $file = public_path() . $value['image'];
                     if (file_exists($file)) {
                         $cell = $row->addCell();
                         $textRun = $cell->addTextRun($this->textRunStyle);
