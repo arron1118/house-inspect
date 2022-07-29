@@ -92,7 +92,7 @@ class Config extends AdminController
                 $this->model::where('keyword', $key)->update($data);
             }
             $this->returnData['code'] = 1;
-            $this->returnData['data'] = $params;
+//            $this->returnData['data'] = $params;
             $this->returnData['param'] = $request->param();
             $this->success(lang('Done'));
         }
