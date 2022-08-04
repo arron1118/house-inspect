@@ -709,6 +709,7 @@ class House extends AdminController
             'is_crack' => '是否存在结构件开裂等',
             'is_rust_eaten' => '是否存在钢筋锈蚀房屋的（疑似海砂房）',
             'is_balcony' => '是否板式悬挑阳台房屋',
+            'house_safety_remark' => '其他需要说明的危险性问题'
         ];
         $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
         $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
@@ -803,6 +804,10 @@ class House extends AdminController
                         }
 
                         $cellValue = $yesOrNo[$k];
+                    }
+
+                    if ($key === 'house_safety_remark') {
+                        $cellValue = $item->house_rate->house_safety_remark;
                     }
                 }
 
