@@ -1219,16 +1219,16 @@
         },
         {
             "name": "topthink/framework",
-            "version": "v6.0.12",
+            "version": "v6.0.13",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/framework.git",
-                "reference": "e478316ac843c1a884a3b3a7a94db17c4001ff5c"
+                "reference": "126d5b2cbacb73d6e2a85cbc7a2c6ee59d0b3fa6"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/framework/zipball/e478316ac843c1a884a3b3a7a94db17c4001ff5c",
-                "reference": "e478316ac843c1a884a3b3a7a94db17c4001ff5c",
+                "url": "https://api.github.com/repos/top-think/framework/zipball/126d5b2cbacb73d6e2a85cbc7a2c6ee59d0b3fa6",
+                "reference": "126d5b2cbacb73d6e2a85cbc7a2c6ee59d0b3fa6",
                 "shasum": ""
             },
             "require": {
@@ -1280,9 +1280,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/framework/issues",
-                "source": "https://github.com/top-think/framework/tree/v6.0.12"
+                "source": "https://github.com/top-think/framework/tree/v6.0.13"
             },
-            "time": "2022-01-21T06:31:07+00:00"
+            "time": "2022-07-15T02:52:08+00:00"
         },
         {
             "name": "topthink/think-captcha",
@@ -1296,13 +1296,7 @@
                 "type": "zip",
                 "url": "https://api.github.com/repos/top-think/think-captcha/zipball/a450602932a5d9ba183e288b79921ba3b9a92331",
                 "reference": "a450602932a5d9ba183e288b79921ba3b9a92331",
-                "shasum": "",
-                "mirrors": [
-                    {
-                        "url": "https://mirrors.aliyun.com/composer/dists/%package%/%reference%.%type%",
-                        "preferred": true
-                    }
-                ]
+                "shasum": ""
             },
             "require": {
                 "topthink/framework": "^6.0.0"
@@ -1483,24 +1477,24 @@
         },
         {
             "name": "topthink/think-orm",
-            "version": "v2.0.53",
+            "version": "v2.0.54",
             "source": {
                 "type": "git",
                 "url": "https://github.com/top-think/think-orm.git",
-                "reference": "06783eda65547a70ea686360a897759e1f873fff"
+                "reference": "97b061b47616301ff29fbd4c35ed9184e1162e4e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/top-think/think-orm/zipball/06783eda65547a70ea686360a897759e1f873fff",
-                "reference": "06783eda65547a70ea686360a897759e1f873fff",
+                "url": "https://api.github.com/repos/top-think/think-orm/zipball/97b061b47616301ff29fbd4c35ed9184e1162e4e",
+                "reference": "97b061b47616301ff29fbd4c35ed9184e1162e4e",
                 "shasum": ""
             },
             "require": {
                 "ext-json": "*",
                 "ext-pdo": "*",
                 "php": ">=7.1.0",
-                "psr/log": "~1.0",
-                "psr/simple-cache": "^1.0",
+                "psr/log": "^1.0|^2.0",
+                "psr/simple-cache": "^1.0|^2.0",
                 "topthink/think-helper": "^3.1"
             },
             "require-dev": {
@@ -1532,9 +1526,9 @@
             ],
             "support": {
                 "issues": "https://github.com/top-think/think-orm/issues",
-                "source": "https://github.com/top-think/think-orm/tree/v2.0.53"
+                "source": "https://github.com/top-think/think-orm/tree/v2.0.54"
             },
-            "time": "2022-02-28T14:54:22+00:00"
+            "time": "2022-07-05T05:25:51+00:00"
         },
         {
             "name": "topthink/think-template",
@@ -1931,5 +1925,5 @@
         "ext-iconv": "*"
     },
     "platform-dev": [],
-    "plugin-api-version": "2.3.0"
+    "plugin-api-version": "2.2.0"
 }
