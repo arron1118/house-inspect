@@ -684,6 +684,8 @@ class House extends AdminController
      */
     public function exportExcel()
     {
+        set_time_limit(0);
+        ini_set('memory_limit', '1024M');
         $house = $this->model::with(['area', 'district', 'houseRate', 'user'])
             ->field('id, title, code, district_id, user_id, contact, space, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
             ->where('status', 1)
