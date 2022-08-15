@@ -685,7 +685,7 @@ class House extends AdminController
     public function exportExcel()
     {
         $house = $this->model::with(['area', 'district', 'houseRate'])
-            ->field('id, title, code, district_id, contact, space, address, is_owner_business, is_balcony, house_extension, house_change')
+            ->field('id, title, code, district_id, contact, space, address, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
             ->where('status', 1)
             ->order('id desc')
             ->select();
@@ -709,7 +709,8 @@ class House extends AdminController
             'is_crack' => '是否存在结构件开裂等',
             'is_rust_eaten' => '是否存在钢筋锈蚀房屋的（疑似海砂房）',
             'is_balcony' => '是否板式悬挑阳台房屋',
-            'house_safety_remark' => '其他需要说明的危险性问题'
+            'house_safety_remark' => '其他需要说明的危险性问题',
+            'rate_status_set' => '已拆除',
         ];
         $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
         $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
@@ -733,7 +734,7 @@ class House extends AdminController
                     $cellValue = $item[$key] . "\t";
                 }
 
-                if (in_array($key, ['is_balcony', 'is_owner_business'])) {
+                if (in_array($key, ['is_balcony', 'is_owner_business', 'rate_status_set'])) {
                     $cellValue = $yesOrNo[$item[$key]];
                 }
 

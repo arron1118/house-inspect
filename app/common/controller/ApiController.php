@@ -174,6 +174,7 @@ class ApiController extends BaseController
         if (isset($param['page'])) {
             $param['page'] = (int) $param['page'];
         }
+
         if (isset($param['limit'])) {
             $param['limit'] = (int) $param['limit'];
         }
