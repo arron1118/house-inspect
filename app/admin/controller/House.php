@@ -684,14 +684,15 @@ class House extends AdminController
      */
     public function exportExcel()
     {
-        $house = $this->model::with(['area', 'district', 'houseRate'])
-            ->field('id, title, code, district_id, contact, space, address, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
+        $house = $this->model::with(['area', 'district', 'houseRate', 'user'])
+            ->field('id, title, code, district_id, user_id, contact, space, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
             ->where('status', 1)
             ->order('id desc')
             ->select();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
         $StructureList = (new HouseRateModel)->getStructureList();
+        $houseUsageList = (new $this->model)->getHouseUsageList();
         $title = [
             'district_title' => '社区',
             'id' => '序号',
@@ -703,6 +704,7 @@ class House extends AdminController
             'space' => '建筑面积（平米）',
             'address' => '地址',
             'final_rate' => '排查结论',
+            'house_usage' => '现有使用功能',
             'is_owner_business' => '是否经营性自建房',
             'house_extension' => '是不改建、加建、扩建',
             'is_incline_or_deposition' => '是否存在明显沉降房屋',
@@ -711,6 +713,7 @@ class House extends AdminController
             'is_balcony' => '是否板式悬挑阳台房屋',
             'house_safety_remark' => '其他需要说明的危险性问题',
             'rate_status_set' => '已拆除',
+            'username' => '排查人',
         ];
         $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
         $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
@@ -728,6 +731,23 @@ class House extends AdminController
                 // 单元格内容写入
                 if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title'])) {
                     $cellValue = $item[$key];
+                }
+
+                if ($key === 'username') {
+                    $cellValue = $item->user_username ?? '';
+                }
+
+                if ($key === 'house_usage' && !empty($item[$key])) {
+                    $temp = '';
+                    foreach ($item[$key] as $v) {
+                        if ((int) $v === 9) {
+                            $temp .= '、' . $item->house_usage_other;
+                        } else {
+                            $temp .= '、' . $houseUsageList[$v];
+                        }
+                    }
+
+                    $cellValue = trim($temp, '、');
                 }
 
                 if ($key === 'code') {
