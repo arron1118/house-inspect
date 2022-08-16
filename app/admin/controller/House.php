@@ -686,14 +686,18 @@ class House extends AdminController
     {
         set_time_limit(0);
         ini_set('memory_limit', '1024M');
-        $house = $this->model::with(['area', 'district', 'houseRate', 'user'])
-            ->field('id, title, code, district_id, user_id, contact, space, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
+        $house = $this->model::with(['area', 'district', 'houseRate', 'user', 'admin'])
+            ->field('id, title, code, district_id, user_id, admin_id, contact, space, height, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
             ->where('status', 1)
             ->order('id desc')
             ->select();
         $spreadsheet = new Spreadsheet();
         $sheet = $spreadsheet->getActiveSheet();
-        $StructureList = (new HouseRateModel)->getStructureList();
+        $HouseRateModel = new HouseRateModel;
+        $StructureList = $HouseRateModel->getStructureList();
+        $BasisTypeList = $HouseRateModel->getBasisTypeList();
+        $GradeList = $HouseRateModel->getGradeList();
+        $SuggestionList = $HouseRateModel->getSuggestionList();
         $houseUsageList = (new $this->model)->getHouseUsageList();
         $title = [
             'district_title' => '社区',
@@ -704,8 +708,12 @@ class House extends AdminController
             'structure' => '结构形式',
             'floor' => '层数',
             'space' => '建筑面积（平米）',
+            'height' => '高度',
             'address' => '地址',
-            'final_rate' => '排查结论',
+            'basis_type' => '基础类型',
+            'site_rate' => '场地排查',
+            'foundation_basis_rate' => '地基基础排查',
+            'main_foundation_rate' => '主体结构排查',
             'house_usage' => '现有使用功能',
             'is_owner_business' => '是否经营性自建房',
             'house_extension' => '是不改建、加建、扩建',
@@ -716,6 +724,9 @@ class House extends AdminController
             'house_safety_remark' => '其他需要说明的危险性问题',
             'rate_status_set' => '已拆除',
             'username' => '排查人',
+            'admin' => '评级人',
+            'final_rate' => '排查结论',
+            'suggestion' => '处理建议',
         ];
         $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
         $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
@@ -731,12 +742,16 @@ class House extends AdminController
             foreach ($title as $key => $value) {
                 $cellValue = '';
                 // 单元格内容写入
-                if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title'])) {
+                if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title', 'height'])) {
                     $cellValue = $item[$key];
                 }
 
                 if ($key === 'username') {
                     $cellValue = $item->user_username ?? '';
+                }
+
+                if ($key === 'admin') {
+                    $cellValue = $item->admin_username ?? '';
                 }
 
                 if ($key === 'house_usage' && !empty($item[$key])) {
@@ -781,6 +796,31 @@ class House extends AdminController
                 }
 
                 if ($item->house_rate) {
+                    if ($key === 'basis_type' && (int) $item->house_rate[$key] > 0) {
+                        if ((int) $item->house_rate[$key] === 9) {
+                            $cellValue = $item->house_rate->basis_type_other;
+                        } else {
+                            $cellValue = $BasisTypeList[$item->house_rate[$key]];
+                        }
+                    }
+
+                    if (in_array($key, ['site_rate', 'foundation_basis_rate', 'main_foundation_rate']) && (int)$item->house_rate[$key] > 0) {
+                        $cellValue = $GradeList[$item->house_rate[$key]];
+                    }
+
+                    if ($key === 'suggestion' && is_array($item->house_rate[$key])) {
+                        $temp = '';
+                        foreach ($item->house_rate[$key] as $v) {
+                            if ((int) $v === 9) {
+                                $temp .= $item->house_rate->suggestion_other;
+                            } else {
+                                $temp .= $SuggestionList[$v];
+                            }
+                        }
+
+                        $cellValue = trim($temp);
+                    }
+
                     if ($key === 'structure' && $item->house_rate->structure > 0) {
                         $cellValue = $item->house_rate->structure === 9 ? $item->house_rate->structure_other : $StructureList[$item->house_rate->structure];
                     }
