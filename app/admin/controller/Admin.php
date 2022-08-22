@@ -134,8 +134,7 @@ class Admin extends AdminController
         if ($request->isPost()) {
             $params = $request->only(['username', 'password', 'phone', 'status']);
             $admin = $this->model::find($id);
-            $this->returnData['data'] = $params['password'];
-            if ($admin->password !== $params['password']) {
+            if (isset($params['password']) && $admin->password !== $params['password']) {
                 $params['password'] = password_hash(trim($params['password']), PASSWORD_BCRYPT);
             }
             $admin->save($params);

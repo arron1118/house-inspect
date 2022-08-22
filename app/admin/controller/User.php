@@ -133,7 +133,7 @@ class User extends AdminController
         if ($request->isPost()) {
             $params = $request->only(['username', 'password', 'phone', 'status']);
             $area = $this->model::find($id);
-            if ($area->password !== $params['password']) {
+            if (isset($params['password']) && $area->password !== $params['password']) {
                 $params['password'] = password_hash(trim($params['password']), PASSWORD_BCRYPT);
             }
             $area->save($params);
