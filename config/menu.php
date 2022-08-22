@@ -43,6 +43,12 @@ return [
                         "target" => "_self"
                     ],
                     [
+                        "title" => "评级人管理",
+                        "href" => (string) url('/admin/index'),
+                        "icon" => "fa-solid fa-users",
+                        "target" => "_self"
+                    ],
+                    [
                         "title" => "用户管理",
                         "href" => (string) url('/user/index'),
                         "icon" => "fa-solid fa-users",

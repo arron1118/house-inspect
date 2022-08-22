@@ -20,8 +20,8 @@ class Admin extends Model
         return $value ? date($this->getDateFormat(), $value) : '-';
     }
 
-    public function house($value)
+    public function house()
     {
-        return $this->belongsTo(House::class);
+        return $this->hasMany(House::class);
     }
 }

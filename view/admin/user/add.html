@@ -111,7 +111,7 @@
                 return false;
             }
 
-            $.post("{:url('/user/save')}", params, function (res) {
+            $.post("{:url('/User/save')}", params, function (res) {
                 if (res.code === 1) {
                     option.icon = 1
                     layer.msg(res.msg, option, function () {
