@@ -93,7 +93,7 @@ class Report
 
         $textRun = $section->addTextRun(array_merge($this->textRunStyle, []));
         $this->addText($textRun, $this->reportTitle, $this->reportTitleStyle);
-//        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:JD / 2022）', ['size' => 12]);
+        $this->addText($textRun, '<w:br /><w:br />（报告编码：SDJ/03:' . $this->house->fileNumber . ' / ' . date('Y') . '）', ['size' => 12]);
 
         $section->addTextBreak(20);
 

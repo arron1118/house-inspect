@@ -687,7 +687,7 @@ class House extends AdminController
         set_time_limit(0);
         ini_set('memory_limit', '1024M');
         $house = $this->model::with(['area', 'district', 'houseRate', 'user', 'admin'])
-            ->field('id, title, code, district_id, user_id, admin_id, contact, space, height, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
+            ->field('id, title, code, fileNumber, district_id, user_id, admin_id, contact, space, height, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
             ->where('status', 1)
             ->order('id desc')
             ->select();
@@ -702,6 +702,7 @@ class House extends AdminController
         $title = [
             'district_title' => '社区',
             'id' => '序号',
+            'fileNumber' => '报告编号',
             'code' => '房屋编码',
             'title' => '房屋名称',
             'contact' => '责任人及联系方式',
@@ -742,7 +743,7 @@ class House extends AdminController
             foreach ($title as $key => $value) {
                 $cellValue = '';
                 // 单元格内容写入
-                if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title', 'height'])) {
+                if (in_array($key, ['id', 'title', 'address', 'contact', 'district_title', 'height', 'fileNumber'])) {
                     $cellValue = $item[$key];
                 }
 
