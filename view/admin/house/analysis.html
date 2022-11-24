@@ -172,11 +172,8 @@
         table.on('toolbar(currentTableFilter)', function (obj) {
             switch (obj.event) {  // 监听添加操作
                 case 'exportExcel':
-                    window.location.href = '{:url("/house/exportExcel")}';
-                    // $('form[lay-filter="exportForm"] > input[name=ids]').val(ids.join(','));
-                    // let f = $('form[lay-filter="exportForm"]');
-                    // console.log(f)
-                    // f.submit();
+                    let formData = form.val('searchForm')
+                    window.location.href = '{:url("/house/exportExcel")}?' + $.param(formData);
                     break;
 
                 case 'baleImages':

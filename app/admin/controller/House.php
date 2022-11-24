@@ -4,9 +4,11 @@ declare (strict_types=1);
 namespace app\admin\controller;
 
 use app\common\library\Report;
+use app\common\model\ResumeCategory;
 use think\db\exception\DbException;
 use PhpOffice\PhpSpreadsheet\Spreadsheet;
 use PhpOffice\PhpSpreadsheet\IOFactory;
+use think\facade\Db;
 use think\Request;
 use app\common\controller\AdminController;
 use app\common\model\House as HouseModel;
@@ -513,19 +515,21 @@ class House extends AdminController
 //                $res = (new $this->model)->saveAll($data);
 
                 foreach ($data as $key => $val) {
-                    $house = $this->model::where('code', $val['code'])->findOrEmpty();
-                    if (!$house->isEmpty()) {
-                        $house->contact = $val['contact'];
-                        if ($house->space === '') {
-                            $house->space = $val['space'];
-                        }
+//                    $house = $this->model::where('code', $val['code'])->findOrEmpty();
+//                    if (!$house->isEmpty()) {
+//                        $house->contact = $val['contact'];
+//                        if ($house->space === '') {
+//                            $house->space = $val['space'];
+//                        }
+//
+//                        $house->save();
+//                    }
+//
+//                    if ($key % 1000 === 0) {
+//                        sleep(3);
+//                    }
 
-                        $house->save();
-                    }
-
-                    if ($key % 1000 === 0) {
-                        sleep(3);
-                    }
+                    (new ResumeCategory())->save($val);
                 }
 
                 $this->returnData['code'] = 1;
@@ -682,13 +686,201 @@ class House extends AdminController
      * 导出已完成房屋EXCEL
      * @throws \PhpOffice\PhpSpreadsheet\Writer\Exception
      */
-    public function exportExcel()
+    public function exportExcel(Request $request)
     {
         set_time_limit(0);
         ini_set('memory_limit', '1024M');
+
+        $title = $request->param('title', '');
+        $district_id = $request->param('district_id', 0);
+        $code = $request->param('code', '');
+        $areaId = (int)$request->param('area_id', 0);
+        $user_id = (int)$request->param('user_id', 0);
+        $admin_id = (int)$request->param('admin_id', 0);
+        $rate_status = (int)$request->param('rate_status', -1);
+        $house_extension = (int)$request->param('house_extension', 0);
+        $is_owner_business = (int)$request->param('is_owner_business', 0);
+        $is_balcony = (int)$request->param('is_balcony', 0);
+        $house_change = (int)$request->param('house_change', 0);
+        $is_crack = (int)$request->param('is_crack', 0);
+        $is_incline_or_deposition = (int)$request->param('is_incline_or_deposition', 0);
+        $is_rust_eaten = (int)$request->param('is_rust_eaten', 0);
+        $final_rate = (int)$request->param('final_rate', 0);
+        $map = [
+            ['status', '=', 1]
+        ];
+        $mapOr = [];
+        $whereAnd = [];
+        $area = '全部';
+        $description = '';
+        $final_rate_list = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
+
+        if ($title) {
+            $map[] = ['title', 'like', '%' . $title . '%'];
+        }
+
+        if ($code) {
+            $map[] = ['code', 'like', '%' . $code . '%'];
+        }
+
+        if ($areaId) {
+            $map[] = ['area_id', '=', $areaId];
+            $area_title = Area::where('id', $areaId)->value('title');
+
+            if ($district_id) {
+                $map[] = ['district_id', '=', $district_id];
+                $district_title = District::where('id', $district_id)->value('title');
+                $area_title .= '-' . $district_title;
+            }
+
+            $area = $area_title;
+        }
+
+        if ($user_id) {
+            $map[] = ['user_id', '=', $user_id];
+        }
+
+        if ($admin_id) {
+            $map[] = ['admin_id', '=', $admin_id];
+        }
+
+        // 有无阳台
+        if ($is_balcony > 0) {
+            $map[] = ['is_balcony', '=', $is_balcony];
+            $description .= ' ' . ($is_balcony === 1 ? '有' : '无') . '阳台';
+        }
+
+        // 经营性自建房
+        if ($is_owner_business > 0) {
+            $map[] = ['is_owner_business', '=', $is_owner_business];
+            $description .= ' ' . ($is_balcony === 1 ? '是' : '不是') . '经营性自建房';
+        }
+
+        // 有无扩建
+        if ($house_change > 0) {
+            $map[] = $house_change === 2 ? ['house_change', '=', 9] : ['house_change', 'in', [1, 2]];
+            $description .= ' ' . ($house_change === 1 ? '有' : '无') . '扩建';
+        }
+
+        // 有无加建
+        if ($house_extension > 0) {
+            if ($house_extension === 2) {
+                $map[] = ['house_extension', 'like', '%9%'];
+                $description .= ' 无加建';
+            } else {
+                $mapOr = function ($query) {
+                    $query->where("house_extension not like '%9%' and house_extension != '[]' and house_extension != ''");
+                };
+                $description .= ' 有加建';
+            }
+        }
+
+        // 有无沉降
+        if ($is_incline_or_deposition > 0) {
+            $where = $is_incline_or_deposition === 1 ? 'foundation_rate like "%5%"' : 'foundation_rate not like "%5%"';
+            $rate = HouseRateModel::where($where)->column('house_id');
+            $map[] = ['id', 'in', $rate];
+            $description .= ' ' . ($is_incline_or_deposition === 1 ? '有' : '无') . '沉降';
+        }
+
+        // 排查结论
+        if ($final_rate > 0) {
+            $rate = HouseRateModel::where('final_rate', $final_rate)->column('house_id');
+            $map[] = ['id', 'in', $rate];
+            $description .= ' ' . $final_rate_list[$final_rate];
+        }
+
+        // 锈蚀
+        if ($is_rust_eaten > 0) {
+            if ($is_rust_eaten === 1) {
+                $where = 'house_danger_frame_rate like "%1%" or house_danger_roof_rate like "%4%" or house_latent_danger_frame_rate like "%2%"';
+                $mapOr = function ($query) {
+                    $query->where('rust_eaten_info != "[]"');
+                };
+            } else {
+                $where = '(house_danger_frame_rate != "[]" and house_danger_frame_rate not like "%1%") or (house_danger_roof_rate != "[]" and house_danger_roof_rate not like "%4%") or (house_latent_danger_frame_rate != "[]" and house_latent_danger_frame_rate not like "%2%")';
+            }
+
+            $rate = HouseRateModel::where($where)->column('house_id');
+            $map[] = ['id', 'in', $rate];
+            $description .= ' ' . ($is_rust_eaten === 1 ? '有' : '无') . '锈蚀';
+        }
+
+        // 裂缝
+        if ($is_crack > 0) {
+            if ($is_crack === 1) {
+                $mapOr = function ($query) {
+                    $query->where('crack_info != "[]"');
+                };
+            }
+            $fields = ['foundation_rate', 'house_danger_frame_rate', 'house_latent_danger_frame_rate', 'house_latent_danger_frame_rate'];
+            $where = '';
+            foreach ($fields as $val) {
+                if ($is_crack === 1) {
+                    switch ($val) {
+                        case 'foundation_rate':
+                            $where .= ' (' . $val . ' like "%2%" or ' . $val . ' like "%3%" or ' . $val . ' like "%4%") ';
+                            break;
+
+                        case 'house_danger_frame_rate':
+                            $where .= ' or (' . $val . ' != "" and ' . $val . ' != "[]" and ' . $val . ' not like "%1%") ';
+                            break;
+
+                        case 'house_danger_roof_rate':
+                            $where .= ' or (' . $val . ' != "" and ' . $val . ' !="[]" and ' . $val . ' not like "%4%") ';
+                            break;
+
+                        case 'house_latent_danger_frame_rate':
+                            $where .= ' or (' . $val . ' like "%1%") ';
+                            break;
+                    }
+                } else {
+                    switch ($val) {
+                        case 'foundation_rate':
+                            $where .= '(' . $val . ' not like "%2%" and ' . $val . ' not like "%3%" and ' . $val . ' not like "%4%")';
+                            break;
+
+                        case 'house_danger_frame_rate':
+                            $where .= ' or (' . $val . ' = "" or ' . $val . ' = "[]" or ' . $val . ' like "%1%") ';
+                            break;
+
+                        case 'house_danger_roof_rate':
+                            $where .= ' or (' . $val . ' = "" or ' . $val . ' ="[]" or ' . $val . ' like "%4%") ';
+                            break;
+
+                        case 'house_latent_danger_frame_rate':
+                            $where .= ' or (' . $val . ' not like "%1%") ';
+                            break;
+                    }
+                }
+            }
+            $rate = HouseRateModel::where($where)->column('house_id');
+            $map[] = ['id', 'in', $rate];
+            $description .= ' ' . ($is_crack === 1 ? '有' : '无') . '裂缝';
+        }
+
+        if ($rate_status >= 0) {
+            switch ($rate_status) {
+                case 0:
+                    $whereAnd = 'rate_status != 1 and rate_status_set != 1';
+                    break;
+
+                case 1:
+                    $whereAnd = 'rate_status = 1 and rate_status_set != 1';
+                    break;
+
+                case 2:
+                    $whereAnd = 'rate_status_set = 1';
+                    break;
+            }
+        }
+
         $house = $this->model::with(['area', 'district', 'houseRate', 'user', 'admin'])
-            ->field('id, title, code, fileNumber, district_id, user_id, admin_id, contact, space, height, address, house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
-            ->where('status', 1)
+            ->field('id, title, code, fileNumber, district_id, user_id, admin_id, contact, space, height, address, 
+            house_usage, house_usage_other, is_owner_business, is_balcony, house_extension, house_change, rate_status_set')
+            ->where($map)
+            ->where($mapOr)
+            ->where($whereAnd)
             ->order('id desc')
             ->select();
         $spreadsheet = new Spreadsheet();
@@ -700,8 +892,8 @@ class House extends AdminController
         $SuggestionList = $HouseRateModel->getSuggestionList();
         $houseUsageList = (new $this->model)->getHouseUsageList();
         $title = [
-            'district_title' => '社区',
             'id' => '序号',
+            'district_title' => '社区',
             'fileNumber' => '报告编号',
             'code' => '房屋编码',
             'title' => '房屋名称',
@@ -729,8 +921,7 @@ class House extends AdminController
             'final_rate' => '排查结论',
             'suggestion' => '处理建议',
         ];
-        $yesOrNo = [0 => '', 1 => '是', 2 => '否'];
-        $final_rate = ['无', 'A类', 'B类', 'C1类', 'C2类', 'C3类'];
+        $yesOrNo = [0 => '', 1 => '是', 2 => '']; // 2 否
         $titCol = 'A';
         foreach ($title as $key => $value) {
             // 单元格内容写入
@@ -827,7 +1018,7 @@ class House extends AdminController
                     }
 
                     if ($key === 'final_rate') {
-                        $cellValue = $final_rate[$item->house_rate->final_rate];
+                        $cellValue = $final_rate_list[$item->house_rate->final_rate];
                     }
 
                     // 有无沉降
@@ -880,12 +1071,18 @@ class House extends AdminController
             }
             $row++;
         }
+
+        $filename = '[房屋排查] ' . $area;
+        if ($description !== '') {
+            $filename .= ' [' . $description . '] ';
+        }
+        $filename .= ' (已排查)';
         // Save
 //        $writer = IOFactory::createWriter($spreadsheet, 'Xlsx');
 //        $writer->save('./report/house.xlsx');
         // Redirect output to a client’s web browser (Xlsx)
         header('Content-Type: application/vnd.openxmlformats-officedocument.spreadsheetml.sheet');
-        header('Content-Disposition: attachment;filename="房屋排查(已完成).xlsx"');
+        header('Content-Disposition: attachment;filename="' . $filename . '.xlsx"');
         header('Cache-Control: max-age=0');
         // If you're serving to IE 9, then the following may be needed
         header('Cache-Control: max-age=1');
