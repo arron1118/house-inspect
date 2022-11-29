@@ -921,7 +921,7 @@ class House extends AdminController
             'final_rate' => '排查结论',
             'suggestion' => '处理建议',
         ];
-        $yesOrNo = [0 => '', 1 => '是', 2 => '']; // 2 否
+        $yesOrNo = [0 => '', 1 => '是', 2 => '否']; // 2 否
         $titCol = 'A';
         foreach ($title as $key => $value) {
             // 单元格内容写入
