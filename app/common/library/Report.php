@@ -47,6 +47,11 @@ class Report
         'name' => '黑体',
     ];
 
+    protected $approver = [
+        2 => '陈  虹',
+        5 => '吴鼎政',
+    ];
+
     protected $examinator = [
         2 => [
             '李泽鹏',
@@ -121,7 +126,7 @@ class Report
 
         $textRun = $section->addTextRun($this->textRunStyle);
         $this->addText($textRun, '批 准 人：', ['bold' => true, 'size' => 15]);
-        $this->addText($textRun, '陈  虹', ['size' => 15]);
+        $this->addText($textRun, $this->approver[$this->house->area_id], ['size' => 15]);
 //        $this->addText($textRun, '<w:br />（检测鉴定技术负责人）', ['size' => 10]);
         $this->addText($textRun, '<w:br />审 核 人：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '龙行伟', ['size' => 15]);
