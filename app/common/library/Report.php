@@ -47,6 +47,16 @@ class Report
         'name' => '黑体',
     ];
 
+    protected $examinator = [
+        2 => [
+            '李泽鹏',
+        ],
+        5 => [
+            '汪  阳',
+            '张思明',
+        ]
+    ];
+
     public function __construct($id)
     {
         $this->fontStyle = new Font();
@@ -118,8 +128,15 @@ class Report
         $this->addText($textRun, '<w:br />编 写 人：', ['bold' => true, 'size' => 15]);
         $this->addText($textRun, '张思明', ['size' => 15]);
         $this->addText($textRun, '<w:br />排 查 人：', ['bold' => true, 'size' => 15]);
-        $this->addText($textRun, '李泽鹏', ['size' => 15]);
-//        $this->addText($textRun, '<w:br />' . str_repeat(' ', 12) . '李泽鹏', ['size' => 15], []);
+
+        foreach ($this->examinator[$this->house->area_id] as $key => $val) {
+            if ($key === 0) {
+                $this->addText($textRun, $val, ['size' => 15]);
+            } else {
+                $this->addText($textRun, '<w:br />' . str_repeat(' ', 10) . $val, ['size' => 15], []);
+            }
+        }
+
         $section->addTextBreak(8);
 
         $textRun = $section->addTextRun();

@@ -960,7 +960,7 @@ class House extends AdminController
                 }
 
                 if ($key === 'code') {
-                    $cellValue = $item[$key] . "\t";
+                    $cellValue = $item[$key] . "\n";
                 }
 
                 if (in_array($key, ['is_balcony', 'is_owner_business', 'rate_status_set'])) {
