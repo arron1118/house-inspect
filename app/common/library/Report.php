@@ -142,7 +142,7 @@ class Report
             }
         }
 
-        $section->addTextBreak(8);
+        $section->addTextBreak(7);
 
         $textRun = $section->addTextRun();
         $textRun->addText('重要提示：<w:br />', $this->fontStyle);
